@@ -31,6 +31,27 @@
   color: var(--dsw-alias-state-idle-primary);
 }
 
+.dot[data-state='done'],
+.step[data-state='done'] {
+  animation: dsh-state-check-in var(--dsw-motion-duration, 240ms) var(--dsw-motion-ease-enter, cubic-bezier(0.05, 0.7, 0.1, 1));
+}
+
+.dot[data-state='error'],
+.step[data-state='error'] {
+  animation: dsh-state-shake var(--dsw-motion-duration-fast, 160ms) var(--dsw-motion-ease-move, cubic-bezier(0.2, 0, 0, 1));
+}
+
+@keyframes dsh-state-check-in {
+  from { opacity: 0; transform: scale(0.6) rotate(-12deg); }
+  to { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+
+@keyframes dsh-state-shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-2px); }
+  75% { transform: translateX(2px); }
+}
+
 /* Ongoing is the sole non-dot state: a quiet full ring sits behind a centered
  * breathing arc while the complete glyph rotates continuously. Both animations
  * share one 1.5s period so pinning their start times aligns them together. */
@@ -91,6 +112,13 @@
   .spinnerArc {
     stroke-dasharray: 18 150;
     stroke-dashoffset: -3;
+  }
+
+  .dot[data-state='done'],
+  .step[data-state='done'],
+  .dot[data-state='error'],
+  .step[data-state='error'] {
+    animation: none;
   }
 }
 

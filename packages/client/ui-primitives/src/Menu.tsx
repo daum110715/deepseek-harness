@@ -10,6 +10,7 @@ import { observeComposition } from './keyboard-composition.ts'
 import { focusWithoutRing } from './focus.ts'
 import { ShortcutKeys } from './ShortcutKeys.tsx'
 import { MenuSurface } from './MenuSurface.tsx'
+import { PresenceExitParent } from './PresenceExit.tsx'
 import css from './Menu.module.css'
 
 /** Selectable row (optionally with a nested submenu). */
@@ -285,6 +286,10 @@ export function Menu({ open, anchor, items = [], children, selectedId, selectedI
 
       if (lw > 0) x = Math.min(Math.max(x, MARGIN), vw - lw - MARGIN)
       if (lh > 0) y = Math.min(Math.max(y, overlayTopMargin(MARGIN, r, GAP)), vh - lh - MARGIN)
+      if (listEl !== null) {
+        const origin = `${String(Math.round(r.left + r.width / 2 - x))}px ${String(Math.round(r.top + r.height / 2 - y))}px`
+        if (listEl.style.transformOrigin !== origin) listEl.style.transformOrigin = origin
+      }
 
       setFixedPos(current => current?.left === x && current.top === y ? current : { left: x, top: y })
     }
@@ -504,6 +509,7 @@ export function Menu({ open, anchor, items = [], children, selectedId, selectedI
                 {sub.shortcut !== undefined && <span aria-hidden="true" className={css.shortcut}><ShortcutKeys keys={sub.shortcut.keys} className={css.shortcutKeys} /></span>}
               </button>
             ))}
+            <PresenceExitParent />
           </MenuSurface>
         )}
       </div>
@@ -554,6 +560,7 @@ export function Menu({ open, anchor, items = [], children, selectedId, selectedI
           {footer.map(renderEntry)}
         </div>
       )}
+      <PresenceExitParent />
     </MenuSurface>
   )
 

@@ -1,0 +1,112 @@
+/* Shared motion. Entering motion decelerates and exiting motion accelerates.
+   Exit durations are seven tenths of the matching enter duration.
+   Curves are Material 3 emphasized decelerate, emphasized accelerate, and standard.
+   Durations are 160/240/340 ms; shared motion is 480 ms.
+   Gesture snap may overshoot. Skeleton motion uses the standard curve and does not. */
+
+:root {
+  --dsw-motion-duration-fast: 160ms;
+  --dsw-motion-duration: 240ms;
+  --dsw-motion-duration-slow: 340ms;
+  --dsw-motion-duration-shared: 480ms;
+  --dsw-motion-duration-exit-fast: 112ms;
+  --dsw-motion-duration-exit: 168ms;
+  --dsw-motion-duration-exit-slow: 238ms;
+  --dsw-motion-ease-enter: cubic-bezier(0.05, 0.7, 0.1, 1);
+  --dsw-motion-ease-exit: cubic-bezier(0.3, 0, 0.8, 0.15);
+  --dsw-motion-ease-move: cubic-bezier(0.2, 0, 0, 1);
+  --dsw-motion-ease-snap: cubic-bezier(0.34, 1.25, 0.64, 1);
+  --dsw-motion-stagger: 24ms;
+  --dsw-motion-press-scale: 0.97;
+}
+
+@supports (animation-timing-function: linear(0, 1)) {
+  :root {
+    --dsw-motion-ease-snap: linear(0, 0.55, 1.08, 0.98, 1);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  :where(button, [role='button'], [role='menuitem'], [role='tab'], [role='switch']):not(:disabled) {
+    transition: scale var(--dsw-motion-duration-fast) var(--dsw-motion-ease-enter);
+  }
+
+  :where(button, [role='button'], [role='menuitem'], [role='tab'], [role='switch']):active:not(:disabled) {
+    scale: var(--dsw-motion-press-scale);
+    transition-duration: var(--dsw-motion-duration-exit-fast);
+    transition-timing-function: var(--dsw-motion-ease-exit);
+  }
+
+  [data-dsh-motion-stagger] > :nth-child(-n + 8) {
+    animation-name: dsh-motion-rise;
+    animation-duration: var(--dsw-motion-duration);
+    animation-timing-function: var(--dsw-motion-ease-enter);
+    animation-fill-mode: backwards;
+  }
+
+  [data-dsh-motion-stagger] > :nth-child(2) { animation-delay: calc(var(--dsw-motion-stagger) * 1); }
+  [data-dsh-motion-stagger] > :nth-child(3) { animation-delay: calc(var(--dsw-motion-stagger) * 2); }
+  [data-dsh-motion-stagger] > :nth-child(4) { animation-delay: calc(var(--dsw-motion-stagger) * 3); }
+  [data-dsh-motion-stagger] > :nth-child(5) { animation-delay: calc(var(--dsw-motion-stagger) * 4); }
+  [data-dsh-motion-stagger] > :nth-child(6) { animation-delay: calc(var(--dsw-motion-stagger) * 5); }
+  [data-dsh-motion-stagger] > :nth-child(7) { animation-delay: calc(var(--dsw-motion-stagger) * 6); }
+  [data-dsh-motion-stagger] > :nth-child(8) { animation-delay: calc(var(--dsw-motion-stagger) * 7); }
+
+  [data-dsh-motion-enter='command'] {
+    animation: dsh-motion-command var(--dsw-motion-duration) var(--dsw-motion-ease-enter) backwards;
+  }
+
+  [data-dsh-motion-enter='forward'] {
+    animation: dsh-motion-forward var(--dsw-motion-duration-slow) var(--dsw-motion-ease-enter);
+  }
+
+  [data-dsh-motion-enter='back'] {
+    animation: dsh-motion-back var(--dsw-motion-duration-slow) var(--dsw-motion-ease-enter);
+  }
+
+  [data-dsh-motion-enter='replace'] {
+    animation: dsh-motion-replace var(--dsw-motion-duration) var(--dsw-motion-ease-enter);
+  }
+}
+
+@keyframes dsh-motion-rise {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes dsh-motion-command {
+  from { opacity: 0; transform: translateX(-12px); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes dsh-motion-forward {
+  from { opacity: 0; transform: translateX(16px); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes dsh-motion-back {
+  from { opacity: 0; transform: translateX(-16px); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes dsh-motion-replace {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dsw-motion-duration-fast: 0ms;
+    --dsw-motion-duration: 0ms;
+    --dsw-motion-duration-slow: 0ms;
+    --dsw-motion-duration-shared: 0ms;
+    --dsw-motion-duration-exit-fast: 0ms;
+    --dsw-motion-duration-exit: 0ms;
+    --dsw-motion-duration-exit-slow: 0ms;
+  }
+
+  [data-dsh-motion-enter],
+  [data-dsh-motion-stagger] > * {
+    animation: none;
+  }
+}
