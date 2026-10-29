@@ -259,6 +259,59 @@ class MorphSession {
 }
 
 /**
+ * Glide a shell from one element to another and fade it out.
+ * The destination stays visible. A missing or zero-size side does nothing.
+ * @param from - source box. A missing or zero-size source skips the glide.
+ * @param to - destination box. A missing or zero-size destination skips the glide.
+ * @returns false when the glide does not start.
+ */
+export function glideShared(from: HTMLElement | null, to: HTMLElement | null): boolean {
+  if (from === null || to === null) return false
+  const view = from.ownerDocument.defaultView
+  if (view === null || !canAnimate(from)) return false
+  const fromRect = from.getBoundingClientRect()
+  const toRect = to.getBoundingClientRect()
+  if (fromRect.width < 1 || fromRect.height < 1 || toRect.width < 1 || toRect.height < 1) return false
+  const shell = view.document.createElement('div')
+  shell.dataset.dshMotionGhost = ''
+  shell.setAttribute('aria-hidden', 'true')
+  shell.style.position = 'fixed'
+  shell.style.left = '0'
+  shell.style.top = '0'
+  shell.style.width = `${String(toRect.width)}px`
+  shell.style.height = `${String(toRect.height)}px`
+  shell.style.transformOrigin = '0 0'
+  shell.style.pointerEvents = 'none'
+  shell.style.overflow = 'hidden'
+  shell.style.zIndex = '1200'
+  shell.style.background = getComputedStyle(from).backgroundColor
+  const clone = from.cloneNode(true) as HTMLElement
+  conceal(clone)
+  clone.style.width = '100%'
+  clone.style.height = '100%'
+  clone.style.margin = '0'
+  clone.style.transform = 'none'
+  shell.append(clone)
+  view.document.body.append(shell)
+  const animation = shell.animate([
+    {
+      transform: `translate(${String(fromRect.left)}px, ${String(fromRect.top)}px) scale(${String(fromRect.width / toRect.width)}, ${String(fromRect.height / toRect.height)})`,
+      borderRadius: radiusOf(from),
+      opacity: 1,
+    },
+    {
+      transform: `translate(${String(toRect.left)}px, ${String(toRect.top)}px) scale(1, 1)`,
+      borderRadius: radiusOf(to),
+      opacity: 0,
+    },
+  ], { duration: MOTION_MS.shared, easing: MOTION_EASE.move, fill: 'forwards' })
+  const drop = (): void => { shell.remove() }
+  animation.onfinish = drop
+  animation.oncancel = drop
+  return true
+}
+
+/**
  * Replace one element with another along the vertical axis.
  * The outgoing copy moves up and fades. The incoming element moves up into place.
  * @param outgoing - element leaving this position. A missing or zero-size element is skipped.

@@ -4,7 +4,7 @@ import { cleanup, render } from '@testing-library/react'
 import { useRef, type JSX } from 'react'
 import { PresenceExit, PresenceExitParent } from '../src/PresenceExit.tsx'
 import {
-  MOTION_EASE, MOTION_MS, canAnimate, capturePresence, morphShared, playPresenceExit, playVerticalSwap,
+  MOTION_EASE, MOTION_MS, canAnimate, capturePresence, glideShared, morphShared, playPresenceExit, playVerticalSwap,
   prefersReducedMotion, releasePresence,
 } from '../src/motion.ts'
 
@@ -231,6 +231,59 @@ describe('morphShared', () => {
     document.body.append(from, to)
     expect(morphShared(from, to)).toBe(true)
     vi.advanceTimersByTime(MOTION_MS.shared + 32)
+    expect(document.querySelector('[data-dsh-motion-ghost]')).toBeNull()
+  })
+})
+
+describe('glideShared', () => {
+  it('skips a missing side and glides a shell that fades out', () => {
+    installAnimate()
+    vi.stubGlobal('matchMedia', () => ({ matches: false }))
+    vi.spyOn(window, 'getComputedStyle').mockImplementation((node) => {
+      const element = node as HTMLElement
+      return { borderRadius: element.dataset.radius ?? '', transformOrigin: '0px 0px', backgroundColor: '' } as CSSStyleDeclaration
+    })
+    const from = document.createElement('div')
+    const to = document.createElement('div')
+    from.dataset.radius = '12px'
+    document.body.append(from, to)
+    expect(glideShared(null, to)).toBe(false)
+    expect(glideShared(from, null)).toBe(false)
+    const foreign = document.implementation.createHTMLDocument('')
+    const parked = foreign.createElement('div')
+    foreign.body.append(parked)
+    expect(glideShared(parked, to)).toBe(false)
+    reduced = true
+    vi.stubGlobal('matchMedia', () => ({ matches: true }))
+    box(from, new DOMRect(1, 2, 10, 10))
+    box(to, new DOMRect(4, 5, 20, 20))
+    expect(glideShared(from, to)).toBe(false)
+    reduced = false
+    vi.stubGlobal('matchMedia', () => ({ matches: false }))
+    box(from, new DOMRect(1, 2, 0, 10))
+    expect(glideShared(from, to)).toBe(false)
+    box(from, new DOMRect(1, 2, 10, 0))
+    expect(glideShared(from, to)).toBe(false)
+    box(from, new DOMRect(1, 2, 10, 10))
+    box(to, new DOMRect(4, 5, 0, 20))
+    expect(glideShared(from, to)).toBe(false)
+    box(to, new DOMRect(4, 5, 20, 0))
+    expect(glideShared(from, to)).toBe(false)
+    box(to, new DOMRect(4, 5, 20, 20))
+    expect(glideShared(from, to)).toBe(true)
+    const shell = document.querySelector<HTMLElement>('[data-dsh-motion-ghost]')
+    expect(shell?.style.width).toBe('20px')
+    expect(shell?.style.background).toBe('')
+    expect(shell?.childElementCount).toBe(1)
+    expect(animations.at(-1)?.keyframes[0]).toMatchObject({ borderRadius: '12px', opacity: 1 })
+    expect(animations.at(-1)?.keyframes[1]).toMatchObject({ opacity: 0 })
+    expect(to.style.opacity).toBe('')
+    const animation = animations.at(-1)?.animation as Animation
+    animation.oncancel?.call(animation, new Event('cancel') as AnimationPlaybackEvent)
+    expect(document.querySelector('[data-dsh-motion-ghost]')).toBeNull()
+    expect(glideShared(from, to)).toBe(true)
+    const finished = animations.at(-1)?.animation as Animation
+    finished.onfinish?.call(finished, new Event('finish') as AnimationPlaybackEvent)
     expect(document.querySelector('[data-dsh-motion-ghost]')).toBeNull()
   })
 })
