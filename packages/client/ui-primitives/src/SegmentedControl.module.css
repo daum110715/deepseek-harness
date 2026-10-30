@@ -30,7 +30,7 @@
   background: var(--dsw-alias-bg-layer-1);
   box-shadow: var(--dsw-elevation-soft);
   transform: translateX(calc(var(--dsh-segment-index) * (100% + 2px)));
-  transition: transform var(--dsw-motion-duration, 240ms) var(--dsw-motion-ease-move, cubic-bezier(0.2, 0, 0, 1));
+  transition: transform 160ms ease;
   pointer-events: none;
 }
 
@@ -50,9 +50,7 @@
   font-weight: 500;
   white-space: nowrap;
   cursor: pointer;
-  transition:
-    color 120ms var(--dsw-motion-ease-move, cubic-bezier(0.2, 0, 0, 1)),
-    scale var(--dsw-motion-duration-fast, 160ms) var(--dsw-motion-ease-enter, cubic-bezier(0.05, 0.7, 0.1, 1));
+  transition: color 120ms ease;
 }
 
 .tab[aria-selected='true'] {
@@ -79,11 +77,5 @@
   .indicator,
   .tab {
     transition: none;
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .tab:active:not(:disabled) {
-    scale: var(--dsw-motion-press-scale, 0.97);
   }
 }

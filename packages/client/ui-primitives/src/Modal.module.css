@@ -26,7 +26,7 @@
   position: absolute;
   inset: 0;
   background: var(--dsw-alias-bg-mask-1);
-  animation: modalFade var(--dsw-motion-duration-slow, 340ms) var(--dsw-motion-ease-enter, cubic-bezier(0.05, 0.7, 0.1, 1));
+  animation: modalEnter var(--ds-transition-duration) var(--ds-ease-in-out);
 }
 
 /* Dialogs use the prominent elevation on the secondary layer. */
@@ -44,35 +44,16 @@
   border-radius: var(--dsw-radius-panel);
   background: var(--dsw-alias-bg-layer-2);
   box-shadow: var(--dsw-elevation-prominent);
-  transform-origin: center;
-  animation: modalIn var(--dsw-motion-duration-slow, 340ms) var(--dsw-motion-ease-enter, cubic-bezier(0.05, 0.7, 0.1, 1));
+  animation: modalEnter var(--ds-transition-duration) var(--ds-ease-in-out);
 }
 
-.content,
-.footer {
-  animation: modalContent var(--dsw-motion-duration, 240ms) var(--dsw-motion-ease-enter, cubic-bezier(0.05, 0.7, 0.1, 1)) 80ms backwards;
-}
-
-@keyframes modalFade {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes modalIn {
-  from { opacity: 0; transform: scale(0.96); }
-  to { opacity: 1; transform: none; }
-}
-
-@keyframes modalContent {
+@keyframes modalEnter {
   from { opacity: 0; }
   to { opacity: 1; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .mask::after,
-  .dialog,
-  .content,
-  .footer { animation: none; }
+  .mask::after, .dialog { animation: none; }
 }
 
 .dialog:focus {

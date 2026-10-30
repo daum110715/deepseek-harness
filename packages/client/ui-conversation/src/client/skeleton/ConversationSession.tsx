@@ -156,11 +156,7 @@ export function ConversationSessionHeader({
                   // base.css) and leave the title inert for dragging too.
                   const title = last
                     ? (
-                      <span
-                        className={clsx(css.crumb, summary.subagent && css.crumbSubagent, css.crumbCurrent)}
-                        data-dsh-shared="session-title"
-                        data-dsh-shared-id={summary.id}
-                      >
+                      <span className={clsx(css.crumb, summary.subagent && css.crumbSubagent, css.crumbCurrent)}>
                         {summary.displayTitle}
                       </span>
                     )
@@ -203,11 +199,7 @@ export function ConversationSessionHeader({
                     </span>
                   )
                 })}
-                {ancestry.length === 0 && (
-                  <span className={css.crumbCurrent} data-dsh-shared="session-title" data-dsh-shared-id={sessionId}>
-                    {sessionId}
-                  </span>
-                )}
+                {ancestry.length === 0 && <span className={css.crumbCurrent}>{sessionId}</span>}
               </nav>
               <div className={css.headerActions}>
                 {renderSlot('conversation.session.header.actions', {})}

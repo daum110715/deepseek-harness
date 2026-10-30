@@ -727,8 +727,6 @@ export function SessionNodeItem({
       <span
         ref={titleRef}
         className={css.title}
-        data-dsh-shared="session-row"
-        data-dsh-shared-id={node.id}
         onMouseDown={(e) => {
           if (e.detail !== 1) return
           renameArmed.current = true

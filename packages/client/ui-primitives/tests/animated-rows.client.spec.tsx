@@ -82,7 +82,7 @@ describe('AnimatedRows', () => {
 
     arm()
     view.rerender(rows(['b', 'a']))
-    expect(animations.map(call => [call.element.textContent, call.options.duration])).toEqual([['b', 240], ['a', 240]])
+    expect(animations.map(call => [call.element.textContent, call.options.duration])).toEqual([['b', 200], ['a', 200]])
     expect(animations[0]?.keyframes).toEqual([
       { transform: 'translate(0px, 34px)', opacity: 1 },
       { transform: 'translate(0, 0)', opacity: 1 },
@@ -96,15 +96,12 @@ describe('AnimatedRows', () => {
     view.rerender(rows(['b', 'c', 'd']))
     expect(within(tree).queryByText('a')).toBeNull()
     expect(animations.map(call => [call.element.textContent, call.options.duration]))
-      .toEqual([['b', 240], ['c', 240], ['d', 240], ['a', 168]])
+      .toEqual([['b', 200], ['c', 200], ['d', 100], ['a', 100]])
     const leaving = animations[3] as RecordedAnimation
     expect(leaving.element.inert).toBe(true)
     expect(leaving.element.closest('[aria-hidden="true"]')).not.toBeNull()
     expect(leaving.element.style.position).toBe('absolute')
-    expect(leaving.keyframes).toEqual([
-      { opacity: 1, transform: 'translateY(0)' },
-      { opacity: 0, transform: 'translateY(-8px)' },
-    ])
+    expect(leaving.keyframes).toEqual([{ opacity: 1 }, { opacity: 0 }])
     finish(leaving.animation)
     expect(leaving.element.isConnected).toBe(false)
   })
@@ -114,7 +111,7 @@ describe('AnimatedRows', () => {
     arm()
     view.rerender(rows([]))
     expect(animations).toHaveLength(1)
-    expect(animations[0]?.options.duration).toBe(168)
+    expect(animations[0]?.options.duration).toBe(100)
     expect(animations[0]?.element.inert).toBe(true)
     finish(animations[0]!.animation)
     expect(animations[0]?.element.isConnected).toBe(false)

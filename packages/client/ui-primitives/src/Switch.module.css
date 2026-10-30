@@ -37,7 +37,7 @@
   border-radius: 50%;
   corner-shape: round;
   background: var(--dsw-alias-label-primary-foreground);
-  transition: transform var(--dsw-motion-duration-fast, 160ms) var(--dsw-motion-ease-move, cubic-bezier(0.2, 0, 0, 1));
+  transition: transform 120ms ease;
 }
 
 .switch[aria-checked='false'] .thumb {
@@ -46,8 +46,4 @@
 
 .switch[aria-checked='true'] .thumb {
   transform: translateX(16px);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .thumb { transition: none; }
 }

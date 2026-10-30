@@ -3,7 +3,6 @@ import type { KeyboardEventHandler, ReactNode } from 'react'
 import { createPortal } from 'react-dom'
 import clsx from 'clsx'
 import { IconCloseOutlineRegular } from './icons/index.tsx'
-import { PresenceExitParent } from './PresenceExit.tsx'
 import { useModalLayer } from './useModalLayer.ts'
 import css from './Modal.module.css'
 
@@ -86,7 +85,6 @@ export function Modal({
               {footer !== undefined && <div className={css.footer}>{footer}</div>}
             </>
           )}
-        <PresenceExitParent />
       </div>
     </div>
   ), document.body)
