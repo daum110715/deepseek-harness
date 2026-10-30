@@ -49,7 +49,6 @@ import { PerformanceUsagePolicy } from './performance-usage.ts'
 import { useTurnDataValue } from './chat/use-turn-data.ts'
 import { bindDisclosure } from './chat/use-disclosure.ts'
 import { useFlowHidden, useMotionHidden } from './chat/flow-motion.ts'
-import { installTranscriptMotion } from './chat/transcript-motion.ts'
 
 /** Bind group and header visibility to the viewport of one flow render. */
 export const CHAT_FLOW_INJECT: ChatFlowInjected = {
@@ -85,7 +84,6 @@ export const inject = [
  * @param ctx - Client root context.
  */
 export function apply(ctx: Context): void {
-  ctx.effect(() => installTranscriptMotion(globalThis.document.body), 'ui-chat: transcript motion')
   const quotaNotice = createSnapshotStore<QuotaNoticeState | null>(null)
   let quotaNoticeSeq = 0
   // Each hold is its own token, so a release can only drop the hold it was

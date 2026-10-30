@@ -11,11 +11,6 @@ export { DisclosureRow } from './DisclosureRow.tsx'
 export type { DisclosureRowProps } from './DisclosureRow.tsx'
 export { AnimatedRows } from './AnimatedRows.tsx'
 export type { AnimatedRowsProps } from './AnimatedRows.tsx'
-export {
-  MOTION_EASE, MOTION_MS, canAnimate, capturePresence, glideShared, morphShared, playPresenceExit, playVerticalSwap,
-  prefersReducedMotion, releasePresence,
-} from './motion.ts'
-export type { PresenceSnapshot } from './motion.ts'
 export { useRowDragPreview } from './useRowDragPreview.ts'
 export { TextShimmer } from './TextShimmer.tsx'
 export type { TextShimmerProps } from './TextShimmer.tsx'

@@ -1,12 +1,9 @@
 /** React-commit-driven movement and entry/exit fades for keyed rows. */
 import { Component, createRef, type AriaRole, type ReactNode } from 'react'
 import css from './AnimatedRows.module.css'
-import { MOTION_EASE, MOTION_MS } from './motion.ts'
 
-const ROW_ENTER_MS = MOTION_MS.base
-const ROW_GLIDE_MS = MOTION_MS.base
-const ROW_EXIT_MS = MOTION_MS.exit
-const STAGGER_MS = 24
+const ROW_FADE_MS = 100
+const ROW_GLIDE_MS = 200
 
 /** Keyed row content, list semantics, and animation readiness. */
 export interface AnimatedRowsProps {
@@ -90,19 +87,13 @@ export class AnimatedRows extends Component<AnimatedRowsProps> {
     const origin = overlay.getBoundingClientRect()
     const positions = this.readPositions()
 
-    let entered = 0
     for (const [key, row] of positions) {
       this.removeExit(key)
       const previousRow = snapshot.positions.get(key)
       if (!intersects(row.rect, viewport)
         && (previousRow === undefined || !intersects(previousRow.rect, viewport))) continue
       if (previousRow === undefined) {
-        const delay = Math.min(entered, 7) * STAGGER_MS
-        entered += 1
-        this.move(row.element, [
-          { opacity: 0, transform: 'translateY(6px)' },
-          { opacity: 1, transform: 'translateY(0)' },
-        ], ROW_ENTER_MS, MOTION_EASE.enter, delay)
+        this.move(row.element, [{ opacity: 0 }, { opacity: 1 }], ROW_FADE_MS)
         continue
       }
       const dx = previousRow.rect.left - row.rect.left
@@ -111,7 +102,7 @@ export class AnimatedRows extends Component<AnimatedRowsProps> {
       this.move(row.element, [
         { transform: `translate(${String(dx)}px, ${String(dy)}px)`, opacity: previousRow.opacity },
         { transform: 'translate(0, 0)', opacity: 1 },
-      ], ROW_GLIDE_MS, MOTION_EASE.move, 0)
+      ], ROW_GLIDE_MS)
     }
 
     for (const [key, row] of snapshot.removed) {
@@ -124,11 +115,8 @@ export class AnimatedRows extends Component<AnimatedRowsProps> {
         width: `${String(row.rect.width)}px`, height: `${String(row.rect.height)}px`,
       })
       overlay.append(element)
-      const animation = element.animate([
-        { opacity: row.opacity, transform: 'translateY(0)' },
-        { opacity: 0, transform: 'translateY(-8px)' },
-      ], {
-        duration: ROW_EXIT_MS, easing: MOTION_EASE.exit, fill: 'forwards',
+      const animation = element.animate([{ opacity: row.opacity }, { opacity: 0 }], {
+        duration: ROW_FADE_MS, easing: 'ease-out', fill: 'forwards',
       })
       this.exits.set(key, { element, animation })
       animation.onfinish = () => { this.removeExit(key) }
@@ -149,8 +137,8 @@ export class AnimatedRows extends Component<AnimatedRowsProps> {
     }]))
   }
 
-  private move(element: HTMLElement, keyframes: Keyframe[], duration: number, easing: string, delay: number): void {
-    const animation = element.animate(keyframes, { duration, easing, delay })
+  private move(element: HTMLElement, keyframes: Keyframe[], duration: number): void {
+    const animation = element.animate(keyframes, { duration, easing: 'ease-out' })
     this.movements.set(element, animation)
     animation.onfinish = () => { this.movements.delete(element); animation.cancel() }
   }
