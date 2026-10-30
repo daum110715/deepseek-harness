@@ -148,6 +148,8 @@ export function playPresenceExit(source: HTMLElement, snapshot: PresenceSnapshot
   return animation
 }
 
+const activeMorphs = new WeakMap<HTMLElement, MorphSession>()
+
 function radiusOf(node: HTMLElement): string {
   const radius = getComputedStyle(node).borderRadius
   return radius === '' ? '0px' : radius
@@ -166,6 +168,7 @@ export function morphShared(from: HTMLElement | null, to: HTMLElement | null): b
   const fromRect = from.getBoundingClientRect()
   const toRect = to.getBoundingClientRect()
   if (fromRect.width < 1 || fromRect.height < 1 || toRect.width < 1 || toRect.height < 1) return false
+  activeMorphs.get(to)?.finish()
   const sx = fromRect.width / toRect.width
   const sy = fromRect.height / toRect.height
   const shell = view.document.createElement('div')
@@ -216,7 +219,9 @@ export function morphShared(from: HTMLElement | null, to: HTMLElement | null): b
     shell.remove()
     sourceClone.remove()
     to.style.opacity = previousOpacity
+    activeMorphs.delete(to)
   })
+  activeMorphs.set(to, session)
   session.arm(shellAnimation)
   return true
 }
