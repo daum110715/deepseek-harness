@@ -26,3 +26,19 @@
   cursor: default;
   opacity: 0.5;
 }
+
+@media (prefers-reduced-motion: no-preference) {
+  .checkbox {
+    transition: scale var(--dsw-motion-duration-fast, 160ms) var(--dsw-motion-ease-enter, cubic-bezier(0.05, 0.7, 0.1, 1));
+  }
+
+  .checkbox:active {
+    scale: var(--dsw-motion-press-scale, 0.97);
+    transition-duration: var(--dsw-motion-duration-exit-fast, 112ms);
+    transition-timing-function: var(--dsw-motion-ease-exit, cubic-bezier(0.3, 0, 0.8, 0.15));
+  }
+
+  .checkbox:has(input:disabled):active {
+    scale: 1;
+  }
+}

@@ -15,11 +15,11 @@
   line-height: 18px;
   white-space: nowrap;
   transition:
-    background-color 160ms ease-out,
-    color 160ms ease-out,
-    border-color 160ms ease-out,
-    opacity 150ms ease-out;
-  animation: indicator-enter 150ms ease-out;
+    background-color var(--dsw-motion-duration-fast, 160ms) var(--dsw-motion-ease-move, cubic-bezier(0.2, 0, 0, 1)),
+    color var(--dsw-motion-duration-fast, 160ms) var(--dsw-motion-ease-move, cubic-bezier(0.2, 0, 0, 1)),
+    border-color var(--dsw-motion-duration-fast, 160ms) var(--dsw-motion-ease-move, cubic-bezier(0.2, 0, 0, 1)),
+    opacity var(--dsw-motion-duration-exit, 168ms) var(--dsw-motion-ease-exit, cubic-bezier(0.3, 0, 0.8, 0.15));
+  animation: indicator-enter var(--dsw-motion-duration, 240ms) var(--dsw-motion-ease-enter, cubic-bezier(0.05, 0.7, 0.1, 1));
 }
 
 .leaving {

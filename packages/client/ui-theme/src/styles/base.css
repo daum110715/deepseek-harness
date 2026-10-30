@@ -1,6 +1,6 @@
 /* Base variables referenced by the token sheets and component CSS but defined
  * upstream (deepsuite theme/global.css) — supplied here so the composite
- * --dsw-font-* variables resolve and motion rides the upstream curve. Code
+ * --dsw-font-* variables resolve. Legacy motion names alias the scale in motion.css. Code
  * font stack deliberately omits a bare `monospace` tail (Windows CJK falls
  * back to SimSun otherwise). */
 :root {
@@ -11,10 +11,10 @@
   --dsh-font-family-code-default: 'SF Mono', 'JetBrains Mono', 'Fira Code', Consolas,
     'Liberation Mono', Menlo, Courier, 'PingFang SC', 'Microsoft YaHei';
   --ds-font-family-code: var(--dsh-font-family-code-default);
-  --ds-ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
-  --ds-transition-duration: 0.2s;
-  --ds-transition-duration-fast: 0.1s;
-  --ds-transition-duration-slow: 0.3s;
+  --ds-ease-in-out: var(--dsw-motion-ease-move, cubic-bezier(0.2, 0, 0, 1));
+  --ds-transition-duration: var(--dsw-motion-duration, 240ms);
+  --ds-transition-duration-fast: var(--dsw-motion-duration-fast, 160ms);
+  --ds-transition-duration-slow: var(--dsw-motion-duration-slow, 340ms);
   --dsw-radius-xs: 4px;
   --dsw-radius-sm: 8px;
   --dsw-radius-md: 12px;

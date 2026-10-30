@@ -15,7 +15,7 @@
   border: 0.5px solid var(--dsw-alias-border-l3);
   border-radius: var(--dsw-radius-md);
   background: var(--dsw-alias-bg-layer-3);
-  transition: transform 180ms ease;
+  transition: transform var(--dsw-motion-duration, 240ms) var(--dsw-motion-ease-move, cubic-bezier(0.2, 0, 0, 1));
   pointer-events: none;
 }
 
@@ -29,7 +29,9 @@
   line-height: 20px;
   background: transparent;
   color: var(--dsw-alias-label-secondary);
-  transition: color 180ms ease;
+  transition:
+    color 180ms var(--dsw-motion-ease-move, cubic-bezier(0.2, 0, 0, 1)),
+    scale var(--dsw-motion-duration-fast, 160ms) var(--dsw-motion-ease-enter, cubic-bezier(0.05, 0.7, 0.1, 1));
 }
 
 .tab[aria-selected='true'] {
@@ -73,5 +75,11 @@
   .indicator,
   .tab {
     transition: none;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .tab:active {
+    scale: var(--dsw-motion-press-scale, 0.97);
   }
 }

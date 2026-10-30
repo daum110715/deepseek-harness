@@ -109,7 +109,20 @@ button.leading {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .row {
+  .row,
+  .root[data-open] > :not([data-disclosure-header]) {
     transition: none;
+    animation: none;
   }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .root[data-open] > :not([data-disclosure-header]) {
+    animation: disclosureIn var(--dsw-motion-duration, 240ms) var(--dsw-motion-ease-enter, cubic-bezier(0.05, 0.7, 0.1, 1)) backwards;
+  }
+}
+
+@keyframes disclosureIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
