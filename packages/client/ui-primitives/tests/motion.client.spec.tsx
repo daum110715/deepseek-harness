@@ -210,6 +210,26 @@ describe('morphShared', () => {
     expect(to.style.opacity).toBe('0.4')
   })
 
+  it('interrupts an active morph and restores the original opacity after the latest animation', () => {
+    installAnimate()
+    vi.stubGlobal('matchMedia', () => ({ matches: false }))
+    const from = document.createElement('div')
+    const to = document.createElement('div')
+    to.style.opacity = '0.4'
+    document.body.append(from, to)
+    box(from, new DOMRect(0, 0, 10, 10))
+    box(to, new DOMRect(20, 20, 10, 10))
+    expect(morphShared(from, to)).toBe(true)
+    const first = animations[0]!
+    expect(morphShared(from, to)).toBe(true)
+    expect(first.cancel).toHaveBeenCalled()
+    expect(document.querySelectorAll('[data-dsh-motion-ghost]')).toHaveLength(2)
+    expect(to.style.opacity).toBe('0')
+    finish(animations[3]!.animation)
+    expect(to.style.opacity).toBe('0.4')
+    expect(document.querySelector('[data-dsh-motion-ghost]')).toBeNull()
+  })
+
   it('stops when the destination leaves or the deadline passes', async () => {
     installAnimate()
     vi.useFakeTimers()
