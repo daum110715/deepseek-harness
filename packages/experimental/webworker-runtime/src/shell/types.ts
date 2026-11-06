@@ -1,61 +1,22 @@
 /**
- * Types of the in-worker shell: the state one command line mutates, the byte
- * face a program reads and writes, and the program signature the command table
- * stores. A browser worker has no processes, so a "program" is a JavaScript
- * function over the VFS and the state below is the whole machine.
+ * Types of the in-worker shell: the filesystem one command line acts on and the
+ * outcome it reports.
  * @module @deepseek-ai/dsh-experimental-webworker-runtime/src/shell/types
  */
 
-/**
- * Mutable state of one shell instance. A subshell copies it; a group and the
- * top level share it, which is what makes `cd` visible to later commands of
- * the same line and invisible outside `( … )`.
- */
-export interface ShellState {
-  /** Absolute working directory every relative path resolves against. */
-  cwd: string
-  /** Exported variables — the environment a program reads. */
-  environment: Record<string, string>
-  /** Shell variables that were assigned but never exported. */
-  variables: Record<string, string>
-  /** Exit status of the last completed command, read back as `$?`. */
-  lastStatus: number
-  /** Set by `exit`; the interpreter stops the line and reports this status. */
-  exitRequested: number | undefined
-  /**
-   * The caller's cancellation, for programs that would otherwise keep the
-   * whole line waiting after a kill. The interpreter checks it between
-   * commands; a program that waits on anything must check it too.
-   */
-  readonly signal: AbortSignal | undefined
-}
-
-/**
- * The byte face of one running program. Output is collected as text rather
- * than streamed: every program is a JavaScript function that returns before
- * the next one starts, so a pipeline is a string handed along, and nothing in
- * this shell can observe a partially written stream.
- */
-export interface ShellIo {
-  /** Everything on standard input, already complete. */
-  readonly stdin: string
-  /** Append to standard output. Declared as a value: redirections hand it around. */
-  readonly out: (text: string) => void
-  /** Append to standard error. Declared as a value: redirections hand it around. */
-  readonly err: (text: string) => void
-}
-
-/** One directory entry, as the listing, glob, and walk programs read it. */
+/** One directory entry. */
 export interface ShellDirent {
   readonly name: string
   readonly directory: boolean
 }
 
-/** What a program can learn about one path. */
+/** What a command can learn about one path. */
 export interface ShellStats {
   readonly directory: boolean
   readonly size: number
   readonly mtimeMs: number
+  /** Permission bits; absent means the default for the entry's kind. */
+  readonly mode?: number
 }
 
 /**
@@ -113,27 +74,27 @@ export interface ShellFileSystem {
    * @param to - absolute destination path.
    */
   rename(from: string, to: string): Promise<void>
+  /**
+   * Read one file as bytes.
+   * @param path - absolute VFS path.
+   * @returns the file's contents.
+   * @throws a Node-shaped error when the path is absent or is a directory.
+   */
+  readBytes(path: string): Promise<Uint8Array>
+  /**
+   * Write bytes to one file.
+   * @param path - absolute VFS path; its parent must exist.
+   * @param bytes - the bytes to store.
+   * @param append - true to keep the existing contents and add after them.
+   */
+  writeBytes(path: string, bytes: Uint8Array, append?: boolean): Promise<void>
+  /**
+   * Set one entry's permission bits.
+   * @param path - absolute VFS path.
+   * @param mode - permission bits.
+   */
+  chmod(path: string, mode: number): Promise<void>
 }
-
-/**
- * One executable of the command table.
- *
- * A program reports its exit status like a POSIX process: 0 for success, and a
- * nonzero status it also explains on {@link ShellIo.err}. Throwing is reserved
- * for a defect in the program itself — the interpreter turns a throw into
- * status 1 plus a diagnostic naming the program.
- * @param argv - the program name at index 0, then its arguments, fully expanded.
- * @param io - standard input contents and the output sinks.
- * @param state - shell state; a program that changes it (`cd`, `export`) mutates in place.
- * @param fs - the filesystem this run acts on.
- * @returns the exit status.
- */
-export type ShellProgram = (
-  argv: readonly string[],
-  io: ShellIo,
-  state: ShellState,
-  fs: ShellFileSystem,
-) => number | Promise<number>
 
 /** Outcome of one interpreted command line. */
 export interface ShellRunOutcome {

@@ -2,6 +2,15 @@
 
 /** Simplified Chinese dictionary (the key-set source of truth). */
 export const zh = {
+  'browserData.title': '浏览器数据',
+  'browserData.description': '会话、设置和 API 密钥只保存在此浏览器中。备份文件包含 API 密钥，请妥善保管。',
+  'browserData.ephemeral': '此浏览器不允许持久存储，关闭页面后数据会丢失。',
+  'browserData.backup': '备份',
+  'browserData.restore': '恢复',
+  'browserData.erase': '清除全部数据',
+  'browserData.eraseConfirm': '确认清除',
+  'browserData.disconnect': '断开连接',
+  'browserData.error': '操作失败，请重试。',
   'desktop.channel.title': '更新渠道',
   'desktop.channel.description': '正式版适合日常使用；开发版可提前体验新功能，但可能不稳定。',
   'desktop.channel.stable': '正式版',
@@ -74,6 +83,15 @@ export type SettingsKey = keyof typeof zh
 
 /** English dictionary, checked complete against the zh key set. */
 export const en = {
+  'browserData.title': 'Browser data',
+  'browserData.description': 'Sessions, settings, and API keys stay in this browser. Backups contain your API keys, so keep them safe.',
+  'browserData.ephemeral': 'This browser does not allow durable storage. Your data is lost when the page closes.',
+  'browserData.backup': 'Back up',
+  'browserData.restore': 'Restore',
+  'browserData.erase': 'Erase all data',
+  'browserData.eraseConfirm': 'Confirm erase',
+  'browserData.disconnect': 'Disconnect',
+  'browserData.error': 'That did not work. Please try again.',
   'desktop.channel.title': 'Update channel',
   'desktop.channel.description': 'Stable is suitable for everyday use. Development offers early access to new features but may be unstable.',
   'desktop.channel.stable': 'Stable',
@@ -143,6 +161,15 @@ export const en = {
 
 /** Japanese copy, checked against the English keys. */
 export const ja = {
+  'browserData.title': 'ブラウザーのデータ',
+  'browserData.description': 'セッション、設定、API キーはこのブラウザーにのみ保存されます。バックアップには API キーが含まれるため、安全に保管してください。',
+  'browserData.ephemeral': 'このブラウザーでは永続ストレージを使用できません。ページを閉じるとデータは失われます。',
+  'browserData.backup': 'バックアップ',
+  'browserData.restore': '復元',
+  'browserData.erase': 'すべてのデータを消去',
+  'browserData.eraseConfirm': '消去を確定',
+  'browserData.disconnect': '接続を解除',
+  'browserData.error': '操作に失敗しました。再試行してください。',
   'desktop.channel.title': '更新チャンネル',
   'desktop.channel.description': '安定版は日常的な使用に適しています。開発版では新機能をいち早く試せますが、不安定な場合があります。',
   'desktop.channel.stable': '安定版',
@@ -212,6 +239,15 @@ export const ja = {
 
 /** Spanish dictionary, checked against the English keys. */
 export const es = {
+  'browserData.title': 'Datos del navegador',
+  'browserData.description': 'Las sesiones, los ajustes y las claves de API solo se guardan en este navegador. Las copias de seguridad contienen tus claves de API: guárdalas en un lugar seguro.',
+  'browserData.ephemeral': 'Este navegador no permite el almacenamiento persistente. Tus datos se pierden al cerrar la página.',
+  'browserData.backup': 'Crear copia',
+  'browserData.restore': 'Restaurar',
+  'browserData.erase': 'Borrar todos los datos',
+  'browserData.eraseConfirm': 'Confirmar borrado',
+  'browserData.disconnect': 'Desconectar',
+  'browserData.error': 'No se pudo completar. Inténtalo de nuevo.',
   'desktop.channel.title': 'Canal de actualizaciones',
   'desktop.channel.description': 'Estable es adecuado para el uso diario. Desarrollo permite probar nuevas funciones antes, pero puede ser inestable.',
   'desktop.channel.stable': 'Estable',
@@ -281,6 +317,15 @@ export const es = {
 
 /** French dictionary, checked against the English keys. */
 export const fr = {
+  'browserData.title': 'Données du navigateur',
+  'browserData.description': 'Les sessions, les réglages et les clés API restent dans ce navigateur. Les sauvegardes contiennent vos clés API : conservez-les en lieu sûr.',
+  'browserData.ephemeral': 'Ce navigateur n’autorise pas le stockage persistant. Vos données sont perdues à la fermeture de la page.',
+  'browserData.backup': 'Sauvegarder',
+  'browserData.restore': 'Restaurer',
+  'browserData.erase': 'Effacer toutes les données',
+  'browserData.eraseConfirm': 'Confirmer l’effacement',
+  'browserData.disconnect': 'Déconnecter',
+  'browserData.error': 'L’opération a échoué. Veuillez réessayer.',
   'desktop.channel.title': 'Canal de mise à jour',
   'desktop.channel.description': 'Stable convient à un usage quotidien. Développement permet de découvrir les nouveautés en avance, mais peut être instable.',
   'desktop.channel.stable': 'Stable',
@@ -350,6 +395,15 @@ export const fr = {
 
 /** German dictionary, checked against the English keys. */
 export const de = {
+  'browserData.title': 'Browserdaten',
+  'browserData.description': 'Sitzungen, Einstellungen und API-Schlüssel bleiben in diesem Browser. Sicherungen enthalten deine API-Schlüssel, bewahre sie also sicher auf.',
+  'browserData.ephemeral': 'Dieser Browser erlaubt keinen dauerhaften Speicher. Deine Daten gehen beim Schließen der Seite verloren.',
+  'browserData.backup': 'Sichern',
+  'browserData.restore': 'Wiederherstellen',
+  'browserData.erase': 'Alle Daten löschen',
+  'browserData.eraseConfirm': 'Löschen bestätigen',
+  'browserData.disconnect': 'Trennen',
+  'browserData.error': 'Das hat nicht geklappt. Bitte versuche es erneut.',
   'desktop.channel.title': 'Update-Kanal',
   'desktop.channel.description': 'Stabil eignet sich für den Alltag. Entwicklung bietet frühzeitigen Zugang zu neuen Funktionen, kann aber instabil sein.',
   'desktop.channel.stable': 'Stabil',
@@ -419,6 +473,15 @@ export const de = {
 
 /** Russian dictionary, checked against the English keys. */
 export const ru = {
+  'browserData.title': 'Данные браузера',
+  'browserData.description': 'Сеансы, настройки и ключи API хранятся только в этом браузере. Резервные копии содержат ключи API, поэтому храните их в надёжном месте.',
+  'browserData.ephemeral': 'Этот браузер не поддерживает постоянное хранилище. Данные будут потеряны при закрытии страницы.',
+  'browserData.backup': 'Создать копию',
+  'browserData.restore': 'Восстановить',
+  'browserData.erase': 'Удалить все данные',
+  'browserData.eraseConfirm': 'Подтвердить удаление',
+  'browserData.disconnect': 'Отключить',
+  'browserData.error': 'Не удалось выполнить действие. Повторите попытку.',
   'desktop.channel.title': 'Канал обновлений',
   'desktop.channel.description': 'Стабильный канал подходит для повседневного использования. Канал разработки позволяет раньше попробовать новые функции, но может быть нестабильным.',
   'desktop.channel.stable': 'Стабильный',
@@ -488,6 +551,15 @@ export const ru = {
 
 /** Portuguese dictionary, checked against the English keys. */
 export const pt = {
+  'browserData.title': 'Dados do navegador',
+  'browserData.description': 'Sessões, configurações e chaves de API ficam apenas neste navegador. Os backups contêm suas chaves de API, então guarde-os com segurança.',
+  'browserData.ephemeral': 'Este navegador não permite armazenamento persistente. Seus dados são perdidos ao fechar a página.',
+  'browserData.backup': 'Fazer backup',
+  'browserData.restore': 'Restaurar',
+  'browserData.erase': 'Apagar todos os dados',
+  'browserData.eraseConfirm': 'Confirmar exclusão',
+  'browserData.disconnect': 'Desconectar',
+  'browserData.error': 'Não foi possível concluir. Tente novamente.',
   'desktop.channel.title': 'Canal de atualização',
   'desktop.channel.description': 'Estável é adequado para o uso diário. Desenvolvimento oferece acesso antecipado a novos recursos, mas pode ser instável.',
   'desktop.channel.stable': 'Estável',

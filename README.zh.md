@@ -44,6 +44,25 @@ pnpm dsh web
 
 `pnpm run build` 会准备仓库产物。`pnpm dsh web` 会直接使用这些已构建产物，不会重新构建。
 
+<a id="dsh-web"></a>
+
+## DSH Web
+
+这个 fork 增加了 DSH Web：一个以静态站点形式、完全在浏览器中运行的 harness 版本。智能体、工具和 Session 日志都运行在 Web Worker 中，模型请求由浏览器直接发往 DeepSeek API，所以没有服务器接触你的密钥或文件。DSH Web 是非官方项目：它基于 DeepSeek Harness 构建，与 DeepSeek 没有隶属关系。
+
+- **数据留在浏览器中**：Session、设置和 API 密钥持久保存在源私有文件系统中。可在**设置 → 通用 → 浏览器数据**中备份、恢复和清除。
+- **真实文件夹**：在 Chromium 系浏览器中选择文件夹作为工作区，智能体会直接读写它。Firefox 和 Safari 使用副本。
+- **支持 bash 语法的 shell**：循环、函数、管道、`grep`、`sed`、`awk`、`jq` 和 `git`，受同一套权限模式约束。没有 `node`、`python` 或包管理器。
+- **可安装、可离线**：站点可以安装为应用，无网络时也能启动，不过模型仍然需要网络。
+
+```sh
+pnpm install
+pnpm run build:lib
+pnpm --filter @deepseek-ai/dsh-web-frontend run build:site  # 输出到 apps/web/dist-site
+```
+
+把 `apps/web/dist-site` 部署到任意 HTTPS 静态托管即可。限制和内部实现见[运行时 README](packages/experimental/webworker-runtime/README.zh.md#known-limitations-and-deferred-work)。
+
 ## 社区与支持
 
 - 通过 [GitHub Discussions](https://github.com/deepseek-ai/deepseek-harness/discussions) 提交反馈或 bug 报告。

@@ -158,8 +158,18 @@ function toTunnelBody(
 const NULL_BODY_STATUS = new Set([101, 204, 205, 304])
 
 /** The page half of the tunnel: one `fetch`-shaped face over `postMessage`. */
+/** Page-side tunnel behavior. */
+export interface WorkerTunnelOptions {
+  /**
+   * Whether bundles inline their source maps so DevTools can reach them; defaults to true. A blob-URL script cannot
+   * resolve the relative map URL, and fetching every map costs real boot time, so a production page passes false.
+   */
+  readonly localizeSourceMaps?: boolean
+}
+
 export class WorkerTunnel {
   private readonly worker: Worker
+  private readonly options: WorkerTunnelOptions
   private nextId = 1
   private readonly unary = new Map<TunnelRequestId, PendingUnary>()
   private readonly bodyStreams = new Map<TunnelRequestId, ReadableStreamDefaultController<Uint8Array>>()
@@ -181,8 +191,9 @@ export class WorkerTunnel {
    * Attach to a spawned worker and start consuming response frames.
    * @param worker - the host worker.
    */
-  constructor(worker: Worker) {
+  constructor(worker: Worker, options: WorkerTunnelOptions = {}) {
     this.worker = worker
+    this.options = options
     worker.addEventListener('message', (event: MessageEvent<ResponseFrame>) => {
       this.receive(event.data)
     })
@@ -394,7 +405,10 @@ export class WorkerTunnel {
     if (!response.ok) {
       throw new Error(`web-preview tunnel: bundle ${url} failed with HTTP ${String(response.status)}`)
     }
-    const source = await localizeSourceMap(await response.text(), url, this.fetch)
+    const text = await response.text()
+    const source = this.options.localizeSourceMaps === false
+      ? text.replace(SOURCE_MAP_TRAILER, '')
+      : await localizeSourceMap(text, url, this.fetch)
     const blob = URL.createObjectURL(new Blob([source], { type: 'text/javascript' }))
     try {
       await new Promise<void>((resolve, reject) => {

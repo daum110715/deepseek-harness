@@ -65,6 +65,9 @@ export function runShellProcess(start: ShellStartFrame, scope: ProcessScope): vo
     mkdir: async (path: string, recursive: boolean) => { await call('mkdir', [path, recursive]) },
     remove: async (path: string, options: { recursive: boolean; force: boolean }) => { await call('remove', [path, options]) },
     rename: async (from: string, to: string) => { await call('rename', [from, to]) },
+    readBytes: async (path: string) => await call('readBytes', [path]) as Uint8Array,
+    writeBytes: async (path: string, bytes: Uint8Array, append = false) => { await call('writeBytes', [path, bytes, append]) },
+    chmod: async (path: string, mode: number) => { await call('chmod', [path, mode]) },
   }
 
   const options = {

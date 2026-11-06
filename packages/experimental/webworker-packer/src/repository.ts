@@ -14,7 +14,7 @@ import {
 } from '@deepseek-ai/dsh-app-boot'
 import { OPTIONAL_BUNDLES, PROFILE_TEMPLATES } from '@deepseek-ai/dsh-official-bundles'
 import type { PatchOptions } from '@deepseek-ai/cordis-plugin-include'
-import { PLATFORM_ENTRY_CONFIG } from '@deepseek-ai/dsh-experimental-webworker-runtime'
+import { PLATFORM_DISABLED_ENTRIES, PLATFORM_ENTRY_CONFIG, PLATFORM_PRESET_REMOVED_ROWS } from '@deepseek-ai/dsh-experimental-webworker-runtime'
 import { collectModuleNames, packVfsImage, type ConfigTree, type ImageInstallation, type ImageTree, type PackResult } from './pack.ts'
 
 export { packPreviewFixture } from './preview.ts'
@@ -124,12 +124,33 @@ export function profileRoster(repoRoot: string, profile: string): ProfileRoster 
  */
 export function platformHomePatch(repoRoot: string, profile: string): PatchOptions[] {
   const composed: unknown = composeEntries([shippedTemplate(profile).bundles.flatMap(bundle => bundlePatches(repoRoot, bundle))])
-  return Object.entries(PLATFORM_ENTRY_CONFIG).flatMap(([id, fields]) => {
+  const configured = Object.entries(PLATFORM_ENTRY_CONFIG).flatMap(([id, fields]) => {
     const row = findRow(composed, id)
     if (row === undefined) return []
     const config = typeof row.config === 'object' && row.config !== null && !Array.isArray(row.config) ? row.config : {}
     return [{ id, config: { ...config, ...fields } }]
   })
+  const disabled = PLATFORM_DISABLED_ENTRIES.filter(id => findRow(composed, id) !== undefined).map(id => ({ id, disabled: true }))
+  const presets = Array.isArray(composed)
+    ? (composed as Array<{ id?: unknown; name?: unknown; config?: unknown }>)
+      .filter(row => row.name === AGENT_PRESET_PACKAGE && typeof row.id === 'string')
+      .map(row => ({ id: row.id as string, config: withoutRows(row.config) }))
+    : []
+  return [...configured, ...disabled, ...presets]
+}
+
+/** Package whose rows carry their own nested plugin composition. */
+const AGENT_PRESET_PACKAGE = '@deepseek-ai/dsh-agent-preset'
+
+/** Copy a row's config without the rows the Worker cannot run, at any nesting depth. */
+function withoutRows(value: unknown): unknown {
+  if (Array.isArray(value)) {
+    return value
+      .filter(item => !PLATFORM_PRESET_REMOVED_ROWS.includes((item as { id?: string } | null)?.id ?? ''))
+      .map(withoutRows)
+  }
+  if (typeof value !== 'object' || value === null || Object.getPrototypeOf(value) !== Object.prototype) return value
+  return Object.fromEntries(Object.entries(value).map(([key, item]) => [key, withoutRows(item)]))
 }
 
 /** Find one Loader row by id, inside group configs too. */

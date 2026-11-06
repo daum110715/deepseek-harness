@@ -67,7 +67,7 @@ export function filesystemError(code: string, syscall: string, path: string): Vf
 
 /** Project VFS stats onto the facts a program reads. */
 function statsOf(stats: VfsStats): ShellStats {
-  return { directory: stats.isDirectory(), size: stats.size, mtimeMs: stats.mtimeMs }
+  return { directory: stats.isDirectory(), size: stats.size, mtimeMs: stats.mtimeMs, mode: stats.mode & 0o777 }
 }
 
 /**
@@ -116,6 +116,19 @@ export function hostFileSystem(): ShellFileSystem {
     },
     rename: (from: string, to: string): Promise<void> => {
       vfs().renameSync(from, to)
+      return Promise.resolve()
+    },
+    readBytes: async (path: string): Promise<Uint8Array> => {
+      if ((await stat(path))?.directory === true) throw filesystemError('EISDIR', 'read', path)
+      return vfs().readFileSync(path) as Uint8Array
+    },
+    writeBytes: (path: string, bytes: Uint8Array, append = false): Promise<void> => {
+      if (append) vfs().appendFileSync(path, bytes)
+      else vfs().writeFileSync(path, bytes)
+      return Promise.resolve()
+    },
+    chmod: (path: string, mode: number): Promise<void> => {
+      vfs().chmodSync(path, mode)
       return Promise.resolve()
     },
   }

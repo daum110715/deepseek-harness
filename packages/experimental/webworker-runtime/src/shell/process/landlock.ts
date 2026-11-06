@@ -161,6 +161,19 @@ export async function landlockFileSystem(
       if (source === NULL_PATH || destination === NULL_PATH) deny('rename', source === NULL_PATH ? from : to)
       await base.rename(source, destination)
     },
+    readBytes: async (path: string): Promise<Uint8Array> => {
+      const target = readPath(path, 'open')
+      return target === NULL_PATH ? new Uint8Array() : await base.readBytes(target)
+    },
+    writeBytes: async (path: string, bytes: Uint8Array, append = false): Promise<void> => {
+      const target = writePath(path, 'open')
+      if (target !== NULL_PATH) await base.writeBytes(target, bytes, append)
+    },
+    chmod: async (path: string, mode: number): Promise<void> => {
+      const target = writePath(path, 'chmod')
+      if (target === NULL_PATH) deny('chmod', path)
+      await base.chmod(target, mode)
+    },
   }
 }
 

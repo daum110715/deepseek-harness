@@ -36,6 +36,8 @@ import { inflateImage, inflateImageStream } from './storage/image-gzip.ts'
 import { loadVfsImage, loadVfsOverlay, MemoryVfs } from './storage/memory.ts'
 import { setActiveVfs } from './storage/active.ts'
 import { setTextViewer } from './shell/process/xdg-open.ts'
+import { setDirectoryChooser } from './shell/process/zenity.ts'
+import type { WebPlatformHost } from './platform/host.ts'
 import { packPackageAssets } from './package-assets.ts'
 import {
   DEFAULT_ROOT, IMAGE_EMPTY_DIRECTORIES, IMAGE_HOME_DIRECTORY, IMAGE_MANIFEST_PATH, LOWERING_VERSION,
@@ -124,6 +126,8 @@ export interface WorkerHostOptions {
   readonly unaryApiLane?: 'route' | 'direct'
   /** Channel back to the page; defaults to the worker global scope. */
   readonly channel?: TunnelPort
+  /** Durable storage, folder mounts, and boot progress; absent leaves the filesystem ephemeral. */
+  readonly platform?: WebPlatformHost
 }
 
 /** The assembled worker host. */
@@ -153,14 +157,25 @@ function requireGlobalPort(channel: TunnelPort | undefined): TunnelPort {
   return { postMessage: (message, transfer) => { post(message, transfer) } }
 }
 
-async function readImage(image: Uint8Array | string): Promise<Uint8Array> {
+async function readImage(image: Uint8Array | string, platform?: WebPlatformHost): Promise<Uint8Array> {
   if (typeof image !== 'string') return await inflateImage(image, 'the image bytes given to createWorkerHost')
   const response = await fetch(image)
   if (!response.ok) throw new Error(`webworker host: image fetch failed with ${String(response.status)} for ${image}`)
   if (response.body === null) throw new Error(`webworker host: image response for ${image} carried no body`)
   // Inflated off the response stream: the archive is built while the rest of the
   // image is still arriving.
-  return await inflateImageStream(response.body, image)
+  if (platform === undefined) return await inflateImageStream(response.body, image)
+  const declared = Number(response.headers.get('content-length'))
+  const total = Number.isFinite(declared) && declared > 0 ? declared : undefined
+  let loaded = 0
+  const counted = response.body.pipeThrough(new TransformStream<Uint8Array, Uint8Array>({
+    transform(chunk, controller) {
+      loaded += chunk.byteLength
+      platform.progress('download', loaded, total)
+      controller.enqueue(chunk)
+    },
+  }))
+  return await inflateImageStream(counted, image)
 }
 
 /**
@@ -189,15 +204,22 @@ export function createWorkerHost(options: WorkerHostOptions): WorkerHost {
       const processShim = installProcessGlobal({ cwd: root, env: { DSH_HOME: home, HOME: home, ...options.env } })
 
       const [bytes, overlays] = await Promise.all([
-        readImage(options.image),
-        Promise.all((options.overlays ?? []).map(readImage)),
+        readImage(options.image, options.platform),
+        Promise.all((options.overlays ?? []).map(async overlay => await readImage(overlay))),
       ])
-      const mounted = loadVfsImage(bytes, root)
+      const mounted = loadVfsImage(bytes, root, new MemoryVfs(options.platform === undefined ? {} : { sink: options.platform }))
       for (const overlay of overlays) loadVfsOverlay(overlay, root, mounted)
       // Belt and braces over the image's own empty-directory entries: a hand
       // -built image without them still boots.
       for (const directory of IMAGE_EMPTY_DIRECTORIES) {
         mounted.seedDirectory(join(root, directory.replace(/\/$/, '')))
+      }
+      if (options.platform !== undefined) {
+        const platform = options.platform
+        await platform.restore(mounted, root)
+        // The native directory-picker backend probes PATH for this command before mounting.
+        mounted.seed(join(root, 'bin', 'zenity'), '', { mode: 0o755 })
+        setDirectoryChooser(async () => await platform.chooseDirectory())
       }
       setActiveVfs(mounted)
       vfs = mounted
@@ -280,6 +302,7 @@ export function createWorkerHost(options: WorkerHostOptions): WorkerHost {
         streamFailure: typertGateway.wireStream.failure,
       })
       started.resolve()
+      options.platform?.progress('ready')
     } catch (reason) {
       tunnel.fail(reason)
       throw reason

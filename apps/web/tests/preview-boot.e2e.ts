@@ -833,11 +833,8 @@ async function bootEmptyPreview(origin: string, browser: Browser): Promise<void>
     })
     expect(sessionCount).toBe(0)
     expect(pageErrors.map(error => error.message)).toEqual([])
-    // One accepted static-host 404: the open-in-app availability read has no
-    // host routes — the controller publishes an empty list and the header
-    // renders no button, which is that surface's designed degradation. The
-    // client graph event stream travels through the tunnel.
-    expect([...failedResponses]).toEqual(['/open-in-app/apps'])
+    // The image disables open-in-app, and the client graph event stream travels through the tunnel.
+    expect([...failedResponses]).toEqual([])
     // HMR recomposes configuration against the Worker's empty ES module cache without asking for a restart.
     expect(consoleErrors.filter(line => !line.includes('Failed to load resource: the server responded with a status of 404')))
       .toEqual([])

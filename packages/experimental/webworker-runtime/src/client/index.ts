@@ -15,7 +15,7 @@ import { WorkerTunnel, type TunnelFetch } from './client.ts'
 import { applyIndexInjections } from './apply-injections.ts'
 import { choosePreviewSource } from './source-chooser.ts'
 
-export { WorkerTunnel, type TunnelFetch } from './client.ts'
+export { WorkerTunnel, type TunnelFetch, type WorkerTunnelOptions } from './client.ts'
 export { applyIndexInjections } from './apply-injections.ts'
 export { IMAGE_FILE_NAME } from '../image-layout.ts'
 export {
@@ -56,6 +56,8 @@ export interface WorkerHostConnectOptions {
   readonly image?: string | URL
   /** Ordered data overlay URLs, resolved against the page like the base image. */
   readonly overlays?: readonly (string | URL)[]
+  /** Whether bundles inline their source maps; see {@link WorkerTunnelOptions}. */
+  readonly localizeSourceMaps?: boolean
 }
 
 /** Inputs for the optional pre-boot filesystem-source chooser. */
@@ -94,7 +96,7 @@ function bootReadyGate(): PromiseWithResolvers<void> {
  * for user input. The later {@link connectWorkerHost} call settles the same
  * barrier.
  */
-function holdWorkerHostBoot(): void {
+export function holdWorkerHostBoot(): void {
   const ready = bootReadyGate()
   // A chooser may remain open indefinitely; if a later connection fails before
   // the stock entry subscribes, retain the rejection without browser noise.
@@ -150,7 +152,7 @@ export async function connectWorkerHost(worker: Worker, options?: WorkerHostConn
   // subscription keeps that from surfacing as an unhandled rejection.
   void ready.promise.catch(() => {})
   try {
-    const tunnel = new WorkerTunnel(worker)
+    const tunnel = new WorkerTunnel(worker, options?.localizeSourceMaps === undefined ? {} : { localizeSourceMaps: options.localizeSourceMaps })
     tunnel.init(
       new URL(options?.image ?? IMAGE_FILE_NAME, document.baseURI).href,
       (options?.overlays ?? []).map(overlay => new URL(overlay, document.baseURI).href),
@@ -176,3 +178,5 @@ export async function connectWorkerHost(worker: Worker, options?: WorkerHostConn
     throw reason
   }
 }
+
+export { startWebPlatform, type WebPlatformBridge, type WebPlatformOptions } from './platform.ts'

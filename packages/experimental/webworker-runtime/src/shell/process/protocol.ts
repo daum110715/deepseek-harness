@@ -43,7 +43,7 @@ export interface ShellSignalFrame {
 }
 
 /** Filesystem operations a process worker can ask its host to perform. */
-export type FilesystemOperation = 'stat' | 'list' | 'readText' | 'writeText' | 'mkdir' | 'remove' | 'rename'
+export type FilesystemOperation = 'stat' | 'list' | 'readText' | 'writeText' | 'mkdir' | 'remove' | 'rename' | 'readBytes' | 'writeBytes' | 'chmod'
 
 /** One filesystem call, awaiting its reply by `id`. */
 export interface FilesystemCallFrame {

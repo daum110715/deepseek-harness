@@ -85,6 +85,13 @@ async function serveFilesystemCall(fs: ShellFileSystem, op: FilesystemOperation,
     case 'rename':
       await fs.rename(args[0] as string, args[1] as string)
       return undefined
+    case 'readBytes': return await fs.readBytes(args[0] as string)
+    case 'writeBytes':
+      await fs.writeBytes(args[0] as string, args[1] as Uint8Array, args[2] as boolean)
+      return undefined
+    case 'chmod':
+      await fs.chmod(args[0] as string, args[1] as number)
+      return undefined
     default:
       // The op crossed a worker postMessage: a name the union does not carry
       // must fail the call rather than answer `{ value: undefined }`.

@@ -347,10 +347,10 @@ export function SidebarRoot({
               <span className={css.brandName}>
                 {renderSlot('sidebar.brand.name', {}, {
                   fallback: buildVersion === undefined
-                    ? <span className={css.fallbackBrandName}>{t('brand.localBuild')}</span>
+                    ? <span className={css.fallbackBrandName}>{(process.env.DSH_CLIENT_TITLE ?? t('brand.localBuild'))}</span>
                     : (
                       <span className={clsx(css.localBuildBrand, css.copyVersion)} data-copy-version onClick={copyVersion(buildVersion)}>
-                        <span className={css.localBuildTitle}>{t('brand.localBuild')}</span>
+                        <span className={css.localBuildTitle}>{(process.env.DSH_CLIENT_TITLE ?? t('brand.localBuild'))}</span>
                         <span className={css.buildVersion}>{buildVersion}</span>
                       </span>
                     ),

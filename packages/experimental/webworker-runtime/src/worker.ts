@@ -23,6 +23,8 @@ import { installTimerGlobals } from './node/globals/timers.ts'
 import { installProcessGlobal } from './node/globals/process.ts'
 import { installCryptoGlobals } from './node/globals/crypto.ts'
 import { isShellStartFrame } from './shell/process/protocol.ts'
+import { isPlatformInitFrame } from './platform/protocol.ts'
+import { WebPlatformHost } from './platform/host.ts'
 import { runShellProcess } from './shell/process/host.ts'
 
 // Before the timer globals, so the wrappers close over the patched platform.
@@ -32,6 +34,7 @@ installCryptoGlobals()
 
 let host: { handleMessage(data: unknown): void } | undefined
 let shellRole = false
+let platform: WebPlatformHost | undefined
 const pending: unknown[] = []
 
 self.addEventListener('message', (event: MessageEvent) => {
@@ -48,6 +51,10 @@ self.addEventListener('message', (event: MessageEvent) => {
     runShellProcess(data, self)
     return
   }
+  if (host === undefined && isPlatformInitFrame(data)) {
+    platform = new WebPlatformHost(data)
+    return
+  }
   if (host === undefined && data !== null && typeof data === 'object' && data.t === 'init') {
     if (typeof data.image !== 'string') {
       throw new Error('webworker: init frame needs a string image url')
@@ -62,6 +69,11 @@ self.addEventListener('message', (event: MessageEvent) => {
       alsCausality,
       image: data.image,
       overlays: data.overlays as string[],
+      ...platform === undefined ? {} : {
+        platform,
+        // A Linux display session plus the chooser on PATH selects the native directory-picker backend.
+        env: { PATH: '/dsh/bin', DISPLAY: ':web' },
+      },
     })
     host = created
     for (const queued of pending) {

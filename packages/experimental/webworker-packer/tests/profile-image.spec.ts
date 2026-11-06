@@ -47,10 +47,22 @@ describe('profile roster', () => {
 
 describe('platform home patch', () => {
   it('keeps the composed JSONL row config and sets the plaintext compression the Worker requires', () => {
-    expect(platformHomePatch(repoRoot, 'web')).toEqual([{
+    expect(platformHomePatch(repoRoot, 'web')).toContainEqual({
       id: 'session-persistence-jsonl',
       config: { root: { __jsExpr: "dshHomePath('sessions')" }, compression: 'none' },
-    }])
+    })
+  })
+
+  it('disables rows that need a Node Host and removes PTC rows from every preset', () => {
+    const patch = platformHomePatch(repoRoot, 'web')
+    expect(patch).toContainEqual({ id: 'open-in-app', disabled: true })
+    const presets = patch.filter(row => row.id?.startsWith('preset-'))
+    expect(presets.length).toBeGreaterThan(0)
+    for (const preset of presets) {
+      const text = JSON.stringify(preset.config)
+      expect(text).not.toContain('"workflow-ptc"')
+      expect(text).not.toContain('"tool-workflow"')
+    }
   })
 })
 

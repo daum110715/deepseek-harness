@@ -40,6 +40,25 @@ pnpm dsh web
 
 `pnpm run build` prepares the repository artifacts. `pnpm dsh web` uses those built artifacts without rebuilding.
 
+<a id="dsh-web"></a>
+
+## DSH Web
+
+This fork adds DSH Web, a build of the harness that runs entirely in the browser as a static site. The agent, tools, and Session logs run in a Web Worker, and model requests go straight from the browser to the DeepSeek API, so no server handles your key or your files. DSH Web is unofficial: it is built on DeepSeek Harness and is not affiliated with DeepSeek.
+
+- **Your data stays in the browser**: Sessions, settings, and API keys persist in the origin-private file system. **Settings → General → Browser data** backs up, restores, and erases them.
+- **Real folders**: in Chromium browsers, choose a folder as a workspace and the agent reads and writes it directly. Firefox and Safari work on a copy.
+- **A shell with bash syntax**: loops, functions, pipes, `grep`, `sed`, `awk`, `jq`, and `git`, confined by the same permission modes. There is no `node`, `python`, or package manager.
+- **Installable and offline**: the site installs as an app and starts without a network, though the model still needs one.
+
+```sh
+pnpm install
+pnpm run build:lib
+pnpm --filter @deepseek-ai/dsh-web-frontend run build:site  # writes apps/web/dist-site
+```
+
+Serve `apps/web/dist-site` from any HTTPS static host. Limitations and internals are in the [runtime README](packages/experimental/webworker-runtime/README.md#known-limitations-and-deferred-work).
+
 ## Community and support
 
 - Submit feedback or bug reports through [GitHub Discussions](https://github.com/deepseek-ai/deepseek-harness/discussions).

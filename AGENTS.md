@@ -2,6 +2,24 @@
 
 DeepSeek Harness is an all-plugin Cordis agent harness. Read [docs/architecture.md](docs/architecture.md) before changing `packages/`; follow [docs/AGENTS.md](docs/AGENTS.md) for documentation.
 
+## Verification (owner rule, overrides every other document here)
+
+The owner hates unnecessary verification. Every needless check costs real time and real money in usage; it is a loss, never a safety margin. This overrides anything else in this repository that asks for more checks, including `dsh-pre-push-checks`, coverage gates and doc-sync.
+
+**Check what has a real chance of being wrong, and nothing else.** Before a check, name the specific mistake it would catch. If you can, run it yourself: under-verifying is a failure too, and verification is never handed to the owner. If you cannot, move on.
+
+- Docs, copy, comments and small fixes you can see are right: no checks.
+- A required check runs one target, one scenario, once. When it passes, stop; never re-run it "to be safe".
+- During development: no full suites, no full-matrix runs, no benchmark comparisons, no tests of your own tool's failure paths, no second looks at a result that already answers the question.
+- Full runs belong only to the moment of a release: once, often not even then. The owner decides.
+- Subagents follow this too: quote this section in their brief.
+
+Report in one line what you ran and what you did not.
+
+## DSH Web
+
+This fork's own product is DSH Web, the browser-hosted build. Repository name, site, and copy use `DSH`, never the full trademark ([BRAND_GUIDELINES.md](BRAND_GUIDELINES.md)). The checkout lives on `/srv/dsh-web` because `/www` is nearly full; do not move build output there. Push to the owner's fork only (`origin`); `upstream` has no push URL. Install with `--ignore-scripts --store-dir /srv/dsh-pnpm-store`. Details: [runtime README](packages/experimental/webworker-runtime/README.md). Deployment: [apps/web/platform/README.md](apps/web/platform/README.md).
+
 ## Pre-stable APIs and released Session data
 
 Public APIs are pre-stable; update every consumer. Follow [version/status](docs/session-format-status.md) and [type acknowledgements](docs/cookbook/reviewing-persistence-type-changes.md). [Adjacent migration](.agents/notes/implemented/architecture/2026-08-31-released-session-format-migrations.md) may add a version-named successor but never move, overwrite, or delete committed generations; predecessors imply neither fallback nor downgrade support. SQLite uses monotonic `SCHEMA_VERSION`.

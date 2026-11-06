@@ -23,7 +23,7 @@ import { startProcess } from '../../../shell/process/host.ts'
 import { hostFileSystem } from '../../../shell/fs-access.ts'
 import { virtualExecutable } from '../../../shell/process/virtual-executables.ts'
 import type { VirtualExecutableExit } from '../../../shell/process/virtual-executables.ts'
-import { standardPrograms } from '../../../shell/programs/index.ts'
+import { isShellCommand } from '../../../shell/interpret.ts'
 import type { ShellFileSystem } from '../../../shell/types.ts'
 import { DSH_ROOT } from '../../../storage/paths.ts'
 
@@ -285,7 +285,7 @@ export function spawn(
 
       const command = commandArgv[0] as string
       const script = shellScriptOf(commandArgv)
-      const known = script !== undefined || standardPrograms().has(command)
+      const known = script !== undefined || isShellCommand(command)
       if (!known) {
         if (missingExecutable !== undefined) {
           emit('stdout', missingExecutable.stdout)
@@ -356,7 +356,7 @@ export function spawnSync(program: string, args: readonly string[] = []): Worker
     const stderr = Buffer.from(result.stderr)
     return { pid: -1, status: result.exitCode, signal: null, stdout, stderr, output: [null, stdout, stderr] }
   }
-  const error = standardPrograms().has(program)
+  const error = isShellCommand(program)
     ? new Error(`${MODULE}.spawnSync cannot run ${program} in the worker host: commands run asynchronously`)
     : spawnEnoent(program)
   return { pid: -1, status: null, signal: null, stdout: empty, stderr: empty, output: [null, empty, empty], error }

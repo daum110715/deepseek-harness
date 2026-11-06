@@ -36,6 +36,21 @@ export const PLATFORM_ENTRY_CONFIG: Readonly<Record<string, Readonly<Record<stri
   'session-persistence-jsonl': { compression: 'none' },
 }
 
+/**
+ * Loader rows the image's home patch disables: telemetry exporters, and features that need a Node Host and only
+ * report a refusal in the Worker. Each costs boot time, and a visible one offers something that cannot work.
+ */
+export const PLATFORM_DISABLED_ENTRIES: readonly string[] = [
+  'otel', 'session-telemetry-otel', 'desktop-product-telemetry', 'product-analytics',
+  'llm-pi-ai', 'open-in-app', 'ui-open-in-app', 'office-to-pdf',
+]
+
+/**
+ * Rows removed from every Agent preset: the Worker cannot run PTC Node programs, so a preset composing them would
+ * offer the model a tool that always fails. Disabling the provider instead leaves the preset's consumers waiting.
+ */
+export const PLATFORM_PRESET_REMOVED_ROWS: readonly string[] = ['workflow-ptc', 'tool-workflow']
+
 /** Working directories the host tree expects to exist, empty. */
 export const IMAGE_EMPTY_DIRECTORIES: readonly string[] = ['home/', 'workspace/', 'tmp/']
 

@@ -1115,6 +1115,45 @@ export class MemoryVfs implements Vfs {
   }
 
   /**
+   * Apply a change another program made to a mirrored directory: watchers see it,
+   * the durable sink does not, because the bytes came from that directory.
+   * @param path - File path.
+   * @param data - File bytes.
+   * @param options - Permission bits and modification time from the directory.
+   */
+  seedObserved(path: string, data: Uint8Array, options: VfsSeedOptions = {}): void {
+    const target = this.key(path)
+    const entryChanged = !this.files.has(target)
+    this.seed(target, data, options)
+    this.notifyListeners({
+      kind: 'write', path: target, bytes: data, mode: (options.mode ?? DEFAULT_FILE_MODE) & 0o777, entryChanged,
+    })
+  }
+
+  /**
+   * Remove a file another program deleted from a mirrored directory: watchers see
+   * it, the durable sink does not.
+   * @param path - File path; an absent file changes nothing.
+   */
+  unseedObserved(path: string): void {
+    const target = this.key(path)
+    if (this.deleteFile(target) === undefined) return
+    this.forgetIdentity(target)
+    this.touchDirectory(dirname(target))
+    this.notifyListeners({ kind: 'remove', path: target })
+  }
+
+  private notifyListeners(mutation: VfsMutation): void {
+    for (const listener of this.mutationListeners) {
+      try {
+        listener(mutation)
+      } catch (error) {
+        console.error('webworker vfs: mutation observer failed', error)
+      }
+    }
+  }
+
+  /**
    * Report what this filesystem holds, for the host's boot diagnostics.
    * @returns File count, directory count, and total byte size.
    */
