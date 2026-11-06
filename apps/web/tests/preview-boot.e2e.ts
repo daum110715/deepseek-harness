@@ -324,7 +324,7 @@ async function bootPreview(site: Site, manifest: ImageManifest, browser: Browser
     })
   })
   try {
-    await page.goto(`${origin}/preview.html`, { waitUntil: 'domcontentloaded' })
+    await page.goto(`${origin}/preview.html?preview-chooser`, { waitUntil: 'domcontentloaded' })
     await page.getByRole('heading', { name: 'Choose Preview data' }).waitFor()
     expect(await page.locator('input[name="preview-source"][value="vfs-example"]').isChecked()).toBe(true)
     expect(await page.getByText('Empty environment', { exact: true }).count()).toBe(1)
