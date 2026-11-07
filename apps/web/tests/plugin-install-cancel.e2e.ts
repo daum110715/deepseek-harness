@@ -150,7 +150,7 @@ it('cancels installation, retries and highlights the enabled plugin at 40% alpha
       await page.keyboard.press('Escape')
       await dialog.waitFor({ state: 'hidden' })
       cancellationReply.resolve(undefined)
-      await page.getByText('安装状态暂未确认，请查看安装任务了解详情。', { exact: true }).waitFor()
+      await page.getByText('安装状态暂未确认，请查看安装任务了解详情', { exact: true }).waitFor()
       await panel.getByRole('button', { name: '查看安装任务', exact: true }).click()
       await dialog.getByText('安装状态尚未确认', { exact: true }).waitFor()
       await compareOrRefreshGolden(fileURLToPath(new URL('./expected/plugin-install-cancel/unconfirmed.expected.md', import.meta.url)),

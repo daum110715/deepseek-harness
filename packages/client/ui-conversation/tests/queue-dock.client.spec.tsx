@@ -769,7 +769,7 @@ describe('QueueDock', () => {
 
     fireEvent.click(getByLabelText('删除排队消息'))
     await waitFor(() => {
-      expect(notify).toHaveBeenCalledWith('error', '删除失败：这条消息可能已经开始发送。')
+      expect(notify).toHaveBeenCalledWith('error', '删除失败：这条消息可能已经开始发送')
     })
     expect(getByText('pending')).toBeTruthy()
   })

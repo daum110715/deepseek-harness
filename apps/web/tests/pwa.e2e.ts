@@ -161,8 +161,8 @@ it('installs, works offline, takes launches, and updates only what changed', { t
     await page.getByText('Browser data').waitFor({ timeout: BOOT_TIMEOUT_MS })
     expect(new URL(page.url()).search).toBe('')
     await page.getByRole('button', { name: 'Check for updates' }).click()
-    await page.getByText('You have the latest version.').waitFor({ timeout: 20_000 })
-    await page.getByText('All files are saved for offline use.').waitFor({ timeout: 20_000 })
+    await page.getByText('You have the latest version').waitFor({ timeout: 20_000 })
+    await page.getByText('All files are saved for offline use').waitFor({ timeout: 20_000 })
     await page.keyboard.press('Escape')
 
     // Headless Chromium accepts notifications without showing or listing them, so this checks the call.
@@ -206,7 +206,7 @@ it('installs, works offline, takes launches, and updates only what changed', { t
     requested.length = 0
     const result = await page.evaluate(() => (globalThis as unknown as { __DSH_WEB_PLATFORM__: { app: { checkForUpdate(): Promise<string> } } }).__DSH_WEB_PLATFORM__.app.checkForUpdate())
     expect(result).toBe('available')
-    const notice = page.locator('[data-dsh-toast]', { hasText: 'A new version is ready.' })
+    const notice = page.locator('[data-dsh-toast]', { hasText: 'A new version is ready' })
     await notice.waitFor({ timeout: 60_000 })
     expect(requested.filter(path => path !== '/sw.js').sort()).toEqual(['/index.html'])
 

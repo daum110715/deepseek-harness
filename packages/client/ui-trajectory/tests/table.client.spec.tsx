@@ -648,7 +648,7 @@ describe('TrajectoryTable', () => {
     fireEvent.scroll(tablePane)
 
     await waitFor(() => { expect(onLoadOlder).toHaveBeenCalledOnce() })
-    expect(screen.getByRole('status').textContent).toContain('Loading earlier history…')
+    expect(screen.getByRole('status').textContent).toContain('Loading earlier history')
     resolveOlder?.(true)
     await waitFor(() => {
       expect(screen.getByRole('status').textContent).toBe('')
@@ -703,8 +703,8 @@ describe('TrajectoryTable', () => {
     fireEvent.click(loadButton)
     expect(onLoadOlder).toHaveBeenCalledOnce()
     expect(loadButton.hasAttribute('disabled')).toBe(true)
-    expect(screen.getByRole('status').textContent).toBe('Loading earlier history…')
-    expect(screen.getByRole('button', { name: 'Loading earlier history…' }).querySelector('[data-state="ongoing"]')).not.toBeNull()
+    expect(screen.getByRole('status').textContent).toBe('Loading earlier history')
+    expect(screen.getByRole('button', { name: 'Loading earlier history' }).querySelector('[data-state="ongoing"]')).not.toBeNull()
 
     resolveOlder?.(false)
     await waitFor(() => {
@@ -730,9 +730,9 @@ describe('TrajectoryTable', () => {
       />,
     )
 
-    expect(screen.getByRole('button', { name: 'Loading earlier history…' })
+    expect(screen.getByRole('button', { name: 'Loading earlier history' })
       .hasAttribute('disabled')).toBe(true)
-    expect(screen.getByRole('status').textContent).toBe('Loading earlier history…')
+    expect(screen.getByRole('status').textContent).toBe('Loading earlier history')
   })
 
   it('covers the ledger while the initial tail is loading', () => {
@@ -740,7 +740,7 @@ describe('TrajectoryTable', () => {
       <TrajectoryTable turns={TURNS} {...FOLD_PROPS} historyLoading />,
     )
 
-    expect(screen.getByRole('status').textContent).toContain('Loading trajectory…')
+    expect(screen.getByRole('status').textContent).toContain('Loading trajectory')
     expect(screen.getByRole('status').querySelector('[data-state="ongoing"]')).not.toBeNull()
     expect(screen.getByRole('table').getAttribute('data-scroll-ready')).toBeNull()
 

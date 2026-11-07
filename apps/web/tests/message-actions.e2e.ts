@@ -492,7 +492,7 @@ describe('web e2e: message IconActions and clocks on settled history', () => {
       await row.hover()
       await row.locator('button[aria-label^="Session actions for "]').click()
       await page.getByRole('menuitem', { name: 'Fork session', exact: true }).click()
-      const notice = page.getByRole('alert').filter({ hasText: 'Open the original session to complete migration before creating a branch.' })
+      const notice = page.getByRole('alert').filter({ hasText: 'Open the original session to complete migration before creating a branch' })
       await notice.waitFor()
       expect(await page.getByRole('menuitem', { name: 'Fork session', exact: true }).count()).toBe(0)
       expect(forkRequests).toEqual(['/api/session/fork'])

@@ -121,7 +121,7 @@ describe('PDF body', () => {
   it('shows loading, adds zoom controls, and renders a continuous page sequence', async () => {
     const h = harness()
     const view = render(<h.View />)
-    expect(screen.getByRole('status').getAttribute('aria-label')).toBe('Rendering document...')
+    expect(screen.getByRole('status').getAttribute('aria-label')).toBe('Rendering document')
     expect(screen.getByRole('status').hasAttribute('data-document-loading')).toBe(true)
     expect(screen.getByRole('status').querySelector('[data-state="ongoing"]')).not.toBeNull()
     await act(async () => { loads[0]!.deferred.resolve(documentOf()) })

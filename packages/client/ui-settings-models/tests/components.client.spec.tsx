@@ -2321,7 +2321,7 @@ it('detects a hidden native credential without displaying its reference', () => 
     },
   })
   expect(screen.queryByText(en.keyFallbackMissing.replace('{hint}', 'ANTHROPIC_API_KEY'))).toBeNull()
-  expect(document.body.textContent).toContain('Env var detected.')
+  expect(document.body.textContent).toContain('Env var detected')
   expect(document.body.textContent).not.toMatch(/oauth/i)
 })
 

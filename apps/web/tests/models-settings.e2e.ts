@@ -106,7 +106,7 @@ describe('web e2e: Models settings page configures a dormant provider', () => {
     const dialog = page.getByRole('dialog', { name: '设置' })
     await dialog.waitFor({ timeout: 10_000 })
     await dialog.getByRole('button', { name: '模型', exact: true }).click()
-    await dialog.getByText('填入各提供商的 API 密钥即可使用其模型。').waitFor({ timeout: 10_000 })
+    await dialog.getByText('填入各提供商的 API 密钥即可使用其模型').waitFor({ timeout: 10_000 })
     // The dormant pi-ai adapter contributes its whole installed catalog; no
     // provider is configured yet, so the page is one add button.
     const add = dialog.getByRole('button', { name: '添加模型提供商' })
@@ -151,14 +151,14 @@ describe('web e2e: Models settings page configures a dormant provider', () => {
     expect(await key.getAttribute('type')).toBe('text')
     await dialog.getByRole('button', { name: '隐藏密钥', exact: true }).click()
     expect(await key.getAttribute('type')).toBe('password')
-    await dialog.getByText('该 API 密钥格式错误，请检查。').waitFor({ timeout: 10_000 })
+    await dialog.getByText('该 API 密钥格式错误，请检查').waitFor({ timeout: 10_000 })
     await expect.poll(async () => save.isEnabled(), { timeout: 10_000 }).toBe(false)
 
     // Clearing it restores submit: an empty field means "keep what is stored",
     // never a refusal, or editing any other setting would demand the key.
     await key.fill('')
     await expect.poll(async () => save.isEnabled(), { timeout: 10_000 }).toBe(true)
-    expect(await dialog.getByText('该 API 密钥格式错误，请检查。').count()).toBe(0)
+    expect(await dialog.getByText('该 API 密钥格式错误，请检查').count()).toBe(0)
   }, 60_000)
 
   it('saves a blank key as a reference-free provider-native profile', async () => {
@@ -295,7 +295,7 @@ describe('web e2e: Models settings page configures a dormant provider', () => {
     // The custom-API mode is the second segment of the one add card; its
     // purpose line replaces the catalog one.
     await dialog.getByRole('tab', { name: '自定义模型 API' }).click()
-    await dialog.getByText('连接中转站、自部署服务或其他兼容 OpenAI / Anthropic 协议的接口，需填写 API 地址、协议和模型。').waitFor({ timeout: 10_000 })
+    await dialog.getByText('连接中转站、自部署服务或其他兼容 OpenAI / Anthropic 协议的接口，需填写 API 地址、协议和模型').waitFor({ timeout: 10_000 })
     // The third-party panel stays mounted, hidden, beside this one, so the
     // form is addressed through its own panel.
     const custom = dialog.getByRole('tabpanel', { name: '自定义模型 API' })

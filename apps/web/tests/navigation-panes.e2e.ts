@@ -216,7 +216,7 @@ describe('web e2e: navigation & panes over a rich seeded session', () => {
     // differently cased fragment can match only through local id matching.
     await search.fill('PANES-WEB')
     await expect.poll(() => result.count(), { timeout: 10_000 }).toBe(1)
-    await page.getByRole('status', { name: 'Searching session history…' }).waitFor({ state: 'detached', timeout: 30_000 })
+    await page.getByRole('status', { name: 'Searching session history' }).waitFor({ state: 'detached', timeout: 30_000 })
     await compareOrRefreshGolden(
       ID_SEARCH_EXPECTED,
       await captureStableAria(page, '[class*="listArea"]', scaffold.workspaceCwd),

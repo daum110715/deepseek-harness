@@ -102,7 +102,7 @@ describe('web e2e: plugin configuration pages', () => {
       expect(await basic.getByRole('button', { name: `查看 ${title}`, exact: true }).count()).toBe(1)
     }
     // A card carries the one-liner; the fields wait for the page.
-    expect(await basic.getByText('限制每条命令最多能跑多久、最多输出多少内容。', { exact: true }).count()).toBe(1)
+    expect(await basic.getByText('限制每条命令最多能跑多久、最多输出多少内容', { exact: true }).count()).toBe(1)
     expect(await panel.getByLabel('命令超时（毫秒）').count()).toBe(0)
 
     const extensions = panel.locator('[data-plugin-group="extensions"]')
@@ -192,7 +192,7 @@ describe('web e2e: plugin configuration pages', () => {
     expect(await searchSection.getByRole('textbox').count()).toBe(1)
     expect(await count.inputValue()).toBe('10')
     await count.fill('51')
-    await panel.getByText('请填 1–50 的整数；留空表示使用默认值。', { exact: true }).waitFor()
+    await panel.getByText('请填 1–50 的整数；留空表示使用默认值', { exact: true }).waitFor()
     expect(await save.isDisabled()).toBe(true)
     for (const menu of [searchMenu, fetchMenu]) expect(await menu.isDisabled()).toBe(true)
     await count.fill('10')
@@ -290,17 +290,17 @@ describe('web e2e: plugin configuration pages', () => {
     await depthHelp.press('Enter')
     const depthRules = panel.getByRole('region', { name: '最大递归深度说明', exact: true })
     await depthRules.waitFor()
-    expect(await depthRules.getByText('限制 Agent 创建子智能体的递归层级。', { exact: true }).count()).toBe(1)
+    expect(await depthRules.getByText('限制 Agent 创建子智能体的递归层级', { exact: true }).count()).toBe(1)
     const depthTable = depthRules.getByRole('table', { name: '最大递归深度说明', exact: true })
     expect(await depthTable.getByRole('row', { name: '0 禁用子智能体', exact: true }).count()).toBe(1)
     expect(await depthTable.getByRole('row', { name: '1 仅允许主 Agent 创建子智能体', exact: true }).count()).toBe(1)
-    expect(await depthRules.getByText('如果某个工具单独设置了最大递归深度，以该工具的设置为准。', { exact: true }).count()).toBe(1)
+    expect(await depthRules.getByText('如果某个工具单独设置了最大递归深度，以该工具的设置为准', { exact: true }).count()).toBe(1)
     await depthHelp.press('Enter')
     expect(await depthRules.count()).toBe(0)
     expect(await depth.inputValue()).toBe('2')
     await panel.getByRole('button', { name: '子智能体并行数量上限说明', exact: true }).click()
     const capacityRules = panel.getByRole('region', { name: '子智能体并行数量上限说明', exact: true })
-    expect(await capacityRules.getByText('同一主 Agent 下，所有递归层级同时存活的子智能体总数，主 Agent 不计入。达到上限时，新的启动请求会被拒绝。', { exact: true }).count()).toBe(1)
+    expect(await capacityRules.getByText('同一主 Agent 下，所有递归层级同时存活的子智能体总数，主 Agent 不计入。达到上限时，新的启动请求会被拒绝', { exact: true }).count()).toBe(1)
     await panel.getByRole('button', { name: '返回插件', exact: true }).click()
     await openPage(panel, '子智能体')
     expect(await depth.inputValue()).toBe('1')
@@ -402,7 +402,7 @@ describe('web e2e: plugin configuration pages', () => {
 
     const save = panel.getByRole('button', { name: '保存', exact: true })
     await expect.poll(() => save.isDisabled(), { timeout: 5_000 }).toBe(true)
-    expect(await panel.getByText('请填数字；留空表示使用默认值。').count()).toBe(1)
+    expect(await panel.getByText('请填数字；留空表示使用默认值').count()).toBe(1)
     expect(tripwire.pageErrors).toEqual([])
   }, 60_000)
 

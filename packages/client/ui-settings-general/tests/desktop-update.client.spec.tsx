@@ -149,7 +149,7 @@ it('shows fallback progress and error details when the shell omits optional fiel
     expect((await screen.findByRole('tooltip')).textContent).toContain('1.0.1')
     await f.emit({ phase: 'error' })
     fireEvent.focus(screen.getByRole('button', { name: '重试更新' }))
-    expect((await screen.findByRole('tooltip')).textContent).toBe('安装更新失败，请稍后重试。')
+    expect((await screen.findByRole('tooltip')).textContent).toBe('安装更新失败，请稍后重试')
   } finally { f.view.unmount(); f.status.resolve({ phase: 'idle' }) }
 })
 
@@ -191,7 +191,7 @@ it('localizes fullscreen timeout guidance and preserves the retry action', async
     expect(copy).toMatchInlineSnapshot(`
       [
         "无法退出全屏，请退出全屏后重试更新",
-        "Could not exit fullscreen. Exit fullscreen, then retry the update.",
+        "Could not exit fullscreen. Exit fullscreen, then retry the update",
       ]
     `)
     fireEvent.click(screen.getByRole('button'))

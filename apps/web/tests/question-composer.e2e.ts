@@ -1094,7 +1094,7 @@ describe.skipIf(MODE === 'record')('web e2e: cancelled question transcript', () 
     await row.click()
 
     await cancelledPage
-      .getByText('This question set was cancelled before answers were submitted.', { exact: true })
+      .getByText('This question set was cancelled before answers were submitted', { exact: true })
       .waitFor({ timeout: 10_000 })
     await cancelledPage.getByText('Which color do you prefer?', { exact: true }).waitFor({ timeout: 10_000 })
     expect(await cancelledPage.getByText(/"questions"/).count()).toBe(0)

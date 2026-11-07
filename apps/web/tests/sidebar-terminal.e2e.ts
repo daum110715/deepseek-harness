@@ -543,7 +543,7 @@ describe.skipIf(process.platform === 'win32')('Web sidebar terminal', () => {
       await page.reload({ waitUntil: 'load' })
       await page.locator('[data-sidebar-right-expand]').click()
       // The title starts discovery before the lazy body mounts; keep that request pending through mounting.
-      await terminal.getByRole('status').getByText('Reading terminal environment…', { exact: true }).waitFor()
+      await terminal.getByRole('status').getByText('Reading terminal environment', { exact: true }).waitFor()
     } finally {
       environmentReady.resolve(undefined)
       await page.unrouteAll({ behavior: 'wait' })

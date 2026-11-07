@@ -1,6 +1,6 @@
 {
   "meta": {
     "title": "Maskierung von Anmeldeinformationen",
-    "description": "Maskiert erkannte Schlüssel, Token und Passwörter in gesendeten Nachrichten."
+    "description": "Maskiert erkannte Schlüssel, Token und Passwörter in gesendeten Nachrichten"
   }
 }

@@ -95,7 +95,7 @@ it('keeps mandatory diagnostics expandable without clearing the block or authori
   expect([p.element('error').textContent, p.element('technical-details-label').textContent,
     p.element('update').textContent]).toMatchInlineSnapshot(`
       [
-        "未能安全停止任务，更新尚未安装，请稍后重试。",
+        "未能安全停止任务，更新尚未安装，请稍后重试",
         "查看技术详情",
         "重试更新",
       ]

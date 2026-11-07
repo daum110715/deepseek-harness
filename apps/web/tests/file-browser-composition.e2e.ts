@@ -43,7 +43,7 @@ it('lists the workspace without the document preview, leaving files nothing can 
   const row = navigator.locator('[data-files-path$="/src/example.txt"]')
   await row.waitFor()
   expect(await row.locator('button').count()).toBe(0)
-  expect(await row.locator('[aria-disabled="true"]').getAttribute('title')).toBe('No viewer can open this file.')
+  expect(await row.locator('[aria-disabled="true"]').getAttribute('title')).toBe('No viewer can open this file')
   const tabs = await column.locator('[data-dockkit-tab]').count()
   await row.click()
   expect(await column.locator('[data-dockkit-tab]').count()).toBe(tabs)

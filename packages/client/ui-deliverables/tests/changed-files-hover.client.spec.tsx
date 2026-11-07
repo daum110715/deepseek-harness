@@ -38,7 +38,7 @@ it.each([1, 2])('reads only after 500ms and renders the selected comparison with
   expect(document.querySelector('[data-changes-hover-preview]')).toBeNull()
   act(() => { vi.advanceTimersByTime(1) })
   expect(loadChangesDiff).toHaveBeenCalledExactlyOnceWith(sessionId, 5, 0)
-  expect(screen.getByText('Reading changes…')).toBeTruthy()
+  expect(screen.getByText('Reading changes')).toBeTruthy()
   act(() => { diffs.state.set({ [changesDiffUrl(sessionId, 5, 0)]: {
     kind: 'text', path: 'main.ts', display: 'main.ts', before: true, after: true, coarse: false,
     hunks: [{ oldStart: 1, oldLines: 1, newStart: 1, newLines: 1, lines: ['-const value = 1', '+const value = 2'] }],

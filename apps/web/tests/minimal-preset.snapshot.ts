@@ -541,7 +541,7 @@ describe('minimal image reading', () => {
       page = await openSession(missingId)
       const card = await imageCard(page)
       await card.getByRole('button', { name: 'Image failed to load; click to retry', exact: true }).waitFor()
-      expect(await card.getByText('Loading image…', { exact: true }).count()).toBe(0)
+      expect(await card.getByText('Loading image', { exact: true }).count()).toBe(0)
       expect(await card.locator('[aria-busy="true"]').count()).toBe(0)
       expect(await card.locator('img').count()).toBe(0)
       await compareOrRefreshGolden(join(snapshotDir, 'missing-image.expected.md'),

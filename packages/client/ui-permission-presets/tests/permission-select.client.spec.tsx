@@ -162,7 +162,7 @@ describe('PermissionSelect', () => {
     expect(trigger().getAttribute('aria-label')).toBe('访问模式，当前：自动审查')
     expect(trigger().textContent).toBe('自动审查')
     expect(trigger().querySelectorAll('svg[aria-hidden="true"]')).toHaveLength(2)
-    expect(trigger().getAttribute('title')).toBe('无沙箱运行；每次原生工具调用和 PTC 内层调用前由同一模型进行实验性审查。')
+    expect(trigger().getAttribute('title')).toBe('无沙箱运行；每次原生工具调用和 PTC 内层调用前由同一模型进行实验性审查')
   })
 
   it('revokes open UI when locked or either source disappears', () => {

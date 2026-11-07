@@ -1,6 +1,6 @@
 {
   "meta": {
     "title": "Interface de sélection de commandes",
-    "description": "Fournit un menu de commande slash et une interface d’opération associée dans la zone de saisie."
+    "description": "Fournit un menu de commande slash et une interface d’opération associée dans la zone de saisie"
   }
 }

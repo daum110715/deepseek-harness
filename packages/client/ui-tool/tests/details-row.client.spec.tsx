@@ -217,7 +217,7 @@ describe('DetailsRow', () => {
     const block = { phase: 'start' as const, args: PartialArguments.fromText('{"timeout_ms":30000}'), callId: 'wait', name: 'wait_agent', argsRaw: '{"timeout_ms":30000}', turn: 1, step: 1, time: 1000, subCalls: [] }
     render(<DetailsRow {...{ useDisclosure, toolName: 'wait_agent', block, t } as Parameters<typeof DetailsRow>[0]} />)
     const header = screen.getByRole('button', { expanded: false })
-    expect(header.textContent).toBe('Waiting for messages…')
+    expect(header.textContent).toBe('Waiting for messages')
   })
 
   it('registers the supported tool names through the scoped keyed slot', () => {

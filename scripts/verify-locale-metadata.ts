@@ -48,8 +48,6 @@ export function localeMetadataProblems(root: string): string[] {
       }
       const en = read('en')
       const zh = existsSync(join(root, directory, 'zh.json')) ? read('zh') : {}
-      const description = en['meta.description']
-      if (description !== undefined && !/[.!?]$/u.test(description)) problems.push(`${directory}/en.json: meta.description must end with sentence punctuation`)
       const expected = { ...zh, ...en }
       for (const language of SHIPPED_LOCALE_IDS.filter(id => id !== 'en' && id !== 'zh')) {
         const translated = read(language)

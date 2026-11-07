@@ -148,7 +148,7 @@ describe('MessageImage', () => {
 
   it.each([
     ['Chinese', labels],
-    ['English', { ...labels, loading: 'Loading image…', loadFailed: 'Image failed to load; click to retry' }],
+    ['English', { ...labels, loading: 'Loading image', loadFailed: 'Image failed to load; click to retry' }],
   ] as const)('labels thumbnail status icons and retries a failed read in %s', async (_locale, statusLabels) => {
     const pending = Promise.withResolvers<string>()
     const load = vi.fn().mockReturnValueOnce(pending.promise).mockResolvedValue('blob:retry')

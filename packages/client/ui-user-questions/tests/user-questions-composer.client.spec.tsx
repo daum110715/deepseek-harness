@@ -518,7 +518,7 @@ describe('QuestionComposer', () => {
     fireEvent.keyDown(emptyCustom, { key: 'Enter', shiftKey: true })
     expect(screen.getByText('2 / 3')).toBeTruthy()
     fireEvent.keyDown(emptyCustom, { key: 'Enter' })
-    expect(screen.getByText('请选择一个选项或填写自定义答案。')).toBeTruthy()
+    expect(screen.getByText('请选择一个选项或填写自定义答案')).toBeTruthy()
 
     fireEvent.click(screen.getByLabelText('下一题'))
     fireEvent.click(screen.getByRole('checkbox', { name: '产品判断' }))
@@ -882,7 +882,7 @@ describe('timed card', () => {
 
     act(() => { carrier.setState('continued') })
 
-    expect(screen.getByText('回答未送达，工作已继续，请再提交一次。')).toBeTruthy()
+    expect(screen.getByText('回答未送达，工作已继续，请再提交一次')).toBeTruthy()
     expect(screen.getByRole('radio', { name: '仅工具' }).getAttribute('aria-checked')).toBe('true')
     const answer = vi.fn(async () => true)
     act(() => { carrier.attachRpc({ answer }) })
@@ -963,7 +963,7 @@ describe('timed card', () => {
     fireEvent.click(screen.getByLabelText('收起问题面板，可从工具调用重新打开'))
 
     expect(hide).toHaveBeenCalledOnce()
-    expect(screen.queryByText('当前无法提交，请稍候再试。')).toBeNull()
+    expect(screen.queryByText('当前无法提交，请稍候再试')).toBeNull()
   })
 
   it('reports an unavailable channel instead of cancelling into the gap', () => {
@@ -974,7 +974,7 @@ describe('timed card', () => {
 
     fireEvent.click(screen.getByLabelText('放弃整组问题'))
 
-    expect(screen.getByText('当前无法提交，请稍候再试。')).toBeTruthy()
+    expect(screen.getByText('当前无法提交，请稍候再试')).toBeTruthy()
   })
 
   it('prunes drafts no card owns on mount and clears its own draft when the card closes', () => {

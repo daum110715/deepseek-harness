@@ -97,7 +97,7 @@ describe('SettingsSecretField', () => {
         {...secret}
         text=""
         configured={false}
-        stateLabel="No key is configured."
+        stateLabel="No key is configured"
         onEdit={onEdit}
       />,
     )
@@ -115,23 +115,23 @@ describe('SettingsSecretField', () => {
         {...secret}
         text=""
         configured={false}
-        stateLabel="No key is configured."
+        stateLabel="No key is configured"
         onEdit={vi.fn()}
       />,
     )
-    expect(screen.getByText('No key is configured.')).toBeTruthy()
+    expect(screen.getByText('No key is configured')).toBeTruthy()
 
     rerender(
       <SettingsSecretField
         {...secret}
         text="ds-secret"
         configured
-        stateLabel="A key is configured."
+        stateLabel="A key is configured"
         onEdit={vi.fn()}
       />,
     )
 
-    expect(screen.getByText('A key is configured.')).toBeTruthy()
+    expect(screen.getByText('A key is configured')).toBeTruthy()
     expect(screen.getByLabelText('API key')).toHaveProperty('value', 'ds-secret')
   })
 
@@ -142,7 +142,7 @@ describe('SettingsSecretField', () => {
         disabled
         text=""
         configured
-        stateLabel="A key is configured."
+        stateLabel="A key is configured"
         onEdit={vi.fn()}
       />,
     )

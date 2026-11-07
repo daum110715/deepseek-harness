@@ -206,14 +206,14 @@ export async function choosePreviewSource(manifestUrl: URL): Promise<readonly UR
     {
       id: EMPTY_SOURCE,
       label: 'Empty environment',
-      description: 'Load only the base runtime to verify first launch and workspace creation.',
+      description: 'Load only the base runtime to verify first launch and workspace creation',
       overlays: [],
     },
     ...fixtureChoices(manifest.fixtures, manifestUrl),
     {
       id: WEBFS_SOURCE,
       label: 'WebFS directory',
-      description: 'Requires directory access and will be available after the WebFS provider lands.',
+      description: 'Requires directory access and will be available after the WebFS provider lands',
       overlays: [],
       disabled: true,
     },

@@ -1063,7 +1063,7 @@ describe('PluginManagerPage', () => {
       expect(screen.getByRole('heading', { level: 3 }).textContent).toBe(title)
       if (description === undefined) {
         expect(screen.queryByText(chineseDescription)).toBeNull()
-        expect(screen.queryByText(dict === zh ? '暂无描述。' : 'No description.')).toBeNull()
+        expect(screen.queryByText(dict === zh ? '暂无描述。' : 'No description')).toBeNull()
       } else {
         expect(screen.getByText(description)).toBeTruthy()
       }
@@ -1640,7 +1640,7 @@ describe('PluginManagerPage', () => {
     const { version: _version, ...unversioned } = pkg()
     set({ packages: [unversioned] })
     fireEvent.click(screen.getByRole('button', { name: en.openDetail.replace('{name}', 'dsh-better-sidebar') }))
-    expect(screen.queryByText('No description.')).toBeNull()
+    expect(screen.queryByText('No description')).toBeNull()
     expect(screen.queryByText(en.versionTag.replace('{version}', '0.16.0'))).toBeNull()
     set({ packages: [] })
     expect(document.querySelector('[data-plugin-detail]')).toBeNull()

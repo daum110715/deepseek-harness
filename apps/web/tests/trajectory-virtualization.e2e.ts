@@ -273,7 +273,7 @@ describe('web e2e: Trajectory virtualization over tail-paged history', () => {
         label: await loadMore.getAttribute('aria-label'),
       }), { timeout: 15_000 }).toEqual({
         disabled: true,
-        label: 'Loading earlier history…',
+        label: 'Loading earlier history',
       })
 
       await scrollToRatio(page, 0)

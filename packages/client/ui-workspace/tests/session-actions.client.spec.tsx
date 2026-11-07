@@ -518,7 +518,7 @@ describe('RowActionToast', () => {
 
   it.each([
     ['zh', t, '请先打开原会话完成迁移，再创建分支', '打开原会话'],
-    ['en', tEn, 'Open the original session to complete migration before creating a branch.', 'Open original session'],
+    ['en', tEn, 'Open the original session to complete migration before creating a branch', 'Open original session'],
   ] as const)('keeps the %s fork notice after menu unmount and opens only on its action', async (_locale, translate, message, action) => {
     const { dismissToast, openForkSource, notify } = await toastSurface(undefined, translate)
     const forkSession = vi.fn((sessionId: SessionId) => { notify({ kind: 'forkRequiresOpen', sessionId }) })

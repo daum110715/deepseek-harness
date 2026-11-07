@@ -25,7 +25,7 @@ export const zh = {
   'tokens.thousand': '{value}K',
   'tokens.million': '{value}M',
   'tokens.total': '{value} tok',
-  'loading.label': '正在加载子智能体…',
+  'loading.label': '正在加载子智能体',
   'load.error': '无法加载子智能体',
   'catalog.migrationRequired': '需要迁移',
   'retry': '重试',
@@ -33,7 +33,7 @@ export const zh = {
   'mode.oneShot': '一次性',
   'mode.continuable': '可继续',
   'mode.unknown': '模式未知',
-  'readonly.unknown.body': '读取子会话后才能确定是否可继续。',
+  'readonly.unknown.body': '读取子会话后才能确定是否可继续',
   'activity.running': '正在运行',
   'activity.completed': '已完成',
   'activity.inactive': '当前未运行',
@@ -51,7 +51,7 @@ export const zh = {
   'sidebar.chat': '聊天',
   'readonly.oneShot.title': '一次性子智能体记录',
   'readonly.title': '此子智能体暂时只读',
-  'readonly.oneShot.body': '一次性任务不支持后续消息，可在这里查看完整执行记录。',
+  'readonly.oneShot.body': '一次性任务不支持后续消息，可在这里查看完整执行记录',
 } as const
 
 /** English dictionary, key-identical to the Chinese source of truth. */
@@ -76,7 +76,7 @@ export const en: Record<SubagentKey, string> = {
   'tokens.thousand': '{value}K',
   'tokens.million': '{value}M',
   'tokens.total': '{value} tok',
-  'loading.label': 'Loading subagents…',
+  'loading.label': 'Loading subagents',
   'load.error': 'Unable to load subagents',
   'catalog.migrationRequired': 'Migration required',
   'retry': 'Retry',
@@ -84,7 +84,7 @@ export const en: Record<SubagentKey, string> = {
   'mode.oneShot': 'one-shot',
   'mode.continuable': 'continuable',
   'mode.unknown': 'unknown mode',
-  'readonly.unknown.body': 'Read the child session to determine whether it can be continued.',
+  'readonly.unknown.body': 'Read the child session to determine whether it can be continued',
   'activity.running': 'running',
   'activity.completed': 'completed',
   'activity.inactive': 'not running',
@@ -102,7 +102,7 @@ export const en: Record<SubagentKey, string> = {
   'sidebar.chat': 'Chat',
   'readonly.oneShot.title': 'One-shot subagent record',
   'readonly.title': 'This subagent is read-only for now',
-  'readonly.oneShot.body': 'One-shot tasks do not accept follow-ups; review the full execution record here.',
+  'readonly.oneShot.body': 'One-shot tasks do not accept follow-ups; review the full execution record here',
 }
 
 /** Key domain of the `subagent` namespace (zh is the source of truth). */
@@ -130,7 +130,7 @@ export const ja = {
   'tokens.thousand': '{value}K',
   'tokens.million': '{value}M',
   'tokens.total': '{value} tok',
-  'loading.label': 'サブエージェントを読み込み中…',
+  'loading.label': 'サブエージェントを読み込み中',
   'load.error': 'サブエージェントを読み込めません',
   'catalog.migrationRequired': '移行が必要です',
   'retry': '再試行',
@@ -138,7 +138,7 @@ export const ja = {
   'mode.oneShot': '単発',
   'mode.continuable': '継続可能',
   'mode.unknown': '不明なモード',
-  'readonly.unknown.body': '子セッションを確認して、継続できるかどうかを判断してください。',
+  'readonly.unknown.body': '子セッションを確認して、継続できるかどうかを判断してください',
   'activity.running': '実行中',
   'activity.completed': '完了',
   'activity.inactive': '停止中',
@@ -156,7 +156,7 @@ export const ja = {
   'sidebar.chat': 'チャット',
   'readonly.oneShot.title': '単発サブエージェントの記録',
   'readonly.title': 'このサブエージェントは現在読み取り専用です',
-  'readonly.oneShot.body': '単発タスクは追加のメッセージを受け付けません。ここで実行記録の全体を確認できます。',
+  'readonly.oneShot.body': '単発タスクは追加のメッセージを受け付けません。ここで実行記録の全体を確認できます',
 } satisfies Record<keyof typeof en, string>
 
 /** Spanish dictionary, checked against the English keys. */
@@ -181,7 +181,7 @@ export const es = {
   'tokens.thousand': '{value}K',
   'tokens.million': '{value}M',
   'tokens.total': 'Tok {value}',
-  'loading.label': 'Cargando subagentes…',
+  'loading.label': 'Cargando subagentes',
   'load.error': 'No se pueden cargar subagentes',
   'catalog.migrationRequired': 'Migración requerida',
   'retry': 'Reintentar',
@@ -189,7 +189,7 @@ export const es = {
   'mode.oneShot': 'un solo disparo',
   'mode.continuable': 'continuable',
   'mode.unknown': 'modo desconocido',
-  'readonly.unknown.body': 'Lea la sesión secundaria para determinar si se puede continuar.',
+  'readonly.unknown.body': 'Lea la sesión secundaria para determinar si se puede continuar',
   'activity.running': 'corriendo',
   'activity.completed': 'completado',
   'activity.inactive': 'no corriendo',
@@ -207,7 +207,7 @@ export const es = {
   'sidebar.chat': 'Chat',
   'readonly.oneShot.title': 'Registro de subagente de una sola vez',
   'readonly.title': 'Este subagente es de solo lectura por ahora',
-  'readonly.oneShot.body': 'Las tareas únicas no aceptan seguimientos; revise el registro de ejecución completo aquí.',
+  'readonly.oneShot.body': 'Las tareas únicas no aceptan seguimientos; revise el registro de ejecución completo aquí',
 } satisfies Record<keyof typeof en, string>
 
 /** French dictionary, checked against the English keys. */
@@ -232,7 +232,7 @@ export const fr = {
   'tokens.thousand': '{value}K',
   'tokens.million': '{value}M',
   'tokens.total': 'Jeton {value}',
-  'loading.label': 'Chargement des sous-agents…',
+  'loading.label': 'Chargement des sous-agents',
   'load.error': 'Impossible de charger les sous-agents',
   'catalog.migrationRequired': 'Migration requise',
   'retry': 'Réessayer',
@@ -240,7 +240,7 @@ export const fr = {
   'mode.oneShot': 'un coup',
   'mode.continuable': 'continu',
   'mode.unknown': 'mode inconnu',
-  'readonly.unknown.body': 'Lisez la séance enfant pour déterminer si elle peut être poursuivie.',
+  'readonly.unknown.body': 'Lisez la séance enfant pour déterminer si elle peut être poursuivie',
   'activity.running': 'courir',
   'activity.completed': 'terminé',
   'activity.inactive': 'ne fonctionne pas',
@@ -258,7 +258,7 @@ export const fr = {
   'sidebar.chat': 'Discussion',
   'readonly.oneShot.title': 'Enregistrement de sous-agent unique',
   'readonly.title': 'Ce sous-agent est actuellement en lecture seule',
-  'readonly.oneShot.body': 'Les tâches ponctuelles n’acceptent pas de messages de suivi ; consultez leur journal d’exécution complet ici.',
+  'readonly.oneShot.body': 'Les tâches ponctuelles n’acceptent pas de messages de suivi ; consultez leur journal d’exécution complet ici',
 } satisfies Record<keyof typeof en, string>
 
 /** German dictionary, checked against the English keys. */
@@ -283,7 +283,7 @@ export const de = {
   'tokens.thousand': '{value}K',
   'tokens.million': '{value}M',
   'tokens.total': '{value}-Token',
-  'loading.label': 'Subagenten werden geladen…',
+  'loading.label': 'Subagenten werden geladen',
   'load.error': 'Subagenten können nicht geladen werden',
   'catalog.migrationRequired': 'Migration erforderlich',
   'retry': 'Erneut versuchen',
@@ -291,7 +291,7 @@ export const de = {
   'mode.oneShot': 'One-Shot',
   'mode.continuable': 'fortsetzbar',
   'mode.unknown': 'Unbekannter Modus',
-  'readonly.unknown.body': 'Lesen Sie die untergeordnete Sitzung, um festzustellen, ob sie fortgesetzt werden kann.',
+  'readonly.unknown.body': 'Lesen Sie die untergeordnete Sitzung, um festzustellen, ob sie fortgesetzt werden kann',
   'activity.running': 'laufen',
   'activity.completed': 'abgeschlossen',
   'activity.inactive': 'läuft nicht',
@@ -309,7 +309,7 @@ export const de = {
   'sidebar.chat': 'Chat',
   'readonly.oneShot.title': 'Einmaliger Subagentendatensatz',
   'readonly.title': 'Dieser Subagent ist derzeit schreibgeschützt',
-  'readonly.oneShot.body': 'Einmalige Aufgaben akzeptieren keine Folgeaufgaben; Sehen Sie sich hier den vollständigen Ausführungsbericht an.',
+  'readonly.oneShot.body': 'Einmalige Aufgaben akzeptieren keine Folgeaufgaben; Sehen Sie sich hier den vollständigen Ausführungsbericht an',
 } satisfies Record<keyof typeof en, string>
 
 /** Russian dictionary, checked against the English keys. */
@@ -334,7 +334,7 @@ export const ru = {
   'tokens.thousand': '{value}K',
   'tokens.million': '{value}M',
   'tokens.total': '{value} ток',
-  'loading.label': 'Загрузка субагентов…',
+  'loading.label': 'Загрузка субагентов',
   'load.error': 'Невозможно загрузить субагенты',
   'catalog.migrationRequired': 'Требуется миграция',
   'retry': 'Повторить',
@@ -342,7 +342,7 @@ export const ru = {
   'mode.oneShot': 'одноразовый',
   'mode.continuable': 'продолжаемый',
   'mode.unknown': 'неизвестный режим',
-  'readonly.unknown.body': 'Прочтите дочерний сеанс, чтобы определить, можно ли его продолжить.',
+  'readonly.unknown.body': 'Прочтите дочерний сеанс, чтобы определить, можно ли его продолжить',
   'activity.running': 'бег',
   'activity.completed': 'завершено',
   'activity.inactive': 'не работает',
@@ -356,11 +356,11 @@ export const ru = {
   'tree.aria': 'Сеансы субагента',
   'open.sidebar': 'Открыть в боковой панели',
   'open.floatWindow': 'Открыть на плавающей панели',
-  'open.sidebar.aria': 'Откройте {label} на боковой панели.',
+  'open.sidebar.aria': 'Откройте {label} на боковой панели',
   'sidebar.chat': 'Чат',
   'readonly.oneShot.title': 'Разовая запись субагента',
-  'readonly.title': 'Этот субагент пока доступен только для чтения.',
-  'readonly.oneShot.body': 'Одноразовые задачи не допускают последующих действий; просмотреть полную запись выполнения можно здесь.',
+  'readonly.title': 'Этот субагент пока доступен только для чтения',
+  'readonly.oneShot.body': 'Одноразовые задачи не допускают последующих действий; просмотреть полную запись выполнения можно здесь',
 } satisfies Record<keyof typeof en, string>
 
 /** Portuguese dictionary, checked against the English keys. */
@@ -385,7 +385,7 @@ export const pt = {
   'tokens.thousand': '{value}K',
   'tokens.million': '{value}M',
   'tokens.total': '{value} valor',
-  'loading.label': 'Carregando subagentes…',
+  'loading.label': 'Carregando subagentes',
   'load.error': 'Não foi possível carregar subagentes',
   'catalog.migrationRequired': 'Migração necessária',
   'retry': 'Tentar novamente',
@@ -393,7 +393,7 @@ export const pt = {
   'mode.oneShot': 'tiro único',
   'mode.continuable': 'continuável',
   'mode.unknown': 'modo desconhecido',
-  'readonly.unknown.body': 'Leia a sessão secundária para determinar se ela pode continuar.',
+  'readonly.unknown.body': 'Leia a sessão secundária para determinar se ela pode continuar',
   'activity.running': 'correndo',
   'activity.completed': 'concluído',
   'activity.inactive': 'não está funcionando',
@@ -411,5 +411,5 @@ export const pt = {
   'sidebar.chat': 'Chat',
   'readonly.oneShot.title': 'Registro de subagente único',
   'readonly.title': 'Este subagente é somente leitura por enquanto',
-  'readonly.oneShot.body': 'Tarefas únicas não aceitam acompanhamentos; revise o registro completo da execução aqui.',
+  'readonly.oneShot.body': 'Tarefas únicas não aceitam acompanhamentos; revise o registro completo da execução aqui',
 } satisfies Record<keyof typeof en, string>

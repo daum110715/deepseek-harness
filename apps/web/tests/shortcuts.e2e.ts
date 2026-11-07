@@ -142,7 +142,7 @@ describe('web e2e: shortcut reference', () => {
       await compareOrRefreshGolden(join(expected, `${locale}-conflict.expected.md`), await errorToast.ariaSnapshot(), mode)
       await page.keyboard.press('i')
       await page.getByRole('alert').filter({ hasText: locale === 'zh-CN'
-        ? '请同时按下 Command、Ctrl 或 Alt 修饰键。' : 'Include Command, Ctrl, or Alt in the combination.' }).waitFor()
+        ? '请同时按下 Command、Ctrl 或 Alt 修饰键' : 'Include Command, Ctrl, or Alt in the combination' }).waitFor()
       await page.keyboard.press(`${key}+Shift+.`)
       await inline.waitFor({ state: 'hidden' })
       expect(await dialog.evaluate(element => element === document.activeElement)).toBe(true)
@@ -433,7 +433,7 @@ describe('web e2e: shortcut reference', () => {
       await other.keyboard.press(referenceKey)
       await other.getByRole('button', { name: 'Edit shortcut for Toggle left sidebar', exact: true }).click()
       await other.getByRole('button', { name: 'Remove', exact: true }).click()
-      await editor.getByText('Shortcut configuration or available commands changed. Review the latest bindings before saving.', { exact: true }).waitFor()
+      await editor.getByText('Shortcut configuration or available commands changed. Review the latest bindings before saving', { exact: true }).waitFor()
       await page.bringToFront()
       await editor.getByRole('button', { name: 'Press a shortcut', exact: true }).focus()
       await page.keyboard.press(`${modifier}+Shift+,`)

@@ -98,12 +98,10 @@ it.each(['../../other/README.md', 'docs\\DETAIL.md', 'docs/DETAIL.txt', '/README
   expect(localeMetadataProblems(root).join('\n')).toMatch(/must (?:be a relative path|name a Markdown file)/u)
 })
 
-it('requires sentence punctuation for English descriptions', () => {
+it('accepts English descriptions without terminal punctuation', () => {
   const root = fixture()
   const file = join(root, 'packages/demo/plugin/locale/en.json')
-  writeFileSync(file, JSON.stringify({ meta: { title: 'Name {name}', description: 'Description' } }))
-  expect(localeMetadataProblems(root).join('\n')).toContain('sentence punctuation')
-  writeFileSync(file, JSON.stringify({ meta: { title: 'Name {name}', description: 'English description.' } }))
+  writeFileSync(file, JSON.stringify({ meta: { title: 'Name {name}', description: 'English description' } }))
   expect(localeMetadataProblems(root)).toEqual([])
 })
 
@@ -135,15 +133,15 @@ it.each(['es', 'fr', 'de', 'ru', 'pt'])('rejects missing %s metadata', (language
 
 it.each(['es', 'fr', 'de', 'ru', 'pt'])('rejects untranslated Chinese descriptions in %s metadata', (language) => {
   const root = fixture()
-  writeFileSync(join(root, 'packages/demo/plugin/locale/en.json'), JSON.stringify({ meta: { title: 'Name {name}', description: 'English description.' } }))
+  writeFileSync(join(root, 'packages/demo/plugin/locale/en.json'), JSON.stringify({ meta: { title: 'Name {name}', description: 'English description' } }))
   writeFileSync(join(root, `packages/demo/plugin/locale/${language}.json`), JSON.stringify({ meta: { title: 'Name {name}', description: '描述' } }))
   expect(localeMetadataProblems(root).join('\n')).toContain(`${language}.json: meta.description contains untranslated source text`)
 })
 
 it.each(['es', 'fr', 'de', 'ru', 'pt'])('rejects copied English descriptions in %s metadata', (language) => {
   const root = fixture()
-  writeFileSync(join(root, 'packages/demo/plugin/locale/en.json'), JSON.stringify({ meta: { title: 'Name {name}', description: 'English description.' } }))
-  writeFileSync(join(root, `packages/demo/plugin/locale/${language}.json`), JSON.stringify({ meta: { title: 'Name {name}', description: 'English description.' } }))
+  writeFileSync(join(root, 'packages/demo/plugin/locale/en.json'), JSON.stringify({ meta: { title: 'Name {name}', description: 'English description' } }))
+  writeFileSync(join(root, `packages/demo/plugin/locale/${language}.json`), JSON.stringify({ meta: { title: 'Name {name}', description: 'English description' } }))
   expect(localeMetadataProblems(root).join('\n')).toContain(`${language}.json: meta.description contains untranslated source text`)
 })
 

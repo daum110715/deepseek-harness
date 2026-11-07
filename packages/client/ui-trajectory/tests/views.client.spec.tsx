@@ -902,7 +902,7 @@ describe('timeline projection', () => {
       .toContain('Click to load earlier history')
     fireEvent.click(boundary)
     expect(onLoadEarlier).toHaveBeenCalledOnce()
-    expect(screen.getByLabelText('Loading earlier history…')).toBeTruthy()
+    expect(screen.getByLabelText('Loading earlier history')).toBeTruthy()
 
     view.rerender(
       <TrajectoryTimeline
