@@ -49,9 +49,11 @@ jobs:
         run: pnpm run build:artifacts
       - name: Build the site
         run: pnpm --config.verifyDepsBeforeRun=false --filter @deepseek-ai/dsh-web-frontend run build:site
-      - name: Install Chromium for the end-to-end tests
-        run: pnpm --filter @deepseek-ai/dsh-web-frontend exec playwright install --with-deps chromium
+      # Full Chrome, as on a person's machine: Playwright's headless shell does
+      # not report notification permission the way the installed app needs.
       - name: End-to-end tests
+        env:
+          DSH_E2E_CHROME: /usr/bin/google-chrome
         run: pnpm exec vitest run --config vitest.web.config.ts apps/web/tests/pwa.e2e.ts apps/web/tests/web-platform.e2e.ts
       - uses: actions/upload-artifact@v4
         with:
