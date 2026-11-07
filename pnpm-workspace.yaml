@@ -53,6 +53,10 @@ allowBuilds:
   electron-winstaller: false
   # Store-index rewriting only needs msgpackr's portable JavaScript codec.
   msgpackr-extract: false
+  # Optional native codecs of just-bash, which runs only in the browser Worker
+  # and cannot load native add-ons there.
+  '@mongodb-js/zstd': false
+  node-liblzma: false
 
 minimumReleaseAgeExclude:
   # Native Codex and Claude tests qualify this exact release with its local patches.
