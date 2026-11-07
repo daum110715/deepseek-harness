@@ -1,0 +1,57 @@
+/* Device adaptation, motion, and touch feel. Every rule is either gated to the
+   input it serves or wrapped in :where(), so a component's own styling wins.
+   Press feedback runs through the Web Animations API (press.ts), because a
+   component's own `transition` would otherwise override an added one. */
+
+/* An app, not a document: pulling down at the top must not reload it and stop a running agent. */
+html,
+body {
+  overscroll-behavior-y: none;
+}
+
+/* While a keyboard covers part of the screen (Safari), the app fills only what stays visible. */
+html[data-dsh-keyboard],
+html[data-dsh-keyboard] body,
+html[data-dsh-keyboard] #root {
+  height: var(--dsh-visible-height) !important;
+  overflow: hidden;
+}
+
+@media (pointer: coarse) {
+  /* The press animation replaces the platform's flat tap flash. */
+  html {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* No double-tap zoom on a control, and a long press does not select its label or open the callout.
+     Pinch zoom stays available. */
+  :where(button, [role="button"], [role="menuitem"], [role="menuitemradio"], [role="menuitemcheckbox"],
+    [role="tab"], [role="switch"], [role="option"], [role="checkbox"]) {
+    touch-action: manipulation;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+
+  /* An invisible larger hit area for small controls; the script marks only those whose ::after is free. */
+  [data-dsh-hit-anchor] {
+    position: relative;
+  }
+
+  [data-dsh-hit]::after {
+    content: '';
+    position: absolute;
+    inset: calc(-1 * var(--dsh-hit-slop, 0px));
+    border-radius: inherit;
+  }
+}
+
+/* The person asked DSH Web for less motion, whatever the system says. */
+html[data-dsh-motion='reduced'] *,
+html[data-dsh-motion='reduced'] *::before,
+html[data-dsh-motion='reduced'] *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}

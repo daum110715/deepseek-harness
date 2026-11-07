@@ -404,6 +404,11 @@
     - id: ui-secret-mask
       name: '@deepseek-ai/dsh-client-ui-secret-mask'
 
+    # Device adaptation, motion, and touch feel: touch-sized hit areas, a
+    # keyboard-aware viewport, press feedback, haptics, and their settings.
+    - id: ui-polish
+      name: '@deepseek-ai/dsh-client-ui-polish'
+
     # Background jobs: the session-header roster with on-demand streaming
     # record panels over the session job-output service.
     - id: ui-jobs

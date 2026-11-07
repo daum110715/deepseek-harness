@@ -64,6 +64,7 @@ kind: "package-group"
 | [`ui-skill/`](ui-skill/README.zh.md) | 向内联建议添加 skill（技能）引用 | — |
 | [`ui-reference/`](ui-reference/README.zh.md) | 统一的 Web `@file` / `@session` 引用 source | — |
 | [`ui-secret-mask/`](ui-secret-mask/README.zh.md) | 遮挡已发送用户文本中可识别的凭据 | — |
+| [`ui-polish/`](ui-polish/README.zh.md) | 设备适配、按压反馈、触感振动和适合手指的点按区域 | — |
 | [`ui-agent-team/`](ui-agent-team/README.zh.md) | Session Team 开关与 Subagent 树下方的共享任务 | — |
 | [`ui-subagent/`](ui-subagent/README.zh.md) | 提供 subagent 导航、子级 transcript（文本记录）状态与内联引用 | — |
 | [`ui-jobs/`](ui-jobs/README.zh.md) | 列出本会话的后台任务，并提供按需展开的流式输出面板 | — |

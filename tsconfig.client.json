@@ -126,6 +126,7 @@
     { "path": "./packages/client/ui-skill" },
     { "path": "./packages/client/ui-reference" },
     { "path": "./packages/client/ui-secret-mask" },
+    { "path": "./packages/client/ui-polish" },
     { "path": "./packages/client/ui-subagent" },
     { "path": "./packages/client/ui-agent-team" },
     { "path": "./packages/experimental/client-ui-stats" },
