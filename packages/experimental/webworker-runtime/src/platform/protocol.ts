@@ -5,18 +5,10 @@
  * @module @deepseek-ai/dsh-experimental-webworker-runtime/src/platform/protocol
  */
 
-/** One folder the page reconnected, restored into `<root>/mnt/<name>` at boot. */
-export interface PlatformMount {
-  readonly name: string
-  readonly handle: FileSystemDirectoryHandle
-}
-
 /** Posted on the Worker before `init`; it hands over the port and enables the platform layer. */
 export interface PlatformInitFrame {
   readonly t: 'platform-init'
   readonly port: MessagePort
-  /** Folders with a granted permission. */
-  readonly mounts: readonly PlatformMount[]
 }
 
 /** Stage reported while the host starts. */
@@ -29,29 +21,23 @@ export type PlatformRequest =
   | { readonly op: 'export' }
   | { readonly op: 'import'; readonly archive: Uint8Array }
   | { readonly op: 'reset' }
-  | { readonly op: 'unmount'; readonly name: string }
 
-/** Storage and folder facts shown to the person using the page. */
+/** Storage facts shown to the person using the page. */
 export interface PlatformStatus {
   /** Whether home and workspace data survive a reload. */
   readonly durable: boolean
-  readonly mounts: readonly { readonly name: string; readonly path: string; readonly files: number; readonly bytes: number }[]
 }
 
 /** Page to worker frames. */
 export type PageToHostFrame =
-  | { readonly t: 'rescan' }
   | ({ readonly t: 'request'; readonly id: number } & PlatformRequest)
-  | { readonly t: 'chosen-directory'; readonly id: number; readonly handle: FileSystemDirectoryHandle }
-  | { readonly t: 'chosen-files'; readonly id: number; readonly name: string; readonly files: readonly { readonly path: string; readonly file: File }[] }
-  | { readonly t: 'chosen-nothing'; readonly id: number }
-  | { readonly t: 'choose-failed'; readonly id: number; readonly message: string }
+  | { readonly t: 'named-workspace'; readonly id: number; readonly name: string }
+  | { readonly t: 'named-nothing'; readonly id: number }
 
 /** Worker to page frames. */
 export type HostToPageFrame =
   | { readonly t: 'progress'; readonly stage: BootStage; readonly loaded?: number; readonly total?: number }
-  | { readonly t: 'choose-directory'; readonly id: number }
-  | { readonly t: 'mounted'; readonly name: string; readonly path: string; readonly handle?: FileSystemDirectoryHandle; readonly files: number; readonly skipped: readonly string[] }
+  | { readonly t: 'name-workspace'; readonly id: number }
   | { readonly t: 'storage-failure'; readonly message: string }
   | { readonly t: 'reply'; readonly id: number; readonly value?: unknown; readonly failure?: string }
 

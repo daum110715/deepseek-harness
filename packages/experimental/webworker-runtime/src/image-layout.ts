@@ -34,6 +34,8 @@ export const IMAGE_HOME_DIRECTORY = 'home'
  */
 export const PLATFORM_ENTRY_CONFIG: Readonly<Record<string, Readonly<Record<string, unknown>>>> = {
   'session-persistence-jsonl': { compression: 'none' },
+  // A Worker has no operating system to ask for a Documents folder, and every workspace belongs in durable storage.
+  'workspace-controller': { documentsDirectory: `${DEFAULT_ROOT}/workspace` },
 }
 
 /**

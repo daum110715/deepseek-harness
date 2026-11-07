@@ -58,15 +58,6 @@ writeFileSync(join(out, 'manifest.webmanifest'), `${JSON.stringify({
       files: [{ name: 'files', accept: ['image/*', 'text/*', 'application/json', 'application/pdf'] }],
     },
   },
-  file_handlers: [{
-    action: './',
-    accept: {
-      'text/plain': ['.txt', '.log', '.py', '.ts', '.tsx', '.js', '.jsx', '.go', '.rs', '.java', '.c', '.cpp', '.h', '.sh', '.toml', '.yaml', '.yml'],
-      'text/markdown': ['.md', '.markdown'],
-      'text/csv': ['.csv'],
-      'application/json': ['.json'],
-    },
-  }],
   screenshots: [
     { src: 'screenshots/wide.png', sizes: '1280x800', type: 'image/png', form_factor: 'wide', label: 'DSH Web on a desktop' },
     { src: 'screenshots/narrow.png', sizes: '780x1688', type: 'image/png', form_factor: 'narrow', label: 'DSH Web on a phone' },

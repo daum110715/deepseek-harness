@@ -8,7 +8,6 @@ import type { WebAppBridge } from './web-app.ts'
 /** Storage facts the platform layer reports. */
 interface BrowserDataStatus {
   readonly durable: boolean
-  readonly mounts: readonly { readonly name: string; readonly path: string; readonly files: number }[]
 }
 
 /** The page's platform layer, present only when the harness runs inside this browser. */
@@ -17,7 +16,6 @@ export interface BrowserDataBridge {
   exportData(): Promise<Uint8Array>
   importData(archive: Uint8Array): Promise<void>
   resetData(): Promise<void>
-  forgetFolder(name: string): Promise<void>
   readonly app: WebAppBridge
 }
 
@@ -39,7 +37,7 @@ function download(archive: Uint8Array): void {
 }
 
 /**
- * Render browser storage state, connected folders, and data actions.
+ * Render browser storage state and data actions.
  * @param props - localized copy.
  * @returns The rows, or nothing on a Node-hosted page.
  */
@@ -84,17 +82,5 @@ export function BrowserDataRow({ t }: PropsRuntime<'settings.general.item'> & Pr
         }} />
       </div>
     </div>
-    {status?.mounts.map(mount => <div className={css.row} key={mount.name}>
-      <div className={css.folder}>
-        <div className={css.title}>{mount.name}</div>
-        <div className={css.description}>{mount.path}</div>
-      </div>
-      <Button variant="outline" size="sm" disabled={busy} onClick={() => {
-        run(async () => {
-          await bridge.forgetFolder(mount.name)
-          setStatus(await bridge.status())
-        })
-      }}>{t('browserData.disconnect')}</Button>
-    </div>)}
   </div>
 }

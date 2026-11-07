@@ -126,7 +126,7 @@ export interface WorkerHostOptions {
   readonly unaryApiLane?: 'route' | 'direct'
   /** Channel back to the page; defaults to the worker global scope. */
   readonly channel?: TunnelPort
-  /** Durable storage, folder mounts, and boot progress; absent leaves the filesystem ephemeral. */
+  /** Durable storage, workspace naming, and boot progress; absent leaves the filesystem ephemeral. */
   readonly platform?: WebPlatformHost
 }
 
@@ -219,7 +219,7 @@ export function createWorkerHost(options: WorkerHostOptions): WorkerHost {
         await platform.restore(mounted, root)
         // The native directory-picker backend probes PATH for this command before mounting.
         mounted.seed(join(root, 'bin', 'zenity'), '', { mode: 0o755 })
-        setDirectoryChooser(async () => await platform.chooseDirectory())
+        setDirectoryChooser(async () => await platform.chooseWorkspace())
       }
       setActiveVfs(mounted)
       vfs = mounted

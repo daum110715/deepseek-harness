@@ -1,7 +1,7 @@
 /**
  * The installed-application half of the page: service worker lifecycle and update
- * offers, the install prompt, launches from the operating system (shortcuts, shared
- * content, opened files), hand-over to a window already running the host, storage
+ * offers, the install prompt, launches from the operating system (shortcuts and
+ * shared content), hand-over to a window already running the host, storage
  * protection, connectivity notices, notifications, and the app badge.
  * @module @deepseek-ai/dsh-experimental-webworker-runtime/src/client/pwa
  */
@@ -98,7 +98,7 @@ interface BeforeInstallPromptEvent extends Event {
 
 /** The launch queue, absent from the standard DOM types. */
 interface LaunchQueue {
-  setConsumer(consumer: (params: { readonly targetURL?: string; readonly files?: readonly FileSystemFileHandle[] }) => void): void
+  setConsumer(consumer: (params: { readonly targetURL?: string }) => void): void
 }
 
 function remembered(key: string): string | null {
@@ -373,12 +373,7 @@ export class WebApp {
     }
   }
 
-  private async acceptLaunch(params: { readonly targetURL?: string; readonly files?: readonly FileSystemFileHandle[] }): Promise<void> {
-    if (params.files !== undefined && params.files.length > 0) {
-      const files = await Promise.all(params.files.map(handle => handle.getFile()))
-      this.deliver({ kind: 'compose', text: '', files })
-      return
-    }
+  private async acceptLaunch(params: { readonly targetURL?: string }): Promise<void> {
     // The launch that opened this page was already read from its address.
     const opening = this.launchedFrom
     this.launchedFrom = undefined

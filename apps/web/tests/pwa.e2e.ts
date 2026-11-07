@@ -23,6 +23,19 @@ const MEDIA_TYPES: Readonly<Record<string, string>> = {
 
 const composer = (page: Page) => page.locator('[data-composer-input]').first()
 
+/** Whether a directory exists in origin-private storage, below the data layout's root. */
+async function storedDirectory(page: Page, path: string): Promise<boolean> {
+  return await page.evaluate(async (relative) => {
+    try {
+      let directory = await (await navigator.storage.getDirectory()).getDirectoryHandle('dsh-data-v1')
+      for (const segment of relative.split('/')) directory = await directory.getDirectoryHandle(segment)
+      return true
+    } catch {
+      return false
+    }
+  }, path)
+}
+
 /** Store a credential over the page's tunnel, which also ends the first-launch dialog. */
 async function setCredential(page: Page): Promise<void> {
   await page.evaluate(async () => {
@@ -88,9 +101,11 @@ it('installs, works offline, takes launches, and updates only what changed', { t
   try {
     const context = await browser.newContext({ viewport: { width: 1280, height: 800 }, locale: 'en-US' })
     await context.grantPermissions(['notifications'], { origin })
+    // Any reach for the host machine's file system fails the run.
     await context.addInitScript(() => {
-      (globalThis as unknown as { showDirectoryPicker(): Promise<FileSystemDirectoryHandle> }).showDirectoryPicker = async () =>
-        await (await navigator.storage.getDirectory()).getDirectoryHandle('picked-project', { create: true })
+      (globalThis as unknown as { showDirectoryPicker(): never }).showDirectoryPicker = () => {
+        throw new Error('the site asked for a host folder')
+      }
     })
     const page = await context.newPage()
     await page.goto(origin, { waitUntil: 'domcontentloaded' })
@@ -98,12 +113,18 @@ it('installs, works offline, takes launches, and updates only what changed', { t
     await page.getByRole('button', { name: 'Continue' }).click({ timeout: 8000 }).catch(() => undefined)
     await setCredential(page)
 
+    // First launch makes a default workspace in origin-private storage and opens the composer on it.
+    await page.locator('[data-composer-input][contenteditable="true"]').first().waitFor({ timeout: 30_000 })
+    await expect.poll(() => storedDirectory(page, 'workspace/deepseek-harness/default-workspace'), { timeout: 10_000 }).toBe(true)
+    expect(await page.getByText('Unable to create default workspace').count()).toBe(0)
+
     // The manifest parses without complaint and the browser would install it.
     const cdp = await context.newCDPSession(page)
     const manifest = await cdp.send('Page.getAppManifest')
     expect(manifest.errors).toEqual([])
     const parsed = JSON.parse(manifest.data ?? '{}') as Record<string, unknown>
-    for (const member of ['share_target', 'file_handlers', 'launch_handler', 'shortcuts', 'screenshots']) expect(parsed).toHaveProperty(member)
+    for (const member of ['share_target', 'launch_handler', 'shortcuts', 'screenshots']) expect(parsed).toHaveProperty(member)
+    expect(parsed).not.toHaveProperty('file_handlers')
     // A Playwright context counts as incognito, where no site can install; anything else would be the site's fault.
     const installability = (await cdp.send('Page.getInstallabilityErrors')).installabilityErrors
     expect(installability.map(error => error.errorId).filter(id => id !== 'in-incognito')).toEqual([])
@@ -113,13 +134,9 @@ it('installs, works offline, takes launches, and updates only what changed', { t
     await expect.poll(offlineReady, { timeout: 120_000, interval: 1000 }).toBe(true)
     await expect.poll(() => page.evaluate(() => navigator.serviceWorker.controller !== null), { timeout: 20_000 }).toBe(true)
 
-    // A share that arrives before any workspace exists waits for one instead of disappearing.
+    // A share posted the way the operating system posts one lands in a draft, unsent.
     await submitShare(page, 'first share')
     await composer(page).waitFor({ timeout: BOOT_TIMEOUT_MS })
-    await page.locator('[data-dsh-toast]', { hasText: 'Choose a workspace' }).waitFor({ timeout: 30_000 })
-    expect(new URL(page.url()).search).toBe('')
-    await page.getByText('Choose workspace').first().click()
-    await page.getByText('Connected picked-project').waitFor({ timeout: 20_000 })
     await expect.poll(() => composer(page).innerText(), { timeout: 30_000 }).toContain('first share')
     expect(await composer(page).innerText()).toContain('https://example.com/shared')
     await page.getByText('shared.txt').first().waitFor({ timeout: 30_000 })
@@ -131,6 +148,13 @@ it('installs, works offline, takes launches, and updates only what changed', { t
     await submitShare(second, 'second share')
     await expect.poll(() => composer(page).innerText(), { timeout: 60_000 }).toContain('second share')
     if (!second.isClosed()) await second.close()
+
+    // Adding a workspace asks for a name and creates it in origin-private storage.
+    await page.getByRole('button', { name: 'Add workspace' }).first().click()
+    await page.getByRole('textbox', { name: 'Workspace name' }).fill('../my project')
+    await page.getByRole('button', { name: 'Create', exact: true }).click()
+    await expect.poll(() => storedDirectory(page, 'workspace/my-project'), { timeout: 20_000 }).toBe(true)
+    await page.getByText('my-project').first().waitFor({ timeout: 20_000 })
 
     // A shortcut opens Settings, the settings rows ship, and the action leaves the address.
     await page.goto(`${origin}?action=settings`, { waitUntil: 'domcontentloaded' })

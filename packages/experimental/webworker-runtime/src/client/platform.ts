@@ -1,18 +1,18 @@
 /**
  * The page half of the Web platform: everything between opening the URL and the
- * harness answering. It keeps one host per origin across tabs, reconnects folders,
- * shows boot progress, answers the host's folder requests, and starts the installed
+ * harness answering. It keeps one host per origin across tabs, shows boot progress,
+ * asks for workspace names on the host's behalf, and starts the installed
  * application layer ({@link WebApp}). The harness itself still starts through {@link connectWorkerHost}.
  * @module @deepseek-ai/dsh-experimental-webworker-runtime/src/client/platform
  */
 
-import type { HostToPageFrame, PageToHostFrame, PlatformMount, PlatformRequest, PlatformStatus } from '../platform/protocol.ts'
+import type { HostToPageFrame, PageToHostFrame, PlatformRequest, PlatformStatus } from '../platform/protocol.ts'
 import { connectWorkerHost, holdWorkerHostBoot } from './index.ts'
 import { WebApp, type LaunchIntent, type ToastFunction, type WebAppBridge } from './pwa.ts'
 
 const HOST_LOCK = 'dsh-web-host'
-const FOLDER_DATABASE = 'dsh-web'
-const FOLDER_STORE = 'folders'
+/** Held handles to host folders in earlier versions; nothing reads it any more. */
+const RETIRED_FOLDER_DATABASE = 'dsh-web'
 
 const COPY = {
   en: {
@@ -27,16 +27,11 @@ const COPY = {
     useHere: 'Use this tab',
     movedTab: 'DSH Web moved to another tab',
     reload: 'Reload',
-    reconnectTitle: 'Reconnect your folders',
-    reconnectDetail: 'Your browser asks again for access to folders after a restart.',
-    reconnect: 'Reconnect',
-    skip: 'Not now',
-    chooseTitle: 'Choose a folder',
-    chooseDetail: 'The agent can read and change files in the folder you choose.',
-    choose: 'Choose folder',
+    nameTitle: 'New workspace',
+    nameDetail: 'Workspaces are kept in this browser\'s private storage. A name that already exists opens that workspace.',
+    nameLabel: 'Workspace name',
+    create: 'Create',
     cancel: 'Cancel',
-    mounted: (name: string) => `Connected ${name}`,
-    skipped: (count: number) => `, ${String(count)} large files left out`,
     storageFailed: (message: string) => `Your data is no longer being saved: ${message}`,
   },
   zh: {
@@ -51,16 +46,11 @@ const COPY = {
     useHere: '在此标签页使用',
     movedTab: 'DSH Web 已转到其他标签页',
     reload: '重新加载',
-    reconnectTitle: '重新连接文件夹',
-    reconnectDetail: '浏览器重启后，需要再次授权访问文件夹。',
-    reconnect: '重新连接',
-    skip: '暂不连接',
-    chooseTitle: '选择文件夹',
-    chooseDetail: '智能体可以读取和修改你选择的文件夹中的文件。',
-    choose: '选择文件夹',
+    nameTitle: '新建工作区',
+    nameDetail: '工作区保存在此浏览器的私有存储中。如果名称已存在，则打开该工作区。',
+    nameLabel: '工作区名称',
+    create: '创建',
     cancel: '取消',
-    mounted: (name: string) => `已连接 ${name}`,
-    skipped: (count: number) => `，${String(count)} 个大文件未载入`,
     storageFailed: (message: string) => `数据已停止保存：${message}`,
   },
 }
@@ -87,6 +77,11 @@ const STYLE = `
   [data-dsh-web-boot] [role=progressbar][data-indeterminate] > i { animation: dsh-boot-slide 1.2s ease-in-out infinite; }
   @media (prefers-reduced-motion: reduce) { [data-dsh-web-boot] [role=progressbar][data-indeterminate] > i { animation: none; } }
   @keyframes dsh-boot-slide { from { transform: translateX(-100%); } to { transform: translateX(100%); } }
+  [data-dsh-web-boot] input {
+    display: block; width: 100%; min-height: 40px; margin: 0 0 16px; padding: 0 12px; box-sizing: border-box; border: 1px solid var(--boot-line);
+    border-radius: 8px; color: inherit; background: transparent; font: inherit;
+  }
+  [data-dsh-web-boot] input:focus-visible { outline: 2px solid #4d6bfe; outline-offset: 1px; }
   [data-dsh-web-boot] button, [data-dsh-toast] button {
     min-height: 40px; margin: 0 8px 0 0; padding: 0 16px; border: 1px solid var(--boot-line, rgb(128 128 128 / 40%));
     border-radius: 8px; color: inherit; background: transparent; font: inherit; cursor: pointer;
@@ -157,6 +152,32 @@ class BootScreen {
     this.root.replaceChildren(panel)
   }
 
+  /**
+   * Ask for one line of text.
+   * @returns What was entered, or null when the person cancels.
+   */
+  async ask(title: string, detail: string, label: string, confirm: string, cancel: string): Promise<string | null> {
+    return await new Promise((settle) => {
+      this.message(title, detail, [
+        { label: confirm, primary: true, run: () => { submit() } },
+        { label: cancel, run: () => { settle(null) } },
+      ])
+      const panel = this.root.firstElementChild as HTMLElement
+      const input = document.createElement('input')
+      input.setAttribute('aria-label', label)
+      input.autocomplete = 'off'
+      const submit = (): void => {
+        if (input.value.trim() !== '') settle(input.value)
+      }
+      input.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') submit()
+        else if (event.key === 'Escape') settle(null)
+      })
+      panel.querySelector('p')?.after(input)
+      input.focus()
+    })
+  }
+
   /** Show boot progress; `fraction` is undefined when the amount is unknown. */
   progress(label: string, fraction?: number): void {
     if (this.bar === undefined) {
@@ -221,145 +242,12 @@ const toast: ToastFunction = (text, actions, timeoutMs) => {
   return remove
 }
 
-async function openFolders(): Promise<IDBDatabase> {
-  return await new Promise((settle, fail) => {
-    const request = indexedDB.open(FOLDER_DATABASE, 1)
-    request.onupgradeneeded = () => { request.result.createObjectStore(FOLDER_STORE) }
-    request.onsuccess = () => { settle(request.result) }
-    request.onerror = () => { fail(request.error) }
-  })
-}
-
-async function folderTransaction<T>(mode: IDBTransactionMode, run: (store: IDBObjectStore) => IDBRequest<T>): Promise<T> {
-  const database = await openFolders()
-  try {
-    return await new Promise((settle, fail) => {
-      const request = run(database.transaction(FOLDER_STORE, mode).objectStore(FOLDER_STORE))
-      request.onsuccess = () => { settle(request.result) }
-      request.onerror = () => { fail(request.error) }
-    })
-  } finally {
-    database.close()
-  }
-}
-
-/** Permission surface of a directory handle, present in browsers offering the picker. */
-interface PermissionedHandle extends FileSystemDirectoryHandle {
-  queryPermission?(options: { mode: 'readwrite' }): Promise<PermissionState>
-  requestPermission?(options: { mode: 'readwrite' }): Promise<PermissionState>
-}
-
-/** Reads a stored folder list; a browser refusing IndexedDB has none. */
-async function storedFolders(): Promise<PlatformMount[]> {
-  if (typeof indexedDB === 'undefined') return []
-  const [names, handles] = await Promise.all([
-    folderTransaction('readonly', store => store.getAllKeys()),
-    folderTransaction('readonly', store => store.getAll() as IDBRequest<FileSystemDirectoryHandle[]>),
-  ])
-  return names.map((name, index) => ({ name: String(name), handle: handles[index] as FileSystemDirectoryHandle }))
-}
-
-/** Ask for access to saved folders before the harness discovers workspaces. */
-async function reconnectFolders(screen: BootScreen): Promise<PlatformMount[]> {
-  const folders = await storedFolders()
-  const granted: PlatformMount[] = []
-  const waiting: PlatformMount[] = []
-  for (const folder of folders) {
-    const state = await (folder.handle as PermissionedHandle).queryPermission?.({ mode: 'readwrite' })
-    if (state === 'granted') granted.push(folder)
-    else waiting.push(folder)
-  }
-  if (waiting.length === 0) return granted
-  await new Promise<void>((settle) => {
-    screen.message(copy.reconnectTitle, copy.reconnectDetail, [
-      {
-        label: copy.reconnect,
-        primary: true,
-        run: () => {
-          void (async () => {
-            for (const folder of waiting) {
-              const state = await (folder.handle as PermissionedHandle).requestPermission?.({ mode: 'readwrite' })
-              if (state === 'granted') granted.push(folder)
-            }
-            settle()
-          })()
-        },
-      },
-      { label: copy.skip, run: () => { settle() } },
-    ], waiting.map(folder => folder.name))
-  })
-  screen.progress(copy.booting)
-  return granted
-}
-
-/** Picker entry point, absent in browsers without the File System Access API. */
-type DirectoryPicker = (options: { mode: 'readwrite'; id: string }) => Promise<FileSystemDirectoryHandle>
-
-function directoryPicker(): DirectoryPicker | undefined {
-  return (globalThis as { showDirectoryPicker?: DirectoryPicker }).showDirectoryPicker
-}
-
-/** A folder request can arrive after the click's activation expired, so it may need its own click. */
-async function withActivation<T>(attempt: () => Promise<T>, onCancel: () => T): Promise<T> {
-  try {
-    return await attempt()
-  } catch (error) {
-    if (!(error instanceof DOMException) || error.name !== 'SecurityError') throw error
-  }
+/** Name a new workspace for the host, over everything else on the page. */
+async function answerWorkspaceRequest(id: number, port: MessagePort): Promise<void> {
   const screen = new BootScreen()
-  try {
-    return await new Promise<T>((settle, fail) => {
-      screen.message(copy.chooseTitle, copy.chooseDetail, [
-        { label: copy.choose, primary: true, run: () => { attempt().then(settle, fail) } },
-        { label: copy.cancel, run: () => { settle(onCancel()) } },
-      ])
-    })
-  } finally {
-    screen.close()
-  }
-}
-
-/** Browsers without the picker hand over a copy of the folder's files through a file input. */
-async function pickFilesFrame(id: number): Promise<PageToHostFrame> {
-  return await new Promise((settle) => {
-    const input = document.createElement('input')
-    input.type = 'file'
-    input.setAttribute('webkitdirectory', '')
-    input.addEventListener('cancel', () => { settle({ t: 'chosen-nothing', id }) })
-    input.addEventListener('change', () => {
-      const selected = [...input.files ?? []]
-      const first = selected[0]?.webkitRelativePath.split('/')[0]
-      if (first === undefined) {
-        settle({ t: 'chosen-nothing', id })
-        return
-      }
-      settle({
-        t: 'chosen-files',
-        id,
-        name: first,
-        files: selected.map(file => ({ path: file.webkitRelativePath.slice(first.length + 1), file })),
-      })
-    })
-    input.click()
-  })
-}
-
-async function answerFolderRequest(id: number, port: MessagePort): Promise<void> {
-  const picker = directoryPicker()
-  let frame: PageToHostFrame
-  try {
-    frame = picker === undefined
-      ? await pickFilesFrame(id)
-      : await withActivation<PageToHostFrame>(
-        async () => ({ t: 'chosen-directory', id, handle: await picker({ mode: 'readwrite', id: 'dsh-workspace' }) }),
-        () => ({ t: 'chosen-nothing', id }),
-      )
-  } catch (error) {
-    frame = error instanceof DOMException && error.name === 'AbortError'
-      ? { t: 'chosen-nothing', id }
-      : { t: 'choose-failed', id, message: error instanceof Error ? error.message : String(error) }
-  }
-  port.postMessage(frame)
+  const name = await screen.ask(copy.nameTitle, copy.nameDetail, copy.nameLabel, copy.create, copy.cancel)
+  screen.close()
+  port.postMessage((name === null ? { t: 'named-nothing', id } : { t: 'named-workspace', id, name }) satisfies PageToHostFrame)
 }
 
 /** What Settings and other page surfaces can ask of the platform layer. */
@@ -371,8 +259,6 @@ export interface WebPlatformBridge {
   importData(archive: Uint8Array): Promise<void>
   /** Erase home and workspace data and restart. */
   resetData(): Promise<void>
-  /** Disconnect one folder; its files stay on disk. */
-  forgetFolder(name: string): Promise<void>
   /** The installed-application surface. */
   readonly app: WebAppBridge
 }
@@ -400,10 +286,6 @@ function startBridge(port: MessagePort, app: WebAppBridge): { bridge: WebPlatfor
       resetData: async () => {
         await request({ op: 'reset' })
         location.reload()
-      },
-      forgetFolder: async (name) => {
-        await request({ op: 'unmount', name })
-        await folderTransaction('readwrite', store => store.delete(name))
       },
     },
     settleReply: (frame) => {
@@ -478,7 +360,8 @@ export async function startWebPlatform(options: WebPlatformOptions): Promise<voi
     })
     app.serveLaunches()
     if (intent !== undefined) app.deliver(intent)
-    const mounts = await reconnectFolders(screen)
+    // Drops the access earlier versions kept to host folders, along with the handles.
+    if (typeof indexedDB !== 'undefined') indexedDB.deleteDatabase(RETIRED_FOLDER_DATABASE)
     const channel = new MessageChannel()
     const { port1: port, port2: remote } = channel
     const { bridge, settleReply } = startBridge(port, app.bridge)
@@ -491,15 +374,8 @@ export async function startWebPlatform(options: WebPlatformOptions): Promise<voi
           else if (frame.stage === 'restore') screen.progress(copy.restoring)
           else if (frame.stage === 'start') screen.progress(copy.booting)
           return
-        case 'choose-directory':
-          void answerFolderRequest(frame.id, port)
-          return
-        case 'mounted':
-          if (frame.handle !== undefined) {
-            const handle = frame.handle
-            void folderTransaction('readwrite', store => store.put(handle, frame.name))
-          }
-          toast(copy.mounted(frame.name) + (frame.skipped.length > 0 ? copy.skipped(frame.skipped.length) : ''), [], 6000)
+        case 'name-workspace':
+          void answerWorkspaceRequest(frame.id, port)
           return
         case 'storage-failure':
           toast(copy.storageFailed(frame.message), [], 6000)
@@ -512,8 +388,7 @@ export async function startWebPlatform(options: WebPlatformOptions): Promise<voi
       }
     }
     worker = options.createWorker()
-    worker.postMessage({ t: 'platform-init', port: remote, mounts }, [remote])
-    addEventListener('focus', () => { port.postMessage({ t: 'rescan' } satisfies PageToHostFrame) })
+    worker.postMessage({ t: 'platform-init', port: remote }, [remote])
     document.addEventListener('visibilitychange', () => {
       if (document.visibilityState === 'hidden') port.postMessage({ t: 'request', id: 0, op: 'flush' } satisfies PageToHostFrame)
     })

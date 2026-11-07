@@ -1,13 +1,11 @@
 /**
  * Web platform acceptance: the assembled static site runs the harness with no Node
- * Host. One browser context walks what a person does: first launch, connect a
- * folder, run an agent turn whose bash and git commands reach that folder, reload,
- * open a second tab, and start offline.
+ * Host. One browser context walks what a person does: first launch into the default
+ * workspace, run an agent turn whose bash and git commands reach that workspace in
+ * origin-private storage, reload, open a second tab, and start offline.
  *
- * Storage, the Worker boundary, and the service worker are the browser's own. Two
- * things are substituted: the operating system's folder dialog, which returns an
- * origin-private directory through the same handle APIs, and the DeepSeek endpoint,
- * which answers with a scripted stream. Requires `pnpm --filter
+ * Storage, the Worker boundary, and the service worker are the browser's own. The
+ * DeepSeek endpoint is substituted with a scripted stream. Requires `pnpm --filter
  * @deepseek-ai/dsh-web-frontend run build:site`.
  */
 import { existsSync } from 'node:fs'
@@ -103,12 +101,13 @@ async function remote<T>(page: Page, endpoint: string, args: object): Promise<T>
   }, { endpoint, args })
 }
 
-async function pickedFile(page: Page, path: string): Promise<string | null> {
+/** Read a file of the default workspace straight from origin-private storage. */
+async function workspaceFile(page: Page, path: string): Promise<string | null> {
   return await page.evaluate(async (relative) => {
-    let directory = await (await navigator.storage.getDirectory()).getDirectoryHandle('picked-project')
-    const segments = relative.split('/')
-    const name = segments.pop() as string
     try {
+      let directory = await navigator.storage.getDirectory()
+      const segments = ['dsh-data-v1', 'workspace', 'deepseek-harness', 'default-workspace', ...relative.split('/')]
+      const name = segments.pop() as string
       for (const segment of segments) directory = await directory.getDirectoryHandle(segment)
       return await (await (await directory.getFileHandle(name)).getFile()).text()
     } catch {
@@ -130,13 +129,10 @@ it('runs the harness in the browser, keeps its data, and starts offline', { time
   try {
     const context = await browser.newContext({ viewport: { width: 1280, height: 800 }, locale: 'en-US' })
     const model = await scriptModel(context)
+    // Any reach for the host machine's file system fails the run.
     await context.addInitScript(() => {
-      (globalThis as unknown as { showDirectoryPicker(): Promise<FileSystemDirectoryHandle> }).showDirectoryPicker = async () => {
-        const picked = await (await navigator.storage.getDirectory()).getDirectoryHandle('picked-project', { create: true })
-        const writable = await (await picked.getFileHandle('README.md', { create: true })).createWritable()
-        await writable.write('from disk\n')
-        await writable.close()
-        return picked
+      (globalThis as unknown as { showDirectoryPicker(): never }).showDirectoryPicker = () => {
+        throw new Error('the site asked for a host folder')
       }
     })
     const page = await context.newPage()
@@ -148,9 +144,7 @@ it('runs the harness in the browser, keeps its data, and starts offline', { time
     await page.getByRole('button', { name: 'Continue' }).click({ timeout: 8000 }).catch(() => undefined)
     await remote(page, 'credentials/set', { ref: 'DEEPSEEK_API_KEY', value: 'sk-scripted' })
 
-    await page.getByText('Choose workspace').first().click()
-    await page.getByText('Connected picked-project').waitFor({ timeout: 20_000 })
-    await page.waitForTimeout(1500)
+    await page.locator('[data-composer-input][contenteditable="true"]').first().waitFor({ timeout: 30_000 })
     await composer(page).click()
     await page.keyboard.type('RUN-SCRIPT please')
     await page.keyboard.press('Enter')
@@ -160,17 +154,16 @@ it('runs the harness in the browser, keeps its data, and starts offline', { time
     expect(model.toolResult).toContain('from the agent')
     expect(model.toolResult).toContain('3 loop.txt')
     await page.waitForTimeout(1000)
-    expect(await pickedFile(page, 'loop.txt')).toBe('line 1\nline 2\nline 3\n')
-    expect(await pickedFile(page, '.git/HEAD')).not.toBeNull()
+    expect(await workspaceFile(page, 'loop.txt')).toBe('line 1\nline 2\nline 3\n')
+    expect(await workspaceFile(page, '.git/HEAD')).not.toBeNull()
     expect(await sessionCount(page)).toBe(1)
 
     await page.reload({ waitUntil: 'domcontentloaded' })
     await composer(page).waitFor({ timeout: BOOT_TIMEOUT_MS })
     expect(await sessionCount(page)).toBe(1)
     expect((await remote<Record<string, { configured: boolean }>>(page, 'credentials/describe', { refs: ['DEEPSEEK_API_KEY'] })).DEEPSEEK_API_KEY?.configured).toBe(true)
-    const status = await page.evaluate(async () => await (globalThis as unknown as { __DSH_WEB_PLATFORM__: { status(): Promise<{ durable: boolean; mounts: { name: string }[] }> } }).__DSH_WEB_PLATFORM__.status())
+    const status = await page.evaluate(async () => await (globalThis as unknown as { __DSH_WEB_PLATFORM__: { status(): Promise<{ durable: boolean }> } }).__DSH_WEB_PLATFORM__.status())
     expect(status.durable).toBe(true)
-    expect(status.mounts.map(mount => mount.name)).toEqual(['picked-project'])
 
     await page.getByText('More', { exact: true }).last().click()
     await page.getByText('Settings', { exact: true }).first().click()

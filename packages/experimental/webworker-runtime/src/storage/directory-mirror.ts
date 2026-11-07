@@ -1,11 +1,10 @@
 /**
- * Write-behind mirror between one VFS subtree and one browser directory handle.
+ * Write-behind mirror between one VFS subtree and one origin-private directory.
  *
  * The VFS stays the synchronous authority the Node compatibility layer reads;
  * this mirror hydrates it at mount time and replays committed mutations onto the
- * handle afterwards. Origin-private directories use synchronous access handles so
- * a Session log append costs one positioned write. User-picked directories only
- * offer `createWritable`, which rewrites through a swap file.
+ * directory afterwards, through synchronous access handles so a Session log
+ * append costs one positioned write.
  * @module @deepseek-ai/dsh-experimental-webworker-runtime/src/storage/directory-mirror
  */
 
@@ -24,40 +23,14 @@ const HYDRATE_CONCURRENCY = 32
 /** Default file bits of {@link MemoryVfs}; the sidecar records only differing files. */
 const DEFAULT_MODE = 0o644
 
-/** Limits applied while reading a directory into memory. */
-export interface HydrateLimits {
-  /** Directory names left out of the VFS wherever they occur. */
-  readonly ignoredDirectories: ReadonlySet<string>
-  /** Largest single file read into memory. */
-  readonly maxFileBytes: number
-  /** Largest total read into memory. */
-  readonly maxTotalBytes: number
-}
-
-/** What one hydration left out, reported to the person who mounted the directory. */
-export interface HydrateReport {
-  readonly files: number
-  readonly bytes: number
-  /** Paths relative to the mirror root that exceeded a limit. */
-  readonly skipped: readonly string[]
-}
-
 /** Construction inputs for {@link DirectoryMirror}. */
 export interface DirectoryMirrorOptions {
-  /** Directory receiving the subtree. */
+  /** Origin-private directory receiving the subtree. */
   readonly directory: FileSystemDirectoryHandle
   /** Absolute VFS path of the subtree. */
   readonly vfsRoot: string
-  /** Whether the handle is origin-private, the only kind offering synchronous access. */
-  readonly originPrivate: boolean
   /** Called once when the mirror stops; the VFS keeps working without durability. */
   onFailure(reason: unknown): void
-}
-
-/** Size and timestamp of a file as this mirror last saw it on the handle. */
-interface KnownFile {
-  size: number
-  lastModified: number
 }
 
 /** Whether a DOMException names an absent entry. */
@@ -87,7 +60,6 @@ export class DirectoryMirror implements VfsMutationSink {
   /** Absolute VFS path of the mirrored subtree. */
   readonly vfsRoot: string
   private readonly directory: FileSystemDirectoryHandle
-  private readonly originPrivate: boolean
   private readonly onFailure: (reason: unknown) => void
   private queue: VfsMutation[] = []
   private timer: ReturnType<typeof setTimeout> | undefined
@@ -96,7 +68,6 @@ export class DirectoryMirror implements VfsMutationSink {
   private readonly directories = new Map<string, FileSystemDirectoryHandle>()
   private readonly modes = new Map<string, number>()
   private modesDirty = false
-  private readonly known = new Map<string, KnownFile>()
 
   /**
    * Bind the mirror to its directory; nothing is read until {@link hydrate}.
@@ -105,78 +76,27 @@ export class DirectoryMirror implements VfsMutationSink {
   constructor(options: DirectoryMirrorOptions) {
     this.directory = options.directory
     this.vfsRoot = options.vfsRoot
-    this.originPrivate = options.originPrivate
     this.onFailure = options.onFailure
   }
 
   /**
    * Seed the VFS from the directory without publishing mutations.
    * @param vfs - Filesystem to seed.
-   * @param limits - Limits for this directory.
-   * @returns The counts and the paths left out.
    */
-  async hydrate(vfs: MemoryVfs, limits: HydrateLimits): Promise<HydrateReport> {
+  async hydrate(vfs: MemoryVfs): Promise<void> {
     vfs.seedDirectory(this.vfsRoot)
     await this.loadModes()
-    let files = 0
-    let bytes = 0
-    const skipped: string[] = []
     const reads: (() => Promise<void>)[] = []
-    await this.walk('', this.directory, limits, (relative, handle) => {
+    await this.walk('', this.directory, (relative, handle) => {
       reads.push(async () => {
         const file = await handle.getFile()
-        if (file.size > limits.maxFileBytes || bytes + file.size > limits.maxTotalBytes) {
-          skipped.push(relative)
-          return
-        }
-        bytes += file.size
-        files += 1
         vfs.seed(`${this.vfsRoot}/${relative}`, new Uint8Array(await file.arrayBuffer()), {
           mode: this.modes.get(relative) ?? DEFAULT_MODE,
           mtimeMs: file.lastModified,
         })
-        this.known.set(relative, { size: file.size, lastModified: file.lastModified })
       })
     }, (relative) => { vfs.seedDirectory(`${this.vfsRoot}/${relative}`) })
     await runBounded(reads, HYDRATE_CONCURRENCY)
-    return { files, bytes, skipped }
-  }
-
-  /**
-   * Bring changes other programs made to the directory into the VFS. Paths with
-   * mutations still queued keep the VFS content, which the next drain writes.
-   * @param vfs - Filesystem to update.
-   * @param limits - Limits for this directory.
-   * @returns Number of files added, changed, or removed.
-   */
-  async rescan(vfs: MemoryVfs, limits: HydrateLimits): Promise<number> {
-    await this.flush()
-    const present = new Set<string>()
-    const reads: (() => Promise<void>)[] = []
-    let changed = 0
-    await this.walk('', this.directory, limits, (relative, handle) => {
-      present.add(relative)
-      reads.push(async () => {
-        const file = await handle.getFile()
-        const known = this.known.get(relative)
-        if (known?.size === file.size && known.lastModified === file.lastModified) return
-        this.known.set(relative, { size: file.size, lastModified: file.lastModified })
-        if (file.size > limits.maxFileBytes) return
-        vfs.seedObserved(`${this.vfsRoot}/${relative}`, new Uint8Array(await file.arrayBuffer()), {
-          mode: this.modes.get(relative) ?? DEFAULT_MODE,
-          mtimeMs: file.lastModified,
-        })
-        changed += 1
-      })
-    }, (relative) => { vfs.seedDirectory(`${this.vfsRoot}/${relative}`) })
-    await runBounded(reads, HYDRATE_CONCURRENCY)
-    for (const relative of this.known.keys()) {
-      if (present.has(relative)) continue
-      this.known.delete(relative)
-      vfs.unseedObserved(`${this.vfsRoot}/${relative}`)
-      changed += 1
-    }
-    return changed
   }
 
   /**
@@ -235,7 +155,6 @@ export class DirectoryMirror implements VfsMutationSink {
   private async walk(
     prefix: string,
     directory: FileSystemDirectoryHandle,
-    limits: HydrateLimits,
     onFile: (relative: string, handle: FileSystemFileHandle) => void,
     onDirectory: (relative: string) => void,
   ): Promise<void> {
@@ -245,9 +164,8 @@ export class DirectoryMirror implements VfsMutationSink {
         if (relative !== MODE_SIDECAR) onFile(relative, handle as FileSystemFileHandle)
         continue
       }
-      if (limits.ignoredDirectories.has(handle.name)) continue
       onDirectory(relative)
-      await this.walk(relative, handle as FileSystemDirectoryHandle, limits, onFile, onDirectory)
+      await this.walk(relative, handle as FileSystemDirectoryHandle, onFile, onDirectory)
     }
   }
 
@@ -290,10 +208,10 @@ export class DirectoryMirror implements VfsMutationSink {
         if (relative !== '') await this.directoryAt(relative, true)
         return
       case 'chmod':
-        if (this.originPrivate) this.setMode(relative, mutation.mode)
+        this.setMode(relative, mutation.mode)
         return
       case 'write':
-        if (this.originPrivate) this.setMode(relative, mutation.mode)
+        this.setMode(relative, mutation.mode)
         await this.writeFile(relative, mutation.bytes, mutation.appendedFrom)
         return
       case 'remove':
@@ -319,27 +237,19 @@ export class DirectoryMirror implements VfsMutationSink {
     const split = relative.lastIndexOf('/')
     const parent = await this.directoryAt(split === -1 ? '' : relative.slice(0, split), true)
     const handle = await parent.getFileHandle(relative.slice(split + 1), { create: true })
-    if (this.originPrivate) {
-      const access = await handle.createSyncAccessHandle()
-      try {
-        if (appendedFrom === undefined) {
-          access.truncate(0)
-          access.write(bytes as Uint8Array<ArrayBuffer>, { at: 0 })
-        } else {
-          access.truncate(appendedFrom)
-          access.write(bytes.subarray(appendedFrom) as Uint8Array<ArrayBuffer>, { at: appendedFrom })
-        }
-        access.flush()
-      } finally {
-        access.close()
+    const access = await handle.createSyncAccessHandle()
+    try {
+      if (appendedFrom === undefined) {
+        access.truncate(0)
+        access.write(bytes as Uint8Array<ArrayBuffer>, { at: 0 })
+      } else {
+        access.truncate(appendedFrom)
+        access.write(bytes.subarray(appendedFrom) as Uint8Array<ArrayBuffer>, { at: appendedFrom })
       }
-    } else {
-      const writable = await handle.createWritable({ keepExistingData: false })
-      await writable.write(bytes as Uint8Array<ArrayBuffer>)
-      await writable.close()
+      access.flush()
+    } finally {
+      access.close()
     }
-    const file = await handle.getFile()
-    this.known.set(relative, { size: file.size, lastModified: file.lastModified })
   }
 
   private async removeEntry(relative: string): Promise<void> {
@@ -351,7 +261,7 @@ export class DirectoryMirror implements VfsMutationSink {
     } catch (error) {
       if (!isNotFound(error)) throw error
     }
-    for (const map of [this.directories, this.known, this.modes]) {
+    for (const map of [this.directories, this.modes]) {
       for (const key of map.keys()) {
         if (key === relative || key.startsWith(`${relative}/`)) {
           map.delete(key)
@@ -362,7 +272,6 @@ export class DirectoryMirror implements VfsMutationSink {
   }
 
   private async loadModes(): Promise<void> {
-    if (!this.originPrivate) return
     let text: string
     try {
       const handle = await this.directory.getFileHandle(MODE_SIDECAR)

@@ -1,11 +1,11 @@
 /**
  * The Worker's `zenity`: the Linux chooser command the native directory-picker
- * backend runs, answered by the page's folder picker. Exit status 1 means the
- * person cancelled, as zenity(1) reports it.
+ * backend runs, answered with a workspace in durable storage that the person names
+ * in the page. Exit status 1 means the person cancelled, as zenity(1) reports it.
  */
 import type { VirtualExecutable, VirtualExecutableExit } from './virtual-executables.ts'
 
-/** Page-side folder selection; resolves with the folder's VFS path. */
+/** Page-side workspace naming; resolves with the workspace's VFS path. */
 export type DirectoryChooser = () => Promise<string | null>
 
 let chooser: DirectoryChooser | undefined
