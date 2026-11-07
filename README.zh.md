@@ -110,6 +110,6 @@ pnpm --filter @deepseek-ai/dsh-web-frontend run build:site  # 输出到 apps/web
 
 ## 许可证
 
-[MIT](LICENSE)
+本分支以 GNU Affero 通用公共许可证第 3 版（AGPL-3.0）发布（[LICENSE](LICENSE)）。它所基于的 DeepSeek Harness 原始代码仍以 MIT 许可证发布（[LICENSE-MIT](LICENSE-MIT)）。
 
 第三方依赖及其许可证见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。

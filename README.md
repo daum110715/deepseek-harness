@@ -91,6 +91,6 @@ For agents, follow [AGENTS.md](AGENTS.md).
 
 ## License
 
-[MIT](LICENSE)
+This fork is licensed under the GNU Affero General Public License v3.0 ([LICENSE](LICENSE)). The DeepSeek Harness code it is based on remains under the MIT License ([LICENSE-MIT](LICENSE-MIT)).
 
 Third-party dependencies and their licenses are disclosed in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
