@@ -180,3 +180,4 @@ export async function connectWorkerHost(worker: Worker, options?: WorkerHostConn
 }
 
 export { startWebPlatform, type WebPlatformBridge, type WebPlatformOptions } from './platform.ts'
+export type { AppLaunch, InstallState, LaunchIntent, WebAppBridge } from './pwa.ts'

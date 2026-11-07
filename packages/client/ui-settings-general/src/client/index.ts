@@ -42,6 +42,8 @@ import { CloseLabel, HeaderContent, TriggerContent } from './chrome.tsx'
 import { GeneralSection } from './GeneralSection.tsx'
 import { CurrentVersionRow } from './CurrentVersionRow.tsx'
 import { BrowserDataRow, browserDataBridge } from './BrowserDataRow.tsx'
+import { BrowserAppRow } from './BrowserAppRow.tsx'
+import { serveWebApp, type WebAppServices } from './web-app.ts'
 import { DeveloperToolsRow, type DeveloperToolsRowInjected } from './DeveloperToolsRow.tsx'
 import { SettingsDocumentAction } from './SettingsDocumentAction.tsx'
 import type { SettingsDocumentActionInjected } from './SettingsDocumentAction.tsx'
@@ -98,10 +100,28 @@ export function apply(ctx: ClientContext): void {
       },
     }),
   }, DeveloperToolsRow))
-  if (browserDataBridge() !== undefined) {
+  // Settings opens from outside the shell's registration, once that shell exists.
+  const webAppSettings: { open?: () => void; wanted: boolean } = { wanted: false }
+  const webPlatform = browserDataBridge()
+  if (webPlatform !== undefined) {
+    ctx.slots.inject('settings.general.item', () => ctx.slots.register({
+      name: 'settings.general.item', id: 'browser-app', order: 85, locale: NS,
+    }, BrowserAppRow))
     ctx.slots.inject('settings.general.item', () => ctx.slots.register({
       name: 'settings.general.item', id: 'browser-data', order: 90, locale: NS,
     }, BrowserDataRow))
+    ctx.inject(['uiSession', 'uiWorkspace', 'sessions'], (scope) => {
+      scope.effect(() => serveWebApp(webPlatform.app, {
+        sessionStatus: scope.get('uiSession')!.sessionStatus,
+        sessionList: scope.get('sessions')!.list,
+        workspace: scope.get('uiWorkspace') as unknown as WebAppServices['workspace'],
+        t: ctx.locale.bind(NS),
+        openSettings: () => {
+          if (webAppSettings.open === undefined) webAppSettings.wanted = true
+          else webAppSettings.open()
+        },
+      }), 'ui-settings-general: web app launches and attention')
+    })
   }
   // Version information follows the core preferences.
   ctx.slots.inject('settings.general.item', () => ctx.slots.register({
@@ -216,6 +236,11 @@ export function apply(ctx: ClientContext): void {
       const shellHandle = createSettingsShellStore()
       const shellInstance = shellHandle.create()
       const shellStore: typeof shellHandle = { ...shellHandle, create: () => shellInstance }
+      webAppSettings.open = () => { shellInstance.actions.requestOpen() }
+      if (webAppSettings.wanted) {
+        webAppSettings.wanted = false
+        webAppSettings.open()
+      }
       const disposeCommand = ctx.shortcuts.register({
         id: 'settings.open' as ShortcutCommandId, label: () => t('shortcut.open'), aliases: ['settings', 'preferences'],
         defaults: {

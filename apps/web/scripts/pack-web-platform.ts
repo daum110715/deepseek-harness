@@ -38,7 +38,53 @@ writeFileSync(join(out, 'manifest.webmanifest'), `${JSON.stringify({
   name: 'DSH Web',
   short_name: 'DSH Web',
   description: 'An unofficial browser build of DSH. It is built on DeepSeek Harness and is not affiliated with DeepSeek.',
+  lang: 'en',
+  dir: 'ltr',
+  categories: ['developer', 'productivity', 'utilities'],
+  // One host runs per origin, so a launch joins the open window instead of opening one that must wait.
+  launch_handler: { client_mode: ['focus-existing', 'auto'] },
+  shortcuts: [
+    { name: 'New session', url: './?action=new', icons: [{ src: 'icon-192.png', sizes: '192x192', type: 'image/png' }] },
+    { name: 'Settings', url: './?action=settings', icons: [{ src: 'icon-192.png', sizes: '192x192', type: 'image/png' }] },
+  ],
+  share_target: {
+    action: './share-target',
+    method: 'POST',
+    enctype: 'multipart/form-data',
+    params: {
+      title: 'title',
+      text: 'text',
+      url: 'url',
+      files: [{ name: 'files', accept: ['image/*', 'text/*', 'application/json', 'application/pdf'] }],
+    },
+  },
+  file_handlers: [{
+    action: './',
+    accept: {
+      'text/plain': ['.txt', '.log', '.py', '.ts', '.tsx', '.js', '.jsx', '.go', '.rs', '.java', '.c', '.cpp', '.h', '.sh', '.toml', '.yaml', '.yml'],
+      'text/markdown': ['.md', '.markdown'],
+      'text/csv': ['.csv'],
+      'application/json': ['.json'],
+    },
+  }],
+  screenshots: [
+    { src: 'screenshots/wide.png', sizes: '1280x800', type: 'image/png', form_factor: 'wide', label: 'DSH Web on a desktop' },
+    { src: 'screenshots/narrow.png', sizes: '780x1688', type: 'image/png', form_factor: 'narrow', label: 'DSH Web on a phone' },
+  ],
 }, null, 2)}\n`)
+cpSync(join(webRoot, 'platform', 'screenshots'), join(out, 'screenshots'), { recursive: true })
+
+// Install metadata the shared application page leaves to each product, and a dark first paint for dark systems.
+const page = readFileSync(join(out, 'index.html'), 'utf8')
+writeFileSync(join(out, 'index.html'), page
+  .replace('<meta name="apple-mobile-web-app-title" content="DSH" />', [
+    '<meta name="apple-mobile-web-app-title" content="DSH Web" />',
+    '<meta name="apple-mobile-web-app-capable" content="yes" />',
+    '<meta name="apple-mobile-web-app-status-bar-style" content="default" />',
+    '<meta name="application-name" content="DSH Web" />',
+    '<meta name="description" content="An unofficial browser build of DSH. It is built on DeepSeek Harness and is not affiliated with DeepSeek." />',
+    '<style>@media (prefers-color-scheme: dark) { html { background: #15171a } }</style>',
+  ].join('\n    ')))
 
 /** List every file under a directory, relative to the site root. */
 function listFiles(directory: string): string[] {
@@ -55,15 +101,24 @@ for (const name of readdirSync(join(out, 'preview'))) {
 
 const files = listFiles(out).sort()
 const hash = createHash('sha256')
-for (const file of files) hash.update(file).update(readFileSync(join(out, file)))
+const hashes = new Map<string, string>()
+for (const file of files) {
+  const bytes = readFileSync(join(out, file))
+  hash.update(file).update(bytes)
+  hashes.set(file, createHash('sha256').update(bytes).digest('hex').slice(0, 16))
+}
 const version = hash.digest('hex').slice(0, 16)
 
-// Grammars and page chunks load on demand and join the cache when used.
-const precache = files.filter(file => !file.startsWith('assets/langs/') && !file.startsWith('preview/lazy/') && !file.startsWith('assets/fonts/KaTeX'))
+const fileMap = (names: readonly string[]): string => JSON.stringify(Object.fromEntries(names.map(file => [`./${file}`, hashes.get(file)])))
+// Grammars and page chunks are not needed to start, so they fill in after boot; store screenshots are never used offline.
+const isLazy = (file: string): boolean => file.startsWith('assets/langs/') || file.startsWith('preview/lazy/') || file.startsWith('assets/fonts/KaTeX')
+const cached = files.filter(file => !file.startsWith('screenshots/'))
+const precache = cached.filter(file => !isLazy(file))
 const template = readFileSync(join(webRoot, 'platform', 'sw.js'), 'utf8')
 writeFileSync(join(out, 'sw.js'), template
   .replace('__DSH_SITE_VERSION__', version)
-  .replace('__DSH_PRECACHE__', JSON.stringify(precache.map(file => `./${file}`))))
+  .replace('__DSH_PRECACHE__', fileMap(precache))
+  .replace('__DSH_LAZY__', fileMap(cached.filter(isLazy))))
 
 const bytes = files.reduce((total, file) => total + statSync(join(out, file)).size, 0)
 console.log(`pack-web-platform: ${String(files.length)} files, ${String(Math.round(bytes / 1048576))} MiB, ${String(precache.length)} precached, version ${version}, in ${relative(process.cwd(), out)}`)

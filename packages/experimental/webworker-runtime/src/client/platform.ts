@@ -1,13 +1,14 @@
 /**
  * The page half of the Web platform: everything between opening the URL and the
  * harness answering. It keeps one host per origin across tabs, reconnects folders,
- * shows boot progress, answers the host's folder requests, and registers the
- * service worker. The harness itself still starts through {@link connectWorkerHost}.
+ * shows boot progress, answers the host's folder requests, and starts the installed
+ * application layer ({@link WebApp}). The harness itself still starts through {@link connectWorkerHost}.
  * @module @deepseek-ai/dsh-experimental-webworker-runtime/src/client/platform
  */
 
 import type { HostToPageFrame, PageToHostFrame, PlatformMount, PlatformRequest, PlatformStatus } from '../platform/protocol.ts'
 import { connectWorkerHost, holdWorkerHostBoot } from './index.ts'
+import { WebApp, type LaunchIntent, type ToastFunction, type WebAppBridge } from './pwa.ts'
 
 const HOST_LOCK = 'dsh-web-host'
 const FOLDER_DATABASE = 'dsh-web'
@@ -37,7 +38,6 @@ const COPY = {
     mounted: (name: string) => `Connected ${name}`,
     skipped: (count: number) => `, ${String(count)} large files left out`,
     storageFailed: (message: string) => `Your data is no longer being saved: ${message}`,
-    update: 'A new version is ready.',
   },
   zh: {
     starting: '正在启动 DSH Web',
@@ -62,7 +62,6 @@ const COPY = {
     mounted: (name: string) => `已连接 ${name}`,
     skipped: (count: number) => `，${String(count)} 个大文件未载入`,
     storageFailed: (message: string) => `数据已停止保存：${message}`,
-    update: '新版本已就绪。',
   },
 }
 
@@ -94,9 +93,12 @@ const STYLE = `
   }
   [data-dsh-web-boot] button[data-primary] { border-color: var(--boot-accent); color: #fff; background: var(--boot-accent); }
   [data-dsh-web-boot] button:focus-visible, [data-dsh-toast] button:focus-visible { outline: 2px solid #4d6bfe; outline-offset: 2px; }
+  [data-dsh-toasts] {
+    position: fixed; left: 50%; bottom: max(16px, env(safe-area-inset-bottom)); z-index: 2147483001; display: flex; flex-direction: column; align-items: center; gap: 8px;
+    width: max-content; max-width: calc(100vw - 32px); transform: translateX(-50%);
+  }
   [data-dsh-toast] {
-    position: fixed; left: 50%; bottom: max(16px, env(safe-area-inset-bottom)); z-index: 2147483001; display: flex; align-items: center; gap: 12px;
-    width: max-content; max-width: calc(100vw - 32px); padding: 10px 16px; box-sizing: border-box; border-radius: 10px; transform: translateX(-50%);
+    display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; padding: 10px 16px; box-sizing: border-box; border-radius: 10px;
     color: #fff; background: #23262b; box-shadow: 0 6px 24px rgb(0 0 0 / 24%);
     font: 14px/20px system-ui, -apple-system, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
   }
@@ -191,22 +193,32 @@ class BootScreen {
   }
 }
 
-/** Show a short notice above the harness. */
-function toast(text: string, action?: { label: string; run(): void }): void {
+/** Show a notice above the harness; it stays until an action, a timeout, or the returned remover. */
+const toast: ToastFunction = (text, actions, timeoutMs) => {
+  let stack = document.querySelector<HTMLElement>('[data-dsh-toasts]')
+  if (stack === null) {
+    stack = document.createElement('div')
+    stack.dataset.dshToasts = ''
+    document.body.append(stack)
+  }
   const node = document.createElement('div')
   node.dataset.dshToast = ''
   node.setAttribute('role', 'status')
   node.append(text)
-  if (action !== undefined) {
+  for (const action of actions) {
     const button = document.createElement('button')
     button.type = 'button'
     button.textContent = action.label
-    button.addEventListener('click', () => { action.run() })
+    button.addEventListener('click', () => {
+      node.remove()
+      action.run()
+    })
     node.append(button)
-  } else {
-    setTimeout(() => { node.remove() }, 6000)
   }
-  document.body.append(node)
+  stack.append(node)
+  const remove = (): void => { node.remove() }
+  if (timeoutMs !== undefined) setTimeout(remove, timeoutMs)
+  return remove
 }
 
 async function openFolders(): Promise<IDBDatabase> {
@@ -350,32 +362,6 @@ async function answerFolderRequest(id: number, port: MessagePort): Promise<void>
   port.postMessage(frame)
 }
 
-/** Registers the service worker that makes the app installable and available offline. */
-function registerServiceWorker(): void {
-  if (!('serviceWorker' in navigator) || !isSecureContext) return
-  navigator.serviceWorker.register('./sw.js').then((registration) => {
-    const offerUpdate = (worker: ServiceWorker): void => {
-      toast(copy.update, {
-        label: copy.reload,
-        run: () => {
-          navigator.serviceWorker.addEventListener('controllerchange', () => { location.reload() })
-          worker.postMessage('skip-waiting')
-        },
-      })
-    }
-    if (registration.waiting !== null && navigator.serviceWorker.controller !== null) offerUpdate(registration.waiting)
-    registration.addEventListener('updatefound', () => {
-      const incoming = registration.installing
-      incoming?.addEventListener('statechange', () => {
-        if (incoming.state === 'installed' && navigator.serviceWorker.controller !== null) offerUpdate(incoming)
-      })
-    })
-  }).catch((error: unknown) => {
-    // The app works without offline support, for example on a static host without the worker file.
-    console.warn('web platform: service worker unavailable', error)
-  })
-}
-
 /** What Settings and other page surfaces can ask of the platform layer. */
 export interface WebPlatformBridge {
   status(): Promise<PlatformStatus>
@@ -387,9 +373,11 @@ export interface WebPlatformBridge {
   resetData(): Promise<void>
   /** Disconnect one folder; its files stay on disk. */
   forgetFolder(name: string): Promise<void>
+  /** The installed-application surface. */
+  readonly app: WebAppBridge
 }
 
-function startBridge(port: MessagePort): { bridge: WebPlatformBridge; settleReply(frame: Extract<HostToPageFrame, { t: 'reply' }>): void } {
+function startBridge(port: MessagePort, app: WebAppBridge): { bridge: WebPlatformBridge; settleReply(frame: Extract<HostToPageFrame, { t: 'reply' }>): void } {
   const pending = new Map<number, { settle(value: unknown): void; fail(reason: Error): void }>()
   let nextId = 0
   const request = async (operation: PlatformRequest, transfer: Transferable[] = []): Promise<unknown> => {
@@ -402,6 +390,7 @@ function startBridge(port: MessagePort): { bridge: WebPlatformBridge; settleRepl
   }
   return {
     bridge: {
+      app,
       status: async () => await request({ op: 'status' }) as PlatformStatus,
       exportData: async () => await request({ op: 'export' }) as Uint8Array,
       importData: async (archive) => {
@@ -426,9 +415,13 @@ function startBridge(port: MessagePort): { bridge: WebPlatformBridge; settleRepl
   }
 }
 
-/** Hold the single-host lock for this tab's lifetime, asking first when another tab has it. */
-async function acquireHostLock(screen: BootScreen, onLost: () => void): Promise<void> {
-  if (!('locks' in navigator)) return
+/**
+ * Hold the single-host lock for this tab's lifetime, asking first when another tab has it.
+ * A launch that opened this window goes to the tab holding the lock instead of taking it.
+ * @returns the opening intent, unless the tab holding the lock took it.
+ */
+async function acquireHostLock(screen: BootScreen, app: WebApp, opening: LaunchIntent | undefined, onLost: () => void): Promise<LaunchIntent | undefined> {
+  if (!('locks' in navigator)) return opening
   const hold = (options: LockOptions): Promise<boolean> => new Promise((acquired, failed) => {
     navigator.locks.request(HOST_LOCK, options, async (lock) => {
       acquired(lock !== null)
@@ -439,9 +432,12 @@ async function acquireHostLock(screen: BootScreen, onLost: () => void): Promise<
       onLost()
     })
   })
-  if (await hold({ ifAvailable: true })) return
+  if (await hold({ ifAvailable: true })) return opening
+  const handedOver = opening !== undefined && await app.handOver(opening)
+  if (handedOver) window.close()
   await new Promise<void>((settle) => {
-    screen.message(copy.otherTab, copy.otherTabDetail, [{
+    const { title, detail } = handedOver ? app.handedOverCopy : { title: copy.otherTab, detail: copy.otherTabDetail }
+    screen.message(title, detail, [{
       label: copy.useHere,
       primary: true,
       run: () => {
@@ -450,6 +446,7 @@ async function acquireHostLock(screen: BootScreen, onLost: () => void): Promise<
       },
     }])
   })
+  return handedOver ? undefined : opening
 }
 
 /** Inputs for {@link startWebPlatform}. */
@@ -469,19 +466,22 @@ export async function startWebPlatform(options: WebPlatformOptions): Promise<voi
   holdWorkerHostBoot()
   const screen = new BootScreen()
   screen.progress(copy.starting)
-  registerServiceWorker()
+  const app = new WebApp(toast)
+  app.start()
+  const opening = await app.readOpeningIntent()
   let worker: Worker | undefined
   try {
-    await acquireHostLock(screen, () => {
+    const intent = await acquireHostLock(screen, app, opening, () => {
       worker?.terminate()
       screen.close()
       new BootScreen().message(copy.movedTab, '', [{ label: copy.reload, primary: true, run: () => { location.reload() } }])
     })
+    app.serveLaunches()
+    if (intent !== undefined) app.deliver(intent)
     const mounts = await reconnectFolders(screen)
-    void navigator.storage?.persist?.()
     const channel = new MessageChannel()
     const { port1: port, port2: remote } = channel
-    const { bridge, settleReply } = startBridge(port)
+    const { bridge, settleReply } = startBridge(port, app.bridge)
     ;(globalThis as { __DSH_WEB_PLATFORM__?: WebPlatformBridge }).__DSH_WEB_PLATFORM__ = bridge
     port.onmessage = (event: MessageEvent<HostToPageFrame>) => {
       const frame = event.data
@@ -499,10 +499,10 @@ export async function startWebPlatform(options: WebPlatformOptions): Promise<voi
             const handle = frame.handle
             void folderTransaction('readwrite', store => store.put(handle, frame.name))
           }
-          toast(copy.mounted(frame.name) + (frame.skipped.length > 0 ? copy.skipped(frame.skipped.length) : ''))
+          toast(copy.mounted(frame.name) + (frame.skipped.length > 0 ? copy.skipped(frame.skipped.length) : ''), [], 6000)
           return
         case 'storage-failure':
-          toast(copy.storageFailed(frame.message))
+          toast(copy.storageFailed(frame.message), [], 6000)
           return
         case 'reply':
           settleReply(frame)
@@ -523,6 +523,7 @@ export async function startWebPlatform(options: WebPlatformOptions): Promise<voi
       localizeSourceMaps: new URLSearchParams(location.search).has('debug-source-maps'),
     })
     screen.close()
+    app.ready()
   } catch (reason) {
     worker?.terminate()
     screen.message(copy.failed, reason instanceof Error ? reason.message : String(reason), [

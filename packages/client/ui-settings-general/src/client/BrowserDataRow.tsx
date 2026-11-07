@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Button } from '@deepseek-ai/dsh-client-ui-primitives'
 import type { PropsLocale, PropsRuntime } from '@deepseek-ai/dsh-client-ui-slots'
 import css from './BrowserDataRow.module.css'
+import type { WebAppBridge } from './web-app.ts'
 
 /** Storage facts the platform layer reports. */
 interface BrowserDataStatus {
@@ -17,6 +18,7 @@ export interface BrowserDataBridge {
   importData(archive: Uint8Array): Promise<void>
   resetData(): Promise<void>
   forgetFolder(name: string): Promise<void>
+  readonly app: WebAppBridge
 }
 
 /**

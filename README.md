@@ -49,7 +49,7 @@ This fork adds DSH Web, a build of the harness that runs entirely in the browser
 - **Your data stays in the browser**: Sessions, settings, and API keys persist in the origin-private file system. **Settings → General → Browser data** backs up, restores, and erases them.
 - **Real folders**: in Chromium browsers, choose a folder as a workspace and the agent reads and writes it directly. Firefox and Safari work on a copy.
 - **A shell with bash syntax**: loops, functions, pipes, `grep`, `sed`, `awk`, `jq`, and `git`, confined by the same permission modes. There is no `node`, `python`, or package manager.
-- **Installable and offline**: the site installs as an app and starts without a network, though the model still needs one.
+- **A real installed app**: it installs with its own window and starts without a network, though the model still needs one. Files and text shared from other apps open as a draft in a new session, nothing is sent until you send it, and it can notify you and badge its icon when a session finishes in the background. **Settings → General → App** has install, updates, storage protection, and notifications.
 
 ```sh
 pnpm install

@@ -1,12 +1,15 @@
 /** Shared settings viewing state for its mouse and command entry points. */
 import { defineStore, type EngineStoreHandle } from '@deepseek-ai/dsh-client-store'
 
-type State = { open: boolean; activeId: string | undefined }
+type State = { open: boolean; activeId: string | undefined; openRequested: boolean }
 type Actions = {
   open(draft: State): void
   close(draft: State): void
   select(draft: State, id: string): void
   openSection(draft: State, id: string): void
+  /** Open once nothing at startup would take the panel down again; SettingsRoot fulfills it. */
+  requestOpen(draft: State): void
+  fulfillOpenRequest(draft: State): void
 }
 
 /**
@@ -15,12 +18,14 @@ type Actions = {
  */
 export function createSettingsShellStore(): EngineStoreHandle<State, Actions> {
   return defineStore({
-    init: (): State => ({ open: false, activeId: undefined as string | undefined }),
+    init: (): State => ({ open: false, activeId: undefined as string | undefined, openRequested: false }),
     actions: {
       open: (d) => { d.open = true },
       close: (d) => { d.open = false; d.activeId = undefined },
       select: (d, id: string) => { d.activeId = id },
       openSection: (d, id: string) => { d.activeId = id; d.open = true },
+      requestOpen: (d) => { d.openRequested = true },
+      fulfillOpenRequest: (d) => { d.openRequested = false; d.open = true },
     },
   })
 }

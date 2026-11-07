@@ -123,9 +123,9 @@ export function SettingsRoot(props: SettingsRootComponentProps) {
     wide, reconnect, useConnectionState, useSections, useOnboardingSteps, useSessions, renderSlot, t,
     useDesktopUpdate, openDesktopUpdate, useStore, actions, useShortcuts,
   } = props
-  const { open, activeId } = useStore(state => state)
+  const { open, activeId, openRequested } = useStore(state => state)
   const shortcut = useShortcuts(rows => rows.find(row => row.id === 'settings.open'))
-  const { close, openSection } = actions
+  const { close, openSection, requestOpen, fulfillOpenRequest } = actions
   const [requestedOnboarding, setRequestedOnboarding] = useState<string | undefined>()
   const [completedOnboarding, setCompletedOnboarding] = useState<ReadonlySet<string>>(() => new Set())
   const [showRecovery, setShowRecovery] = useState(false)
@@ -145,6 +145,7 @@ export function SettingsRoot(props: SettingsRootComponentProps) {
       .find(session => (session.retainedBy.mainView ?? 0) > 0)
     return state.phase === 'ready' && (main === undefined || main.blank)
   })
+  const sessionsReady = useSessions(state => state.phase === 'ready')
   const onboardingStep = requestedOnboarding !== undefined
     ? onboardingSteps.find(step => step.id === requestedOnboarding)
     : onboardingActive
@@ -157,14 +158,25 @@ export function SettingsRoot(props: SettingsRootComponentProps) {
   }, [onboardingActive])
 
   const onboardingStepSeen = useRef(onboardingStep)
+  const openedByRequest = useRef(false)
   // An onboarding step owns the viewport and marks `#root` inert. The panel portals
   // beside `#root`, outside that mark, so a step that appears while the panel is open
   // takes the panel down rather than leaving it focusable behind the onboarding mask.
   useEffect(() => {
     const appeared = onboardingStepSeen.current === undefined && onboardingStep !== undefined
     onboardingStepSeen.current = onboardingStep
-    if (appeared && open) close()
-  }, [onboardingStep, open, close])
+    if (!appeared || !open) return
+    close()
+    if (openedByRequest.current) requestOpen()
+  }, [onboardingStep, open, close, requestOpen])
+
+  // A step counts as appeared even while it decides whether to show, and that can
+  // happen at any point in startup, so a requested panel waits until none is active.
+  useEffect(() => {
+    if (!openRequested || !sessionsReady || onboardingStep !== undefined) return
+    openedByRequest.current = true
+    fulfillOpenRequest()
+  }, [openRequested, sessionsReady, onboardingStep, fulfillOpenRequest])
 
   useLayoutEffect(() => {
     const previous = previousConnectionState.current
