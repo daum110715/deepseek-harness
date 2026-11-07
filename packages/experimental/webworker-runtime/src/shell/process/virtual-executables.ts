@@ -2,6 +2,7 @@
 import { basename } from '../../module-system/posix-path.ts'
 import type { ShellFileSystem } from '../types.ts'
 import { LANDLOCK_EXECUTABLE } from './landlock.ts'
+import { RIPGREP_EXECUTABLE } from './ripgrep.ts'
 import { XDG_OPEN_EXECUTABLE } from './xdg-open.ts'
 import { ZENITY_EXECUTABLE } from './zenity.ts'
 
@@ -51,6 +52,7 @@ export interface VirtualExecutable {
 
 const EXECUTABLES: ReadonlyMap<string, VirtualExecutable> = new Map([
   [LANDLOCK_EXECUTABLE.name, LANDLOCK_EXECUTABLE],
+  [RIPGREP_EXECUTABLE.name, RIPGREP_EXECUTABLE],
   [XDG_OPEN_EXECUTABLE.name, XDG_OPEN_EXECUTABLE],
   [ZENITY_EXECUTABLE.name, ZENITY_EXECUTABLE],
 ])

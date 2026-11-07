@@ -42,9 +42,11 @@ jobs:
           node-version: 24
           cache: pnpm
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile --ignore-scripts
-      - name: Build client bundles
-        run: pnpm run build:lib:client
+        run: pnpm install --frozen-lockfile
+      # The client imports the host packages' declarations (each `/remote`
+      # entry), so the host libraries build first, as in the preview lane.
+      - name: Build workspace libraries
+        run: pnpm run build:artifacts
       - name: Build the site
         run: pnpm --config.verifyDepsBeforeRun=false --filter @deepseek-ai/dsh-web-frontend run build:site
       - name: Install Chromium for the end-to-end tests

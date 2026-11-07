@@ -80,6 +80,8 @@ export const MODULE_PROXIES: Record<string, string> = {
   'execa': './node/external_packages/execa.ts',
   'got': './node/external_packages/got.ts',
   '@vscode/ripgrep': './node/external_packages/ripgrep.ts',
+  // Node socket client; the browser's fetch serves it.
+  'undici': './node/external_packages/undici.ts',
   '@earendil-works/pi-ai': './node/external_packages/pi-ai.ts',
   '@earendil-works/pi-coding-agent': './node/external_packages/pi-coding-agent.ts',
   // Node internal modules for callers without `--expose-internals`.

@@ -61,6 +61,7 @@ import * as piAi from './external_packages/pi-ai.ts'
 import * as piCodingAgent from './external_packages/pi-coding-agent.ts'
 import * as ripgrep from './external_packages/ripgrep.ts'
 import * as sharp from './external_packages/sharp.ts'
+import * as undici from './external_packages/undici.ts'
 import * as ws from './external_packages/ws.ts'
 import { REPLACED_EXTERNAL_PACKAGES } from './external_packages/replaced-externals.ts'
 import type { StaticModuleFactory } from '../module-system/module-loader.ts'
@@ -111,6 +112,7 @@ const EXTERNALS: Record<string, StaticModuleFactory> = {
   'node-addon-require-builtin': () => nodeAddonRequireBuiltin,
   'ws': () => ws,
   '@vscode/ripgrep': () => ripgrep,
+  'undici': () => undici,
   '@earendil-works/pi-ai': () => piAi,
   '@earendil-works/pi-coding-agent': () => piCodingAgent,
 }

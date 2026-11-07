@@ -1,11 +1,10 @@
 /**
- * `@vscode/ripgrep` stub. The package's only export is the binary path, read at
- * module scope by search plugins; the path stays a plain string so construction
- * succeeds, and the loud failure comes from the child_process stub when something
- * tries to run it.
+ * `@vscode/ripgrep` stub. The package's only export is the binary path, read by
+ * the search plugins. Spawning it reaches the Worker's own `rg`
+ * (`src/shell/process/ripgrep.ts`), which the process launcher finds by name.
  */
 
-/** Path the search plugins would spawn; nothing can execute it in a browser. */
+/** Path the search plugins spawn; the launcher answers it with the Worker's `rg`. */
 export const rgPath = '/dsh/bin/rg'
 
 /** CommonJS interop marker: the worker loader hands `default` to default imports (see ./builtins.ts). */

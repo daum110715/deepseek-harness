@@ -18,5 +18,6 @@ export const REPLACED_EXTERNAL_PACKAGES: readonly string[] = [
   'got',
   'node-addon-require-builtin',
   'sharp',
+  'undici',
   'ws',
 ]
