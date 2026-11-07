@@ -71,6 +71,6 @@ export function signalProcess(pid: number, signal: NodeJS.Signals): boolean {
   if (entry === undefined) return false
   entry.signal ??= signal
   if (signal === 'SIGKILL') entry.process?.destroy()
-  else entry.process?.interrupt()
+  else entry.process?.interrupt(signal)
   return true
 }

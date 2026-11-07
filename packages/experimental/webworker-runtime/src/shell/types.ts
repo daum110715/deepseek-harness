@@ -104,4 +104,6 @@ export interface ShellRunOutcome {
   stdout: string
   /** Everything written to standard error. */
   stderr: string
+  /** Shell variables when the line settled, for a session that continues from them. */
+  env?: Record<string, string> | undefined
 }

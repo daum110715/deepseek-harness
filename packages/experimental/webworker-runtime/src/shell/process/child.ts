@@ -83,7 +83,7 @@ export function runShellProcess(start: ShellStartFrame, scope: ProcessScope): vo
     : runShellCommand(start.script, options)
   void run.then(
     (outcome) => {
-      scope.postMessage({ t: 'shell-exit', code: outcome.exitCode })
+      scope.postMessage({ t: 'shell-exit', code: outcome.exitCode, env: outcome.env })
       scope.close()
     },
     (error: unknown) => {

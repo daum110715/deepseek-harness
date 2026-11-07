@@ -5,7 +5,7 @@
  * during construction.
  */
 import { DSH_HOME, DSH_TMP } from '../../../storage/paths.ts'
-import type { CpuInfo, NetworkInterfaceInfo } from 'node:os'
+import type { CpuInfo, NetworkInterfaceInfo, UserInfo } from 'node:os'
 
 /** Line ending of the virtual platform. */
 export const EOL = '\n'
@@ -67,6 +67,16 @@ export function hostname(): string {
 }
 
 /**
+ * The account the worker runs as: the one user of the virtual machine, whose
+ * login shell is the Worker shell (`bash -i` opens the Worker terminal).
+ * Always string fields; a Buffer encoding is not offered.
+ * @returns `user`, uid and gid 1000, the VFS home, and `/bin/bash`.
+ */
+export const userInfo = ((): UserInfo<string> => ({
+  username: 'user', uid: 1000, gid: 1000, shell: '/bin/bash', homedir: DSH_HOME,
+})) as typeof import('node:os').userInfo
+
+/**
  * Usable parallelism.
  * @returns the browser's hardware concurrency, at least 1.
  */
@@ -113,5 +123,5 @@ type NodeFace = Partial<Omit<typeof import('node:os'), 'constants'>> & Record<'c
 /** CommonJS default export: the members `require()` hands a caller of this module. */
 export default {
   EOL, tmpdir, homedir, platform, type, arch, release, hostname, availableParallelism, cpus,
-  networkInterfaces, constants,
+  networkInterfaces, constants, userInfo,
 } satisfies NodeFace

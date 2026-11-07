@@ -1,16 +1,16 @@
 /**
- * `node-pty` stub: pseudo-terminals belong to the excluded surface. Terminal
- * plugins mount so their tools stay visible; spawning reports the gap.
+ * `node-pty` over the Worker's own terminal (`src/shell/terminal.ts`): an
+ * interactive shell whose lines run as Worker shell processes, so the persistent
+ * bash tool and the sidebar terminal work without an operating-system PTY.
  */
 import { notImplementedFail } from '../notImplementedFail.ts'
+import { spawnTerminal } from '../../shell/terminal.ts'
 
-const MODULE = 'node-pty'
+/** Spawn a terminal session. */
+export const spawn = spawnTerminal
 
-/** Spawn a pseudo-terminal (unavailable). */
-export const spawn = notImplementedFail(MODULE, 'spawn')
-
-/** Open a pseudo-terminal pair (unavailable). */
-export const open = notImplementedFail(MODULE, 'open')
+/** Open a bare pseudo-terminal pair (unavailable: nothing here can hold the other end). */
+export const open = notImplementedFail('node-pty', 'open')
 
 /** CommonJS interop marker: the worker loader hands `default` to default imports (see ./builtins.ts). */
 export const __esModule = true

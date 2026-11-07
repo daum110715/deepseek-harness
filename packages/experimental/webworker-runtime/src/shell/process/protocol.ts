@@ -35,6 +35,8 @@ export interface ShellOutputFrame {
 export interface ShellExitFrame {
   t: 'shell-exit'
   code: number
+  /** Shell variables when the command settled. */
+  env?: Record<string, string> | undefined
 }
 
 /** A signal the command is asked to honor (the terminate ladder's first rung). */

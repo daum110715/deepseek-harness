@@ -171,6 +171,16 @@ check(
     ].join('\n'),
   })
   check('stored, rebased, and shadowed createRequire calls stay runtime-only', runtimeOnly.moduleRequests, ['node:module'])
+
+  const lazy = lowerModuleSource({
+    filename: 'node_modules/p/lazy.js',
+    source: [
+      "import { createLazyRequire } from '@deepseek-ai/dsh-lazy-require'",
+      "const load = createLazyRequire('lazy-package', import.meta.url)",
+      "createLazyRequire('rebased-lazy', new URL('./other.js', import.meta.url))",
+    ].join('\n'),
+  })
+  check('a literal createLazyRequire target is a module request', lazy.moduleRequests, ['@deepseek-ai/dsh-lazy-require', 'lazy-package'])
 }
 
 // ---------------------------------------------------------------------------

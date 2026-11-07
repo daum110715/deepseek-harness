@@ -35,16 +35,19 @@ export interface ProcessStartOptions {
   stdin: string
   /** Receives output as it is produced. */
   onOutput: (stream: 'stdout' | 'stderr', text: string) => void
-  /** Receives the settled status exactly once. */
-  onExit: (code: number) => void
+  /** Receives the settled status exactly once, with the shell variables when the command reported them. */
+  onExit: (code: number, env?: Record<string, string>) => void
   /** The filesystem the command acts on; defaults to the mounted VFS. */
   fs?: ShellFileSystem | undefined
 }
 
 /** A started command, from the host's side. */
 export interface RunningProcess {
-  /** Ask the command to stop at its next command boundary (the `SIGTERM` rung). */
-  interrupt(): void
+  /**
+   * Ask the command to stop at its next command boundary (the `SIGTERM` rung).
+   * @param signal - the signal that asked, for a process that tells them apart.
+   */
+  interrupt(signal?: NodeJS.Signals): void
   /**
    * Stop the command now (the `SIGKILL` rung). A worker-backed process dies
    * whatever it was doing; an inline one can only be asked, because nothing
@@ -107,11 +110,11 @@ function startWorkerProcess(options: ProcessStartOptions): RunningProcess {
   // the build-order trap a sibling artifact would bring.
   const worker = new Worker(self.location.href, { type: 'module' })
   let settled = false
-  const settle = (code: number): void => {
+  const settle = (code: number, env?: Record<string, string>): void => {
     if (settled) return
     settled = true
     worker.terminate()
-    options.onExit(code)
+    options.onExit(code, env)
   }
 
   worker.addEventListener('message', (event: MessageEvent) => {
@@ -121,7 +124,7 @@ function startWorkerProcess(options: ProcessStartOptions): RunningProcess {
       return
     }
     if (frame.t === 'shell-exit') {
-      settle(frame.code)
+      settle(frame.code, frame.env)
       return
     }
     void serveFilesystemCall(fs, frame.op, frame.args).then(
@@ -173,7 +176,7 @@ function startInlineProcess(options: ProcessStartOptions): RunningProcess {
     ? runShellProgram(options.argv, runOptions)
     : runShellCommand(options.script, runOptions)
   void run.then(
-    (outcome) => { options.onExit(outcome.exitCode) },
+    (outcome) => { options.onExit(outcome.exitCode, outcome.env) },
     (error: unknown) => {
       options.onOutput('stderr', `bash: ${String(error)}\n`)
       options.onExit(1)

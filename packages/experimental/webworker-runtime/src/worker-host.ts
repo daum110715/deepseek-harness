@@ -214,6 +214,9 @@ export function createWorkerHost(options: WorkerHostOptions): WorkerHost {
       for (const directory of IMAGE_EMPTY_DIRECTORIES) {
         mounted.seedDirectory(join(root, directory.replace(/\/$/, '')))
       }
+      // The login shell, as an executable file: the subprocess service checks the
+      // terminal's shell exists before starting it, and the Worker shell answers it.
+      for (const shell of ['/bin/bash', '/bin/sh']) mounted.seed(shell, '', { mode: 0o755 })
       if (options.platform !== undefined) {
         const platform = options.platform
         await platform.restore(mounted, root)

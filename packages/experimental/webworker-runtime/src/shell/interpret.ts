@@ -87,7 +87,8 @@ function textOf(output: string, bytes: boolean): string {
 export async function runShellCommand(source: string, options: ShellRunOptions): Promise<ShellRunOutcome> {
   if (isAborted(options.signal)) return { exitCode: ABORTED_STATUS, stdout: '', stderr: '' }
   const fs = options.fs ?? hostFileSystem()
-  const env = { ...options.env, PATH: ['/usr/bin', '/bin', options.env.PATH].filter(Boolean).join(':') }
+  const inherited = (options.env.PATH ?? '').split(':').filter(entry => entry !== '' && entry !== '/usr/bin' && entry !== '/bin')
+  const env = { ...options.env, PATH: ['/usr/bin', '/bin', ...inherited].join(':') }
   const bash = new Bash({
     fs: new MountableFs({
       // The base holds the interpreter's /bin stubs; only the mounts reach the VFS.
@@ -121,7 +122,7 @@ export async function runShellCommand(source: string, options: ShellRunOptions):
   const stdout = textOf(result.stdout, result.stdoutKind === 'bytes')
   if (stdout !== '') options.onOutput?.('stdout', stdout)
   if (result.stderr !== '') options.onOutput?.('stderr', result.stderr)
-  return { exitCode: isAborted(options.signal) ? ABORTED_STATUS : result.exitCode, stdout, stderr: result.stderr }
+  return { exitCode: isAborted(options.signal) ? ABORTED_STATUS : result.exitCode, stdout, stderr: result.stderr, env: result.env }
 }
 
 /**

@@ -104,6 +104,8 @@ class Transformer {
   private readonly moduleRequests = new Set<string>()
   private readonly metaResolveRequests = new Set<string>()
   private readonly createRequireBindings = new Set<string>()
+  /** Local names of `createLazyRequire` from `@deepseek-ai/dsh-lazy-require`. */
+  private readonly lazyRequireBindings = new Set<string>()
   /** Module temporary per import declaration with specifiers, assigned before traversal. */
   private readonly importModules = new Map<object, string>()
   /** Named and default imports by local name. */
@@ -472,6 +474,13 @@ class Transformer {
           && typeof callArguments[0]?.value === 'string') {
           this.moduleRequests.add(callArguments[0].value)
         }
+        // `createLazyRequire('x', import.meta.url)` defers the same literal
+        // require to first use, so the pack sweep must keep its target too.
+        if (callee.type === 'Identifier' && this.lazyRequireBindings.has(nameOf(callee))
+          && callArguments.length === 2 && typeof callArguments[0]?.value === 'string'
+          && this.isImportMetaUrl(callArguments[1] as Node)) {
+          this.moduleRequests.add(callArguments[0].value)
+        }
         // `import.meta.resolve('lit')` is the third static request face: the
         // loader answers it from the image, so the pack sweep must keep the
         // target. A computed argument stays out, same as dynamic import —
@@ -555,7 +564,10 @@ class Transformer {
     if (callee.type !== 'Identifier' || !this.createRequireBindings.has(nameOf(callee)) || args.length !== 1) {
       return false
     }
-    const base = args[0] as Node
+    return this.isImportMetaUrl(args[0] as Node)
+  }
+
+  private isImportMetaUrl(base: Node): boolean {
     if (base.type !== 'MemberExpression' || base.computed === true) return false
     const object = base.object as Node
     const property = base.property as Node
@@ -574,6 +586,14 @@ class Transformer {
     for (const statement of program.body) {
       if (statement.type !== 'ImportDeclaration') continue
       const source = statement.source
+      if (source.value === '@deepseek-ai/dsh-lazy-require') {
+        for (const specifier of statement.specifiers) {
+          if (specifier.type === 'ImportSpecifier' && specifierName(specifier.imported) === 'createLazyRequire') {
+            this.lazyRequireBindings.add(specifier.local.name)
+          }
+        }
+        continue
+      }
       if (source.value !== 'node:module' && source.value !== 'module') continue
       for (const specifier of statement.specifiers) {
         if (specifier.type !== 'ImportSpecifier' || specifierName(specifier.imported) !== 'createRequire') continue

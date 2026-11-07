@@ -53,7 +53,8 @@ const CALLED: [string, Record<string, unknown>, readonly string[]][] = [
   // The rest of `node:child_process` runs commands (see child-process.spec.ts);
   // these three need a real process, so they stay refusals.
   ['node:child_process', childProcess, ['execFileSync', 'execSync', 'fork']],
-  ['node-pty', nodePty, ['spawn', 'open']],
+  // `spawn` runs the Worker terminal (see tests/shell/terminal.spec.ts); a bare PTY pair stays a refusal.
+  ['node-pty', nodePty, ['open']],
   ['execa', execa, ['execa']],
   ['got', got.default, ['post']],
   ['@earendil-works/pi-coding-agent', piCodingAgent, [
