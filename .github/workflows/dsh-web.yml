@@ -1,0 +1,91 @@
+name: DSH Web
+
+# Builds the browser build of DSH Web and runs its installed-app and web-platform
+# end-to-end tests. Pushes to web-platform also publish the build to dsh.daum.pw
+# once the publish job is enabled; see apps/web/platform/README.md.
+on:
+  push:
+    branches: [web-platform]
+  pull_request:
+    paths:
+      - 'apps/web/**'
+      - 'packages/client/**'
+      - 'packages/experimental/webworker-runtime/**'
+      - 'packages/bundle/web-app/**'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - '.github/workflows/dsh-web.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: dsh-web-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  DSH_CLIENT_TITLE: DSH Web
+  DSH_TELEMETRY_DISABLED: '1'
+  NODE_OPTIONS: --max-old-space-size=8192
+
+jobs:
+  build:
+    name: Build and test DSH Web
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile --ignore-scripts
+      - name: Build client bundles
+        run: pnpm run build:lib:client
+      - name: Build the site
+        run: pnpm --config.verifyDepsBeforeRun=false --filter @deepseek-ai/dsh-web-frontend run build:site
+      - name: Install Chromium for the end-to-end tests
+        run: pnpm --filter @deepseek-ai/dsh-web-frontend exec playwright install --with-deps chromium
+      - name: End-to-end tests
+        run: pnpm exec vitest run --config vitest.web.config.ts apps/web/tests/pwa.e2e.ts apps/web/tests/web-platform.e2e.ts
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dsh-web-site
+          path: apps/web/dist-site
+          if-no-files-found: error
+          retention-days: 7
+
+  publish:
+    name: Publish to dsh.daum.pw
+    needs: build
+    if: github.event_name == 'push' && github.ref == 'refs/heads/web-platform' && vars.DSH_WEB_SSH_DEPLOY == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    concurrency:
+      group: dsh-web-publish
+      cancel-in-progress: false
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dsh-web-site
+          path: dist-site
+      - name: Connect to the server
+        env:
+          DEPLOY_KEY_B64: ${{ secrets.DSH_DEPLOY_KEY_B64 }}
+          KNOWN_HOSTS_B64: ${{ secrets.DSH_DEPLOY_KNOWN_HOSTS_B64 }}
+        run: |
+          install -d -m 700 ~/.ssh
+          echo "$DEPLOY_KEY_B64" | base64 -d > ~/.ssh/dsh_web_deploy
+          chmod 600 ~/.ssh/dsh_web_deploy
+          echo "$KNOWN_HOSTS_B64" | base64 -d > ~/.ssh/known_hosts
+      - name: Upload the site
+        run: tar -C dist-site -cf - . | ssh -p 22222 -i ~/.ssh/dsh_web_deploy -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes lemon@23.251.32.150
+      - name: Confirm the live version
+        run: |
+          expected=$(grep -o "const VERSION = '[^']*'" dist-site/sw.js)
+          live=$(curl -fsS "https://dsh.daum.pw/sw.js?ci=${GITHUB_SHA}" | grep -o "const VERSION = '[^']*'")
+          test -n "$expected" && test "$live" = "$expected"
+          echo "live: $expected"
