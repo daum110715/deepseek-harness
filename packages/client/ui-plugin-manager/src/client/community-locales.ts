@@ -1,0 +1,43 @@
+/** Locale-owned copy for the built-in browser plugin community. */
+export const communityZh = {
+  title: '插件社区', intro: '发现和安装第三方 DSH Web 插件',
+  scope: '支持独立的 DSH Web 页面插件 API 1 插件在隔离页面中运行 无法访问会话和密钥',
+  source: '社区目录地址', sourceHint: '输入 HTTPS 插件目录 JSON 地址', discover: '加载目录',
+  packageUrl: '插件包地址', packageHint: '输入 HTTPS 插件包 JSON 地址', installUrl: '从链接安装', importFile: '从文件安装',
+  search: '搜索插件', searchHint: '搜索名称作者或说明', available: '发现插件', installed: '已安装',
+  empty: '尚未加载社区目录 可填写目录地址或直接安装插件包', noInstalled: '还没有安装社区插件', noResults: '没有匹配的插件',
+  install: '下载并安装', update: '替换已安装版本', open: '打开', close: '关闭插件', remove: '卸载', download: '下载插件包',
+  compatible: '兼容', incompatible: '不兼容', loading: '正在处理',
+  invalid: '插件格式无效 请使用 DSH Web 插件包或版本 1 社区目录',
+  runtime: '已拦截 仅支持 DSH Web 浏览器插件 不支持 Node 或原生插件',
+  api: '已拦截 插件要求的 API 版本与当前版本 1 不兼容',
+  dependencies: '已拦截 插件包含浏览器无法安装的外部依赖 请作者提供独立插件包',
+  permissions: '已拦截 插件申请了当前不支持的权限',
+  network: '下载失败 请检查地址网络和来源的跨域设置后重试',
+  size: '已拦截 插件包不得超过 2 MiB 社区目录不得超过 512 KiB',
+  integrity: '已拦截 插件内容或版本与社区目录记录不符 请刷新目录',
+  storage: '插件存储无法读取或写入 原有数据未被覆盖 请检查浏览器存储空间和站点权限',
+  trust: '仅安装你信任的作者发布的插件 社区目录由其提供者维护',
+} as const
+
+/** English dictionary also used as the fallback for other locales. */
+export const communityEn: Record<keyof typeof communityZh, string> = {
+  title: 'Plugin community', intro: 'Discover and install third-party DSH Web plugins',
+  scope: 'Supports standalone DSH Web page plugins using API 1 Plugins run in isolated pages without access to sessions or credentials',
+  source: 'Community index URL', sourceHint: 'HTTPS plugin index JSON URL', discover: 'Load index',
+  packageUrl: 'Plugin package URL', packageHint: 'HTTPS plugin package JSON URL', installUrl: 'Install from URL', importFile: 'Install from file',
+  search: 'Search plugins', searchHint: 'Search names authors or descriptions', available: 'Discover plugins', installed: 'Installed',
+  empty: 'Load a community index or install a plugin package directly', noInstalled: 'No community plugins installed yet', noResults: 'No matching plugins',
+  install: 'Download and install', update: 'Replace installed version', open: 'Open', close: 'Close plugin', remove: 'Uninstall', download: 'Download package',
+  compatible: 'Compatible', incompatible: 'Incompatible', loading: 'Working',
+  invalid: 'Invalid plugin format Use a DSH Web plugin package or a version 1 community index',
+  runtime: 'Blocked Only DSH Web browser plugins are supported Node and native plugins cannot run here',
+  api: 'Blocked The plugin requires an API version incompatible with API 1',
+  dependencies: 'Blocked External dependencies cannot be installed Ask the author for a standalone package',
+  permissions: 'Blocked The plugin requests unsupported permissions',
+  network: 'Download failed Check the URL network and source CORS settings then retry',
+  size: 'Blocked Packages must fit within 2 MiB and indexes within 512 KiB',
+  integrity: 'Blocked Package content or version differs from the index Refresh the index',
+  storage: 'Plugin storage could not be read or written Existing data was preserved Check browser storage and site permissions',
+  trust: 'Install only plugins from authors you trust Community indexes are maintained by their providers',
+}

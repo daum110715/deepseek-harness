@@ -1,0 +1,35 @@
+/* Community sections follow the Plugins page content axis and wrap actions on narrow screens. */
+.page {
+  height: 100%;
+  overflow-y: auto;
+  box-sizing: border-box;
+  padding: 28px clamp(20px, 4vw, 48px) 48px;
+  color: var(--dsw-alias-label-primary);
+}
+.content {
+  max-width: 960px;
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.content h1 { margin: 0; font-size: 24px; font-weight: 500; }
+.content h2 { margin: 0; font-size: 16px; font-weight: 500; }
+.content h3 { margin: 0; font-size: 15px; font-weight: 500; overflow-wrap: anywhere; }
+.content p { margin: 0; font-size: 13px; line-height: 1.6; overflow-wrap: anywhere; }
+.content header { display: flex; flex-direction: column; gap: 8px; }
+.note { color: var(--dsw-alias-label-secondary); font-size: 13px; line-height: 1.6; overflow-wrap: anywhere; }
+.setup, .section { display: flex; flex-direction: column; gap: 16px; }
+.form { display: flex; flex-direction: column; gap: 8px; font-size: 13px; }
+.row, .actions, .heading { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+.row > :first-child { flex: 1 1 240px; min-width: 0; }
+.row button, .actions button { flex-shrink: 0; }
+.file { display: none; }
+.feedback { min-height: 22px; font-size: 13px; }
+.feedback [role='alert'] { color: var(--dsw-alias-label-primary); }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 16px; }
+.card { padding: 16px; display: flex; flex-direction: column; align-items: flex-start; gap: 12px; background: var(--dsw-alias-bg-module-platform); border-radius: var(--dsw-radius-lg); min-width: 0; }
+.heading { justify-content: space-between; width: 100%; }
+.actions { margin-top: auto; }
+.frame { width: 100%; min-height: 420px; box-sizing: border-box; background: white; border: 0; border-radius: var(--dsw-radius-lg); }
+@media (pointer: coarse) { .row input, .content > input { font-size: 16px; } }
