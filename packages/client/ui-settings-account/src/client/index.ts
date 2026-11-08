@@ -20,6 +20,8 @@ import { BrowserLogin } from './browser-login.ts'
 import { AccountOnboarding } from './AccountOnboarding.tsx'
 import { AccountPlatformHost, type AccountPlatformHostInjected } from './AccountPlatformHost.tsx'
 import { AccountMenu } from './AccountMenu.tsx'
+import { SettingsMenu } from './SettingsMenu.tsx'
+import { ACCOUNT_LOGIN_GLOBAL } from '../login-config.ts'
 import { createPlatformPages, type PlatformPages } from './platform-pages.ts'
 import { AccountSection, type AccountSnapshot, type AccountSectionInjected } from './AccountSection.tsx'
 import { createBonusNoticeController } from './bonus-notices.ts'
@@ -42,11 +44,24 @@ declare module '@deepseek-ai/dsh-client-ui-slots' {
 }
 
 /** Services required by account settings. */
-export const inject = ['slots', 'locale', 'remote', 'remote.account', 'remote.session', 'theme', 'configForms', 'remoteAccess']
+export const inject = ['slots', 'locale']
 /** Register account UI in Desktop and plain Web clients. @param ctx - client plugin context. */
 export function apply(ctx: Context): void {
-  const desktop = 'dshDesktop' in globalThis
   ctx.effect(() => ctx.locale.register('settings.account', { en, zh, ja, es, fr, de, ru, pt }), 'account: dictionaries')
+  const bootstrap = globalThis as Partial<Record<typeof ACCOUNT_LOGIN_GLOBAL, unknown>>
+  const loginEnabled = bootstrap[ACCOUNT_LOGIN_GLOBAL]
+  if (loginEnabled !== undefined && typeof loginEnabled !== 'boolean') throw new Error('account: loginEnabled must be boolean')
+  if (loginEnabled === false) {
+    ctx.slots.inject('settings.launcher', () => ctx.slots.register({
+      name: 'settings.launcher', locale: 'settings.account',
+    }, SettingsMenu))
+    return
+  }
+  ctx.inject(['remote', 'remote.account', 'remote.session', 'theme', 'configForms', 'remoteAccess'], applyAccount)
+}
+
+function applyAccount(ctx: Context): void {
+  const desktop = 'dshDesktop' in globalThis
   const t = ctx.locale.bind('settings.account')
   const page = globalThis as Partial<Record<typeof CONTACT_CONFIG_GLOBAL, unknown>>
   const config = ContactConfig(page[CONTACT_CONFIG_GLOBAL] ?? {})

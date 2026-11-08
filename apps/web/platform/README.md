@@ -19,4 +19,6 @@ Each file in the service worker is pinned to a content hash. A version downloads
 
 To refresh the screenshots in the install dialog, run `pnpm exec tsx scripts/capture-site-screenshots.ts` from `apps/web` after a build, then build again.
 
+DSH Web uses API keys only. Account login, account settings, and the account model route are disabled in the Worker image; the sidebar keeps Settings and Feedback, and first-use model setup opens the API-key editor directly.
+
 The live site is `dsh.daum.pw`, a block in `/etc/caddy/Caddyfile`.

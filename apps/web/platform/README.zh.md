@@ -19,4 +19,6 @@ Service worker 中的每个文件都绑定了内容哈希。新版本只下载�
 
 如需刷新安装对话框中的截图，请在构建后于 `apps/web` 目录运行 `pnpm exec tsx scripts/capture-site-screenshots.ts`，然后重新构建。
 
+DSH Web 仅使用 API Key。Worker 镜像禁用账号登录、账号设置和账号模型路由；侧栏保留设置和意见反馈，首次使用的模型配置直接打开 API Key 编辑器。
+
 线上站点是 `dsh.daum.pw`，配置位于 `/etc/caddy/Caddyfile` 的对应区块。

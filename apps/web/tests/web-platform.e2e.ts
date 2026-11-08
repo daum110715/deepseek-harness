@@ -28,7 +28,7 @@ const MEDIA_TYPES: Readonly<Record<string, string>> = {
 const AGENT_SCRIPT = 'for i in 1 2 3; do echo "line $i" >> loop.txt; done; git init -q . && git add . && git commit -qm "from the agent" && git log --oneline && wc -l loop.txt'
 
 /** Serve the site the way a static host does: stored bytes, and 404 for a missing file. */
-async function serveSite(): Promise<{ origin: string; close(): void }> {
+async function serveSite(): Promise<{ origin: string; close(): Promise<void> }> {
   const server = createServer((request, response) => {
     const pathname = normalize(new URL(request.url ?? '/', 'http://site').pathname)
     const file = pathname === '/' ? 'index.html' : pathname
@@ -42,7 +42,13 @@ async function serveSite(): Promise<{ origin: string; close(): void }> {
   })
   server.listen(0, '127.0.0.1')
   await once(server, 'listening')
-  return { origin: `http://127.0.0.1:${String((server.address() as AddressInfo).port)}`, close: () => { server.close() } }
+  return {
+    origin: `http://127.0.0.1:${String((server.address() as AddressInfo).port)}`,
+    close: () => new Promise<void>((resolve, reject) => {
+      server.close(error => { if (error) reject(error); else resolve() })
+      server.closeAllConnections()
+    }),
+  }
 }
 
 /** What the scripted model saw. */
@@ -187,6 +193,40 @@ it('runs the harness in the browser, keeps its data, and starts offline', { time
     expect(pageErrors).toEqual([])
   } finally {
     await browser.close()
-    site.close()
+    await site.close()
+  }
+})
+
+it('offers API-key setup and settings without account login', { timeout: 180_000 }, async () => {
+  const site = await serveSite()
+  try {
+    const browser = await chromium.launch({ headless: true, args: ['--no-sandbox'], ...process.env.DSH_E2E_CHROME === undefined ? {} : { executablePath: process.env.DSH_E2E_CHROME } })
+    try {
+      const context = await browser.newContext({ viewport: { width: 1280, height: 800 }, locale: 'en-US' })
+      const page = await context.newPage()
+      const errors: string[] = []
+      page.on('pageerror', error => { errors.push(error.message) })
+      await page.goto(site.origin, { waitUntil: 'domcontentloaded' })
+      await page.getByRole('button', { name: 'Continue', exact: true }).click({ timeout: BOOT_TIMEOUT_MS })
+      const apiKey = page.getByPlaceholder('Enter your API key', { exact: true })
+      await apiKey.waitFor({ timeout: 30_000 })
+      expect(await page.getByRole('button', { name: 'Sign in', exact: true }).count()).toBe(0)
+      expect(await page.evaluate(() => (globalThis as { __DSH_ACCOUNT_LOGIN_ENABLED__?: boolean }).__DSH_ACCOUNT_LOGIN_ENABLED__)).toBe(false)
+      await page.getByRole('button', { name: 'Configure later', exact: true }).click()
+      await page.getByRole('button', { name: 'More', exact: true }).last().click()
+      const menu = page.getByRole('menu')
+      await menu.waitFor()
+      expect(await menu.getByRole('menuitem').allTextContents()).toEqual(expect.arrayContaining([expect.stringContaining('Settings'), expect.stringContaining('Feedback')]))
+      expect(await menu.getByRole('menuitem').count()).toBe(2)
+      await menu.getByRole('menuitem', { name: 'Settings', exact: true }).click()
+      const settings = page.getByRole('dialog', { name: 'Settings', exact: true })
+      await settings.waitFor()
+      expect(await settings.getByText('Account', { exact: true }).count()).toBe(0)
+      expect(errors).toEqual([])
+    } finally {
+      await browser.close()
+    }
+  } finally {
+    await site.close()
   }
 })

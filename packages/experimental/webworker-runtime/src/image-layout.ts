@@ -34,6 +34,7 @@ export const IMAGE_HOME_DIRECTORY = 'home'
  */
 export const PLATFORM_ENTRY_CONFIG: Readonly<Record<string, Readonly<Record<string, unknown>>>> = {
   'session-persistence-jsonl': { compression: 'none' },
+  'ui-settings-account': { loginEnabled: false },
   // A Worker has no operating system to ask for a Documents folder, and every workspace belongs in durable storage.
   'workspace-controller': { documentsDirectory: `${DEFAULT_ROOT}/workspace` },
 }
@@ -45,6 +46,7 @@ export const PLATFORM_ENTRY_CONFIG: Readonly<Record<string, Readonly<Record<stri
 export const PLATFORM_DISABLED_ENTRIES: readonly string[] = [
   'otel', 'session-telemetry-otel', 'desktop-product-telemetry', 'product-analytics',
   'llm-pi-ai', 'open-in-app', 'ui-open-in-app', 'office-to-pdf',
+  'deepseek-account', 'account-controller', 'llm-deepseek-account',
 ]
 
 /**
