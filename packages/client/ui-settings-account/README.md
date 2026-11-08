@@ -28,7 +28,7 @@ A new account-model sign-in-required event displays “Model unavailable. Please
 <a id="use-this-package"></a>
 ## Use this package
 
-Set `loginEnabled: false` in the plugin row for deployments that use API keys only. The sidebar then offers Settings and Feedback without account actions or account subscriptions, and model onboarding opens the API-key editor directly. DSH Web uses this mode and disables the account provider, controller, and account model route in its Worker image.
+Set `loginEnabled: false` in the plugin row for deployments that use API keys only. The sidebar then offers Settings without account actions or account subscriptions, and model onboarding opens the API-key editor directly. DSH Web uses this mode and disables the account provider, controller, and account model route in its Worker image.
 
 When `loginEnabled` is true, Desktop and plain Web clients both mount the sidebar account launcher, Account settings, the sign-in step of model onboarding, and the account-state subscription. Desktop main opens the authorization page in the system browser. A plain Web client, identified by the absent Desktop preload bridge, sends `login_source` web with its own origin as the callback origin, preopens a tab during the sign-in click, navigates it to the authorization URL with the same `theme` parameter once its attempt receives one, and closes it on failure, expiry, or cancellation; a blocked popup leaves the copy-link route. Embedded Platform pages, Desktop onboarding, and the native device reader stay Desktop-only, so Web Platform links open new tabs.
 

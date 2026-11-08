@@ -1,9 +1,7 @@
-/** Sidebar settings and contact actions for deployments using API keys only. */
+/** Sidebar settings action for deployments using API keys only. */
 import { useRef, useState } from 'react'
-import { Menu, IconEllipsisOutlineMedium, IconPaperPlaneOutlineMedium, IconSettingsOutlineMedium } from '@deepseek-ai/dsh-client-ui-primitives'
+import { Menu, IconEllipsisOutlineMedium, IconSettingsOutlineMedium } from '@deepseek-ai/dsh-client-ui-primitives'
 import type { PropsLocale, PropsRuntime } from '@deepseek-ai/dsh-client-ui-slots'
-import { ContactConfig, CONTACT_CONFIG_GLOBAL } from '../contact-config.ts'
-import { contactUrl } from './contact-url.ts'
 import css from './AccountMenu.module.css'
 
 /** @param props - sidebar geometry, settings navigation and localized labels. @returns settings menu without account actions. */
@@ -21,20 +19,12 @@ export function SettingsMenu({ wide, settingsShortcut, openSettings, t }:
       items={[
         { id: 'settings', label: t('settings'), icon: <IconSettingsOutlineMedium size={16} />,
           ...(settingsShortcut === undefined ? {} : { shortcut: settingsShortcut }) },
-        { id: 'contact', label: t('contactUs'), icon: <IconPaperPlaneOutlineMedium size={16} /> },
       ]}
       onClose={() => { setOpen(false) }}
-      onSelect={id => {
+      onSelect={() => {
         setOpen(false)
         trigger.current?.focus()
-        if (id === 'settings') openSettings()
-        else {
-          const page = globalThis as Partial<Record<typeof CONTACT_CONFIG_GLOBAL, unknown>>
-          window.open(contactUrl(ContactConfig(page[CONTACT_CONFIG_GLOBAL] ?? {}), {
-            uid: null, version: process.env.DSH_CLIENT_VERSION, deviceInfo: navigator.userAgent,
-            width: window.screen.width, height: window.screen.height, pixelRatio: window.devicePixelRatio,
-          }), '_blank', 'noopener,noreferrer')
-        }
+        openSettings()
       }} />
   </div>
 }
