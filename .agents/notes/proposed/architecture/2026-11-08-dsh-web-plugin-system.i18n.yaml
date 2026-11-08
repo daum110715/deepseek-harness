@@ -1,0 +1,61 @@
+# Bilingual-pair consistency record for 2026-11-08-dsh-web-plugin-system.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/proposed/architecture/2026-11-08-dsh-web-plugin-system.md
+/agent-note-dsh-web-plugin-system-and-package-format:
+  en: 206ad0e71f0a4989
+  zh: 3797822fe5845a9a
+/agent-note-dsh-web-plugin-system-and-package-format/problem:
+  en: 25cffdcd92fbb8bc
+  zh: a4c2d9c8a0a1cf7b
+/agent-note-dsh-web-plugin-system-and-package-format/proposal:
+  en: 986dd8097aac4d3d
+  zh: ca258a5d37ffa6a0
+/agent-note-dsh-web-plugin-system-and-package-format/proposal/user-capabilities-and-scope:
+  en: 70fe992411ce6923
+  zh: a5961aaba96b5685
+/agent-note-dsh-web-plugin-system-and-package-format/proposal/ownership-and-execution:
+  en: 63c9f0fc6a0006a2
+  zh: 5bd420acde80b256
+/agent-note-dsh-web-plugin-system-and-package-format/proposal/runtime-and-ui-security:
+  en: 29c0ea36c6089a3a
+  zh: 40d4670cccb76099
+/agent-note-dsh-web-plugin-system-and-package-format/proposal/package-container:
+  en: 1acfb5b38e9f575b
+  zh: a5411e2ba6a0bd25
+/agent-note-dsh-web-plugin-system-and-package-format/proposal/manifest-example:
+  en: 2bf598415d1d1c7d
+  zh: 19c7ea5bcc4b8296
+/agent-note-dsh-web-plugin-system-and-package-format/proposal/manifest-field-rules:
+  en: 9d18b726eccff0e4
+  zh: aa935f069fd213c4
+/agent-note-dsh-web-plugin-system-and-package-format/proposal/contribution-records-and-entry-protocol:
+  en: 6b4ed8815a6cc934
+  zh: d24835b6a3023a66
+/agent-note-dsh-web-plugin-system-and-package-format/proposal/sdk-and-contribution-behavior:
+  en: c542966837476711
+  zh: 1405b715c3ce0bda
+/agent-note-dsh-web-plugin-system-and-package-format/proposal/permissions-and-invocation-identity:
+  en: e92327111edcab4b
+  zh: d23de7df397406a8
+/agent-note-dsh-web-plugin-system-and-package-format/proposal/compatibility-and-interception:
+  en: f451394e2e09ced6
+  zh: 27423a4a9c2b1e60
+/agent-note-dsh-web-plugin-system-and-package-format/proposal/index-format-and-publisher-trust:
+  en: 1a97ff2414ec8a28
+  zh: 8b491da91020927e
+/agent-note-dsh-web-plugin-system-and-package-format/proposal/storage-lifecycle-and-updates:
+  en: 8b664154ee4cb84f
+  zh: 05e8b42cc52f640c
+/agent-note-dsh-web-plugin-system-and-package-format/proposal/version-1-transition-and-delivery-sequence:
+  en: 700c71546c479229
+  zh: 9e4e00f98d7c82a1
+/agent-note-dsh-web-plugin-system-and-package-format/alternatives-considered:
+  en: 02ba753e8dc06d68
+  zh: 6125fe0bc2f009cf
+/agent-note-dsh-web-plugin-system-and-package-format/acceptance-criteria:
+  en: 60f517cd2303ee70
+  zh: 67b5e402d1c3dd34
+/agent-note-dsh-web-plugin-system-and-package-format/risks:
+  en: e79e91d9d2df264d
+  zh: 506717e4bf245748
