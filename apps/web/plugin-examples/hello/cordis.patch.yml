@@ -1,0 +1,3 @@
+- insert:
+    - id: community-hello
+      name: '@dsh-community/hello'
