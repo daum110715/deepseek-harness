@@ -452,3 +452,5 @@ declare module '@deepseek-ai/cordis' {
     'plugin-manager/update-state'(progress: PluginUpdateProgress): void
   }
 }
+
+export type { WebBundleInspection, WebPackageRuntime, WebPackageLimits } from './web-package-types.ts'

@@ -1,0 +1,41 @@
+{
+  "format": 1,
+  "title": {
+    "en": "DSH Web community examples",
+    "zh": "DSH Web 社区示例"
+  },
+  "metadata": {},
+  "plugins": [
+    {
+      "name": "@dsh-community/hello",
+      "title": {
+        "en": "Cordis example",
+        "zh": "Cordis 示例"
+      },
+      "description": {
+        "en": "A normal Cordis tool plugin",
+        "zh": "直接使用现有工具注册表的普通 Cordis 插件"
+      },
+      "metadata": {},
+      "versions": [
+        {
+          "version": "1.0.0",
+          "publishTimestamp": 1794268800,
+          "source": {
+            "type": "git",
+            "url": "https://github.com/daum110715/deepseek-harness",
+            "commit": "68b617dec80e206f69463817190e8bacc2ebb70f",
+            "path": "apps/web/plugin-examples/hello"
+          },
+          "engines": {
+            "dsh": "^0.2.2-rc.1"
+          },
+          "web": {
+            "url": "hello-1.0.0.tgz",
+            "sha256": "3b248b7fb8adc85631c72a7347d23fcfc653caf67daf874395bb54650513f86a"
+          }
+        }
+      ]
+    }
+  ]
+}

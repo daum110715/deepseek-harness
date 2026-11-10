@@ -132,6 +132,10 @@ export function parseTar(archive: Uint8Array): TarEntry[] {
       throw new Error(`vfs tar: unsupported entry type ${String.fromCharCode(typeflag ?? 0)} for "${name}"`)
     }
     const dataStart = offset + BLOCK
+    if (!Number.isSafeInteger(size) || size < 0 || dataStart + size > archive.length) throw new Error('vfs tar: truncated or invalid entry size')
+    let checksum = 0
+    for (let index = 0; index < BLOCK; index++) checksum += index >= 148 && index < 156 ? 0x20 : header[index] ?? 0
+    if (checksum !== Number.parseInt(readField(header, 148, 8).trim(), 8)) throw new Error('vfs tar: invalid header checksum')
     entries.push({ name, bytes: archive.subarray(dataStart, dataStart + size), directory, mode })
     offset = dataStart + Math.ceil(size / BLOCK) * BLOCK
   }

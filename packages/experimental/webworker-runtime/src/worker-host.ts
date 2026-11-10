@@ -23,6 +23,7 @@
  * platform overlay, and the command line.
  * @module @deepseek-ai/dsh-experimental-webworker-runtime/src/worker-host
  */
+import { createWebPackageRuntime } from './web-packages.ts'
 import { setActiveModuleLoader, WorkerModuleLoader, type StaticModuleFactory } from './module-system/module-loader.ts'
 import type { ProfileContext } from '@deepseek-ai/dsh-app-boot'
 import type { TypertGateway } from '@deepseek-ai/dsh-api-gateway'
@@ -265,6 +266,7 @@ export function createWorkerHost(options: WorkerHostOptions): WorkerHost {
       const profileConfig = join(profile.dir, 'cordis.yml')
       const ctx = await appBoot.boot(BIN_NAME, profileConfig, patches, async (hostCtx) => {
         hostCtx.provide('profileContext', profile)
+        hostCtx.provide('webPluginRuntime', createWebPackageRuntime(loader, async () => { await options.platform?.flush() }))
         hostCtx.provide(DSH_LAUNCH_ENVIRONMENT_KEY, environment)
         installLogSink(hostCtx, require)
         // Package lookup without a runtime resolution: the Worker loader owns

@@ -237,7 +237,7 @@ function icon(value: unknown, path: string, indexUrl: URL): string {
   return resolved.href
 }
 
-function marketVersion(value: unknown, path: string): MarketVersion {
+function marketVersion(value: unknown, path: string, indexUrl: URL): MarketVersion {
   const object = objectAt(value, path)
   const version = stringAt(object.version, `${path}.version`)
   if (!SEMVER.test(version)) fail(`${path}.version`, 'must be an exact SemVer version')
@@ -245,19 +245,28 @@ function marketVersion(value: unknown, path: string): MarketVersion {
   if (typeof publishTimestamp !== 'number' || !Number.isInteger(publishTimestamp) || publishTimestamp < 0 || publishTimestamp >= MAX_PUBLISH_TIMESTAMP) {
     fail(`${path}.publishTimestamp`, 'must be an integer number of Unix seconds in [0, 10^11)')
   }
+  const web = optional(object, 'web', path, (value, at) => {
+    const entry = objectAt(value, at)
+    const url = new URL(stringAt(entry.url, `${at}.url`), indexUrl)
+    if ((url.protocol !== 'https:' && url.origin !== indexUrl.origin) || url.username !== '' || url.password !== '') fail(`${at}.url`, 'must resolve to https or the index origin without credentials')
+    const sha256 = stringAt(entry.sha256, `${at}.sha256`)
+    if (!/^[a-f0-9]{64}$/.test(sha256)) fail(`${at}.sha256`, 'must be a lowercase SHA-256 digest')
+    return { url: url.href, sha256 }
+  })
   return {
     version, publishTimestamp,
+    ...web === undefined ? {} : { web },
     source: source(object.source, `${path}.source`),
     engines: optional(object, 'engines', path, engines) ?? {},
   }
 }
 
-function versions(value: unknown, path: string): MarketVersion[] {
+function versions(value: unknown, path: string, indexUrl: URL): MarketVersion[] {
   if (!Array.isArray(value) || value.length === 0) fail(path, 'must be a non-empty array')
   const seen = new Set<string>()
   const parsed = value.map((member, position) => {
     const at = `${path}[${String(position)}]`
-    const entry = marketVersion(member, at)
+    const entry = marketVersion(member, at, indexUrl)
     if (seen.has(entry.version)) fail(`${at}.version`, `duplicates ${entry.version}`)
     seen.add(entry.version)
     return entry
@@ -284,7 +293,7 @@ function plugin(value: unknown, path: string, index: MarketIndexMetadata, indexU
     ...homepage === undefined ? {} : { homepage },
     ...repo === undefined ? {} : { repository: repo },
     metadata: pluginMetadata(object.metadata, `${path}.metadata`, index),
-    versions: versions(object.versions, `${path}.versions`),
+    versions: versions(object.versions, `${path}.versions`, indexUrl),
   }
 }
 

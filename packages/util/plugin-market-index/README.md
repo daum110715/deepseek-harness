@@ -11,6 +11,8 @@ English | [中文](README.zh.md)
 
 Validator without runtime dependencies for format 1 of the plugin market index, the single JSON file that lists installable DSH bundles with their display metadata. [The format Agent Note](../../../.agents/notes/implemented/feature/2026-10-02-plugin-market-index-format.md) defines the document; this package is its executable rule set. DSH's [`dsh-plugin-market`](../../boot/plugin-market/README.md) reads indexes with it, and index generators validate their output with it before publishing.
 
+A version can additionally declare `web: { url, sha256 }` for a prepared Web distribution of the same release. The URL resolves against the index and must use HTTPS except on the index origin; credentials are rejected. `sha256` is a lowercase 64-character digest. Native install targets still use `source`.
+
 ## Table of Contents
 
 - [Use this package](#use-this-package)

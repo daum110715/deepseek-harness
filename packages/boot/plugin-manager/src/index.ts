@@ -28,6 +28,7 @@ import {
 import { OPTIONAL_BUNDLES, OFFICIAL_ON_DEMAND_CATALOG, PROTECTED_PLUGINS } from '@deepseek-ai/dsh-official-bundles'
 import type {} from '@deepseek-ai/dsh-hmr'
 import type { ProfileContext, ProfileManifest } from '@deepseek-ai/dsh-app-boot'
+import { inspectWebBundle, installWebBundle as commitWebBundle, removeWebBundle, type WebPackageLimits, type WebBundleInspection } from './web-packages.ts'
 import { bundleManifest, readProfileRegistry, registryArguments, runProfilePnpm, saveManifest, viewProfilePackage } from './operations.ts'
 import { classifyInstallFailure } from './install-failure.ts'
 import { officialBundleInstallTarget } from './official-install-target.ts'
@@ -52,6 +53,12 @@ export { InvalidInstallSpecError, parseInstallSpec, type ParsedInstallSpec } fro
 
 /** The pnpm executable, registries, and limits for diagnostics, lookups and connection checks. */
 export interface Config {
+  /** Maximum compressed Web distribution bytes. */
+  webPackageArchiveBytes?: number
+  /** Maximum expanded Web distribution bytes. */
+  webPackageExpandedBytes?: number
+  /** Maximum Web distribution archive entries. */
+  webPackageFiles?: number
   /** The pnpm executable name or path; resolved through `PATH` like the `dsh plugin` command. */
   pnpmCommand?: string
   /** Maximum retained package-operation diagnostic bytes. */
@@ -312,6 +319,9 @@ declare module '@deepseek-ai/cordis' {
 export class PluginManager extends TypertRemoteService {
   static inject = ['loader', 'profileContext']
   static Config: z<Config> = z.object({
+    webPackageArchiveBytes: z.natural().min(1024).default(2 * 1024 * 1024),
+    webPackageExpandedBytes: z.natural().min(1024).default(32 * 1024 * 1024),
+    webPackageFiles: z.natural().min(1).default(1024),
     pnpmCommand: z.string().default('pnpm'),
     outputBytes: z.number().step(1).min(1).default(16384),
     lockWaitMs: z.number().step(1).min(0).default(120000),
@@ -329,6 +339,7 @@ export class PluginManager extends TypertRemoteService {
     detailNpmFileSources: z.array(z.union(NPM_FILE_SOURCES)).min(1).default([...NPM_FILE_SOURCES]),
   })
   /** Management bundles remain protected if their files become unreadable. */
+  private readonly webLimits: WebPackageLimits
   private readonly managementBundles = new Set<string>()
   /**
    * The registry each package was last installed from by this manager in this process. pnpm verifies lockfile tarball
@@ -356,6 +367,11 @@ export class PluginManager extends TypertRemoteService {
 
   constructor(ctx: Context, config: Config) {
     super(ctx, 'pluginManager')
+    this.webLimits = {
+      archiveBytes: (config as Required<Config>).webPackageArchiveBytes,
+      expandedBytes: (config as Required<Config>).webPackageExpandedBytes,
+      files: (config as Required<Config>).webPackageFiles,
+    }
     this.ownerEntryId = ctx.fiber.entry?.id
     this.ownerContext = ctx
     this.profile = ctx.profileContext
@@ -487,7 +503,7 @@ export class PluginManager extends TypertRemoteService {
    */
   @Remote
   listBundles(): Promise<BundleInfo[]> {
-    return Promise.resolve(this.readBundles().map(bundle => ({ ...bundle, updatable: typeof updateRefusal(bundle, bundle.name) !== 'string' })))
+    return Promise.resolve(this.readBundles().map(bundle => ({ ...bundle, updatable: this.ctx.get('webPluginRuntime') === undefined && typeof updateRefusal(bundle, bundle.name) !== 'string' })))
   }
 
   /** The bundle inventory before update eligibility, which is derived from each listed bundle. */
@@ -841,6 +857,48 @@ export class PluginManager extends TypertRemoteService {
     }), { stage: 'enable', target: id, enabled }, 'plugin')
   }
 
+  private async webOperation<T>(operation: () => Promise<T>): Promise<T> {
+    this.abort.signal.throwIfAborted()
+    const pending = operation()
+    this.packageOperations.add(pending)
+    try { return await pending } finally { this.packageOperations.delete(pending) }
+  }
+
+  /** Read the browser distribution policy without invoking a package manager.
+   * @returns Bounds when a Web distribution provider is installed or null on other hosts.
+   */
+  @Remote
+  webBundlePolicy(): WebPackageLimits | null { return this.ctx.get('webPluginRuntime') === undefined ? null : this.webLimits }
+
+  /** Inspect ordinary npm bundle metadata and dependencies without evaluating package modules.
+   * @param encoded Base64 prepared npm tarball.
+   * @returns Compatibility report for the running Web host.
+   */
+  @Remote
+  async inspectWebBundle(encoded: string): Promise<WebBundleInspection> {
+    const runtime = this.ctx.get('webPluginRuntime')
+    if (runtime === undefined) throw new ManagementFailure('unsupported-platform')
+    return this.webOperation(() => inspectWebBundle(encoded, this.profile.dir, runtime, this.webLimits))
+  }
+
+  /** Install a trusted Web distribution as a disabled ordinary profile dependency.
+   * @param encoded Base64 prepared npm tarball.
+   * @param trusted Explicit approval of full host privileges.
+   * @returns Persisted package and ordinary manager outcome.
+   */
+  @Remote
+  importWebBundle(encoded: string, trusted: boolean): Promise<ChangeResult> {
+    return this.change(async (result) => {
+      if (!trusted) throw new ManagementFailure('invalid-spec')
+      const runtime = this.ctx.get('webPluginRuntime')
+      if (runtime === undefined) throw new ManagementFailure('unsupported-platform')
+      const installed = await this.webOperation(() =>
+        commitWebBundle(encoded, this.profile.dir, runtime, this.webLimits, this.abort.signal))
+      result.bundle = installed.name; result.version = installed.version; result.target = installed.name
+      Object.assign(result, await this.configure(() => this.publishAndReload()))
+    }, { stage: 'install', target: 'web-distribution', enabled: false }, 'install')
+  }
+
   /** Select or remove a bundle layer while retaining installed dependencies.
    * @param name Bundle package name.
    * @param enabled Whether the bundle contributes its patch layer.
@@ -851,6 +909,7 @@ export class PluginManager extends TypertRemoteService {
     return this.change(result => this.configure(async () => {
       await this.selectBundle(name, enabled)
       Object.assign(result, enabled ? await this.publishAndReload(this.bundleRows(name).map(row => row.id)) : await this.reload())
+      await this.ctx.get('webPluginRuntime')?.flush()
     }), { stage: 'enable', target: name, enabled }, 'bundle')
   }
 
@@ -1037,7 +1096,7 @@ export class PluginManager extends TypertRemoteService {
     return { status: 'cancelled' }
   }
 
-  /** Unload and remove a profile-owned bundle dependency through dsh plugin's pnpm path; a selected name no
+  /** Unload and remove a profile-owned bundle dependency through the host package operations; a selected name no
    * dependency holds is only deselected.
    * @param name Installed dependency or selected bundle name.
    * @returns Removal diagnostics and the remaining profile state.
@@ -1065,6 +1124,12 @@ export class PluginManager extends TypertRemoteService {
         return bundle.installed
       })
       if (!installed) return
+      const webRuntime = this.ctx.get('webPluginRuntime')
+      if (webRuntime !== undefined) {
+        await removeWebBundle(name, this.profile.dir, webRuntime)
+        Object.assign(result, await this.configure(() => this.publishAndReload()))
+        return
+      }
       // `pnpm remove` takes no `--registry` option; the generic configuration flag sets the same setting. A package
       // installed before this process started is removed with the registry an installation asks first.
       const registry = this.installedFrom.has(name) ? this.installedFrom.get(name) : this.configuredRegistries.registry

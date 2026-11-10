@@ -1,0 +1,19 @@
+# Bilingual-pair consistency record for 2026-11-10-web-plugin-distribution.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-11-10-web-plugin-distribution.md
+/agent-note-cordis-web-plugin-distribution:
+  en: d7f9cd9d622573ec
+  zh: df103a3d3c37f6e6
+/agent-note-cordis-web-plugin-distribution/problem:
+  en: 883d686b7ade713e
+  zh: c9da2c739ebb0d2e
+/agent-note-cordis-web-plugin-distribution/decision:
+  en: 5d6f151da9c73516
+  zh: cd8f454eb50266c3
+/agent-note-cordis-web-plugin-distribution/alternatives-considered:
+  en: 4b76fd8cf515dd99
+  zh: 9d20e863ddb971d8
+/agent-note-cordis-web-plugin-distribution/consequences:
+  en: 9da714706dd85610
+  zh: 2acdb60a931946d5

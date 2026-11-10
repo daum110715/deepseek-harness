@@ -1,27 +1,35 @@
 # DSH Web plugin community
 
-The preinstalled **Plugin community** entry discovers and installs self-contained browser page plugins. It does not load npm packages into the harness. Plugins receive no host API, model tools, filesystem access, session data or credentials. Their HTML runs only after **Open** in an iframe with `sandbox="allow-scripts"`; storage belonging to the DSH Web origin is inaccessible. Plugin network traffic follows normal browser sandbox and CORS rules. Closing its panel destroys its frame, so authors must not depend on durable iframe state.
+English | [中文](plugin-community.zh.md)
 
-Publish a UTF-8 JSON package like the [working text toolbox example](../public/plugin-community/text-toolbox.dsh-plugin.json):
+Plugin community discovers and installs Web distributions of ordinary DSH Cordis bundles. The installed inventory, enablement, configuration layers and removal belong to the existing Plugin Manager. Authors use the existing `Context`, services, tools, events and effect cleanup. There is no separate browser plugin SDK or execution engine.
 
-```json
-{
-  "format": "dsh-web-plugin",
-  "id": "my-plugin",
-  "name": "My plugin",
-  "version": "1.0.0",
-  "description": "A standalone browser page",
-  "author": "Your name",
-  "runtime": "dsh-web",
-  "apiVersion": 1,
-  "dependencies": {},
-  "permissions": [],
-  "html": "<!doctype html><html><meta charset=\"utf-8\"><h1>My plugin</h1></html>"
-}
+## Install a plugin
+
+Load the bundled Cordis catalog or enter another HTTPS market index URL. Review a downloaded release or import a local `.tgz` file. The community checks package identity, release SHA-256, DSH and Node requirements, Worker wrapper generation, supported Node capabilities and resolvable dependencies. Approval of the source is required. Install first records a disabled profile dependency; enable it through the community or the ordinary Plugins page. Refreshing the browser retains installed packages and selection in the browser's normal DSH home storage.
+
+Cordis plugins have the same browser-host authority as shipped plugins, including workspace, Session, settings and credential access. Install only trusted publishers. The Node compatibility layer does not isolate one Cordis plugin from another. Compatibility preflight does not establish harmless behavior or prove that dynamic imports and every Node operation will succeed. Cordis reports activation failures through its normal lifecycle.
+
+Disable and uninstall through either management view. Both use the same profile and lifecycle; package files are removed only after the manager withdraws their contributions. The Web host does not invoke pnpm or execute package installation scripts. Updating a prepared distribution uses the existing stop, uninstall and reinstall workflow; no independent upgrade database or recovery engine is added. The install manifest is published after package files reach the browser persistence barrier; a storage failure requires refreshing the inventory to determine its outcome.
+
+## Prepare an ordinary bundle
+
+The [hello example](../plugin-examples/hello/README.md) is a normal Cordis plugin that contributes `community_echo` through `ctx.tools.register`. Its `package.json` declares the existing `dsh.bundle.patch`, `engines.dsh` and peer dependencies. Its patch inserts its normal package entry. Build TypeScript and bundle private npm dependencies before preparing a Web distribution; host-provided dependencies can remain peers.
+
+```sh
+node --import tsx/esm scripts/pack-web-plugin.ts --src apps/web/plugin-examples/hello --out /tmp/hello-1.0.0.tgz
 ```
 
-All fields are required and unknown fields are rejected. IDs use lowercase letters, digits, dots, underscores and hyphens and have at most 80 characters. Versions use three numeric components with an optional prerelease suffix. Bundle required CSS and JavaScript into `html`; npm resolution, Node built-ins and native modules are unavailable. Packages may not exceed 2 MiB including JSON metadata. Other runtimes, API versions, nonempty dependency maps and requested host permissions are refused at every installation path before persistence or execution.
+The author tool reuses `lowerModuleSource` from the Node compatibility layer and writes its existing wrapper generation to `package.json.dsh.web.lowered`. It records static module requests in `dsh.web.modules` and required Node proxies in `dsh.web.requires`. Client factory bundles keep their existing `window.__ModuleLoader__` registration. The result is a gzip-compressed ustar archive with the ordinary npm `package/` root, package manifest, bundle patch, built JavaScript and resources. It is a Web build of the same Cordis plugin rather than a new plugin API. The original source remains usable for the normal Node distribution.
 
-Publish a discovery index with `format: "dsh-web-plugin-index"`, `version: 1` and a `plugins` array. Each entry contains the package fields except `html`, plus a package `url` resolved relative to the index URL and a lowercase hexadecimal SHA-256 digest in `sha256`. Calculate that digest over the exact UTF-8 package bytes including the final newline. See the [bundled index](../public/plugin-community/index.json). Indexes are limited to 512 KiB and 100 entries. Installation recomputes compatibility and verifies the digest and exact ID and version. This checks consistency with the chosen index, not author trust.
+Native addons, uncompiled TypeScript, encrypted or linked archive entries, unsafe paths, duplicate names and incompatible wrapper generations are refused. Dependencies must be bundled or supplied at a compatible version by the host. The default limits on `plugin-manager` are `webPackageArchiveBytes: 2097152`, `webPackageExpandedBytes: 33554432` and `webPackageFiles: 1024`. Inspection resolves imports without evaluating package JavaScript. Configuration expressions retain the existing bundle loader semantics after source approval.
 
-Host indexes and packages over HTTPS with CORS enabled for consumer origins. Requests omit credentials and reject redirects; each download has a 15 second deadline. Same-origin HTTP is permitted for local development. Users can enter an index URL or import packages by URL or file. Installed inventory and the last successfully loaded source are saved in browser-local storage; download and storage failures leave the previous inventory intact. Exported packages can be imported in another browser. The bundled catalog is a first-party format example, not a populated third-party directory.
+## Publish a catalog
+
+Use the existing [market index format 1](../../../packages/util/plugin-market-index/README.md). A version keeps its normal npm or pinned Git `source` and can add `web: { "url": "hello-1.0.0.tgz", "sha256": "<lowercase SHA-256>" }`. The Web URL resolves against the index URL and requires HTTPS except same-origin development. Native clients keep their original install source. The [bundled index](../public/plugin-community/cordis/index.json) provides the working Web example; it is not a populated third-party directory.
+
+Requests omit credentials and reject redirects. The community bounds indexes to 512 KiB and 100 packages and uses a 15 second download deadline. Release metadata is advisory until inspection verifies the actual package. SHA-256 establishes consistency with the chosen index, not publisher identity. No npm dependency resolver or compiler is installed in the browser.
+
+## Legacy page plugins
+
+The collapsed Legacy page plugins section retains the version 1 JSON reader and browser-local inventory. Those pages keep their `sandbox="allow-scripts"` iframe without Cordis services or Session access. They are not converted into trusted Cordis bundles automatically. The [page example](../public/plugin-community/text-toolbox.dsh-plugin.json) and its [index](../public/plugin-community/index.json) remain available.

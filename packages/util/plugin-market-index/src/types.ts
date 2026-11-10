@@ -65,6 +65,8 @@ export interface MarketEngines {
 
 /** One installable version of a plugin. */
 export interface MarketVersion {
+  /** Optional prepared Web distribution of this same npm or Git release. */
+  readonly web?: { readonly url: string; readonly sha256: string }
   /** Exact SemVer version, unique within its plugin. */
   readonly version: string
   /** Publish time of `version` in Unix seconds. */

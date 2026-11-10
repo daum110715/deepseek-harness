@@ -32,6 +32,8 @@ export interface DshPackageManifest {
 export interface DshManifest {
   /** Manifest format version, independent of the npm package and Session format versions. */
   manifestVersion?: 1
+  /** Prepared Web distribution using the existing Worker module wrapper. */
+  web?: { lowered: string; requires: string[]; modules: Record<string, string[]> }
   /** Bundle metadata consumed by the profile launcher. */
   bundle?: DshBundleManifest
   /** Profile metadata consumed by the profile launcher. */

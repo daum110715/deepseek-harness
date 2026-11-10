@@ -1,6 +1,6 @@
 # Agent Note: DSH Web plugin system and package format
 
-Status: proposed
+Status: rejected — a separate SDK duplicates the existing Cordis plugin model
 
 English | [中文](2026-11-08-dsh-web-plugin-system.zh.md)
 

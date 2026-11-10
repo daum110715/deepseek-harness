@@ -11,6 +11,8 @@ kind: "package-library"
 
 插件市场索引格式 1 的校验器，没有运行时依赖。插件市场索引是一份 JSON 文件，列出可安装的 DSH 组合包（bundle）及其展示元数据。[格式 Agent Note](../../../.agents/notes/implemented/feature/2026-10-02-plugin-market-index-format.zh.md) 定义该文档；本包是其可执行的规则集。DSH 的 [`dsh-plugin-market`](../../boot/plugin-market/README.zh.md) 用它读取索引，索引生成器在发布前用它校验输出。
 
+每个版本还可声明 `web: { url, sha256 }`，提供同一发行版的预构建 Web 文件。地址相对索引解析，除索引同源外必须使用 HTTPS，且拒绝凭据。`sha256` 是小写的 64 位摘要。原生安装目标仍使用 `source`。
+
 ## 目录
 
 - [使用本包](#use-this-package)

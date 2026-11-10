@@ -113,6 +113,10 @@ CLI 提供 `dsh plugin --profile <profile> version-exemptions`、`allow-version 
 
 失败：`listBundles()` 未列出或无法解析其目录的组合包为 `plugin-manager/unknown-bundle`；无效语言为 `plugin-manager/invalid-language`；`plugin-manager/detail-unavailable` 携带 `reason`，取值为 `too-large`、`network`，或在 locale 文件或 `meta.detail` 格式错误、指定的文件不存在时为 `invalid`。图片路由对这些失败依次返回 404、413、502 和 400。
 
+### 准备后的 Web 发行文件
+
+浏览器宿主 DSH 通过 `inspectWebBundle` 和 `importWebBundle` 安装普通 Cordis 组合包的预构建文件。Worker 通过 `webPluginRuntime` 提供归档解码、能力检查、模块解析及持久化，本管理器继续负责配置清单、生命周期、已安装列表和卸载。导入的组合包初始停用，因其获得完整宿主访问权限，安装需要明确信任来源。不具备该提供者的宿主上，`webBundlePolicy` 返回 null。限制通过 `webPackageArchiveBytes`（2097152）、`webPackageExpandedBytes`（33554432）及 `webPackageFiles`（1024）配置。见[社区格式指南](../../../apps/web/platform/plugin-community.zh.md)。
+
 -----
 
 <a id="understand-the-implementation"></a>

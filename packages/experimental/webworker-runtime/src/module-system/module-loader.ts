@@ -84,7 +84,7 @@ export interface WorkerRequire {
 export interface WorkerModuleLoaderOptions {
   /** Filesystem holding package metadata and module sources. */
   readonly vfs: MemoryVfs
-  /** Virtual root whose `node_modules` bare specifiers resolve against. */
+  /** Image root whose `node_modules` supplements caller-relative package lookup. */
   readonly root?: string
   /**
    * Modules served from the worker bundle instead of the VFS: `node:*` proxies
@@ -123,6 +123,14 @@ export class WorkerModuleLoader {
   private readonly manifests = new Map<string, PackageManifest>()
   private readonly stack: string[] = []
   private cascaded: CascadedLoader | undefined
+
+  /** Drop package cache entries after its Cordis contributions have stopped.
+   * @param directory Removed or replaced package directory.
+   */
+  invalidate(directory: string): void {
+    for (const path of this.modules.keys()) if (path === directory || path.startsWith(directory + '/')) this.modules.delete(path)
+    for (const path of this.manifests.keys()) if (path === directory || path.startsWith(directory + '/')) this.manifests.delete(path)
+  }
 
   /**
    * Resolution and loading over this mount, in Node's v1 argument order. The cascaded ESM loader
@@ -314,9 +322,11 @@ export class WorkerModuleLoader {
     const segments = specifier.split('/')
     const packageName = specifier.startsWith('@') ? segments.slice(0, 2).join('/') : segments[0] ?? specifier
     const rest = specifier.slice(packageName.length).replace(/^\//, '')
-    const packageDirectory = join(this.root, 'node_modules', packageName)
-    if (!this.vfs.existsSync(join(packageDirectory, 'package.json'))) {
-      return this.fail(`cannot resolve "${specifier}": ${packageDirectory}/package.json is not in the image`, 'MODULE_NOT_FOUND')
+    const packageDirectory = this.packagePaths(fromDirectory)
+      .map(path => join(path, packageName))
+      .find(path => this.vfs.existsSync(join(path, 'package.json')))
+    if (packageDirectory === undefined) {
+      return this.fail(`cannot resolve "${specifier}" from ${fromDirectory}`, 'MODULE_NOT_FOUND')
     }
     const manifest = this.manifestOf(packageDirectory)
     const subpath = rest === '' ? '.' : `./${rest}`
@@ -428,9 +438,24 @@ export class WorkerModuleLoader {
     resolve.paths = (specifier: string): string[] | null => {
       if (this.staticModule(specifier) !== undefined || specifier.startsWith('node:')) return null
       if (specifier.startsWith('.')) return [resolvePath(fromDirectory, '.')]
-      return [join(this.root, 'node_modules')]
+      return this.packagePaths(fromDirectory)
     }
     return Object.assign(require, { resolve })
+  }
+
+  /** Search caller ancestors before the shared image package directory. */
+  private packagePaths(fromDirectory: string): string[] {
+    const paths: string[] = []
+    let directory = resolvePath(fromDirectory)
+    for (;;) {
+      if (!directory.endsWith('/node_modules')) paths.push(join(directory, 'node_modules'))
+      const parent = dirname(directory)
+      if (parent === directory) break
+      directory = parent
+    }
+    const image = join(this.root, 'node_modules')
+    if (!paths.includes(image)) paths.push(image)
+    return paths
   }
 
   /**

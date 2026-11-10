@@ -113,6 +113,10 @@ An installed bundle is read from its directory, without network access. An offic
 
 Failures: `plugin-manager/unknown-bundle` for a bundle `listBundles()` does not list or whose directory cannot be resolved, `plugin-manager/invalid-language`, and `plugin-manager/detail-unavailable` with `reason` `too-large`, `network`, or `invalid` for a malformed locale file or `meta.detail`, or a named file that does not exist. The image route answers them with 404, 413, 502, and 400.
 
+### Prepared Web distributions
+
+Browser-hosted DSH installs prepared builds of ordinary Cordis bundles through `inspectWebBundle` and `importWebBundle`. The Worker supplies archive decoding, capability checks, module resolution and persistence through `webPluginRuntime`; this manager retains the profile manifest, lifecycle, inventory and removal. Imported bundles start disabled and require explicit source trust because they receive full host access. `webBundlePolicy` returns null on hosts without that provider. Limits are configured with `webPackageArchiveBytes` (2097152), `webPackageExpandedBytes` (33554432) and `webPackageFiles` (1024). See the [community format guide](../../../apps/web/platform/plugin-community.md).
+
 -----
 
 <a id="understand-the-implementation"></a>
