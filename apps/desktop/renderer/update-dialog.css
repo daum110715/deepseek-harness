@@ -14,11 +14,13 @@ main:focus { outline: none; }
 h1 { margin: 0; min-height: 28px; font-size: 16px; font-weight: 500; line-height: 24px; overflow-wrap: anywhere; }
 p { margin: 0; font-size: 14px; line-height: 22px; white-space: pre-wrap; overflow-wrap: anywhere; }
 #actions { display: flex; flex-direction: column; gap: 8px; margin-top: 20px; position: sticky; bottom: 0; background: var(--dsw-alias-bg-layer-1); }
-button { min-height: 44px; padding: 9px 16px; border: 0; border-radius: 12px; font-family: inherit; font-size: 14px; font-weight: 500; line-height: 22px; color: inherit; cursor: pointer; }
+button { min-height: 44px; padding: 9px 16px; border: 0; border-radius: 12px; font-family: inherit; font-size: 14px; font-weight: 500; line-height: 22px; color: inherit; cursor: pointer; transition: background-color 140ms cubic-bezier(0.2, 0.8, 0.2, 1), color 140ms cubic-bezier(0.2, 0.8, 0.2, 1), opacity 140ms cubic-bezier(0.2, 0.8, 0.2, 1), scale 120ms cubic-bezier(0.16, 1, 0.3, 1); }
+button:active:not(:disabled) { scale: 0.97; }
 .primary { background: var(--dsw-alias-button-primary-fill); color: var(--dsw-alias-label-primary-inverted); }
 
 .secondary { background: var(--dsw-alias-button-primary-dimmed); color: inherit; }
-.close { display: grid; place-items: center; flex: none; width: 28px; min-height: 28px; padding: 7px; border-radius: 50%; background: transparent; }
+.close { display: grid; place-items: center; flex: none; width: 28px; min-height: 28px; padding: 7px; border-radius: 50%; corner-shape: round; background: transparent; }
+.close:active { scale: 0.92; }
 .close::before { content: ""; width: 14px; height: 14px; background: currentColor; mask: url("update-close.svg") center / contain no-repeat; }
 
 button:focus-visible, summary:focus-visible, pre:focus-visible { outline: 2px solid var(--dsw-alias-link); outline-offset: 3px; }
@@ -30,7 +32,12 @@ button:disabled { opacity: 0.5; cursor: default; }
 body.update-dialog { opacity: 0; transition: opacity 150ms ease; }
 body.update-dialog.visible { opacity: 1; }
 @starting-style { body.update-dialog.visible { opacity: 0; } }
-@media (prefers-reduced-motion: reduce) { body.update-dialog { transition: none; } }
+@media (prefers-reduced-motion: reduce) {
+  body.update-dialog,
+  button { transition: none; }
+  button:active:not(:disabled),
+  .close:active { scale: none; }
+}
 @media (hover: hover) {
   .primary:hover:not(:disabled) { background: var(--dsw-alias-button-primary-hover); }
   .secondary:hover:not(:disabled), .close:hover { background: var(--dsw-alias-interactive-bg-hover); }

@@ -49,6 +49,18 @@
   color: var(--dsw-alias-label-secondary);
   font-size: 12px;
   line-height: 18px;
+  animation: dsh-input-notice-in var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+@keyframes dsh-input-notice-in {
+  from {
+    opacity: 0;
+    translate: 0 4px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
 }
 
 .card {
@@ -345,6 +357,13 @@
   background: var(--dsw-specific-selector);
   color: var(--dsw-alias-label-primary);
   cursor: pointer;
+  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    opacity var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.add:active:not(:disabled) {
+  scale: 0.93;
 }
 
 @media (hover: hover) {
@@ -379,6 +398,14 @@
   white-space: nowrap;
   cursor: pointer;
   appearance: none;
+  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    opacity var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.select:active:not(:disabled) {
+  scale: 0.97;
 }
 
 @media (hover: hover) {
@@ -409,11 +436,17 @@
      fill in both themes (design 34:10465). */
   color: var(--dsw-alias-label-on-color);
   cursor: pointer;
-  transition: background-color 100ms ease;
+  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    opacity var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
   /* Opts out of the row's 2px downward shift (.row top pad): the send circle
      keeps its original seat while the smaller chips sit lower. Transform, not
      margin, so flex centering math is untouched. */
   transform: translateY(-2px);
+}
+
+.primary:active:not(:disabled) {
+  scale: 0.93;
 }
 
 /* Solid artwork uses a smaller footprint than the thin send arrow. */
@@ -462,6 +495,18 @@
   color: inherit;
   font-size: 12px;
   cursor: pointer;
+  transition: opacity var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+@media (hover: hover) {
+  .retry:hover:not(:disabled) {
+    opacity: 0.8;
+  }
+}
+
+.retry:active:not(:disabled) {
+  scale: 0.97;
 }
 
 .standardControls { display: flex; align-items: center; gap: 12px; min-width: 0; }
@@ -470,3 +515,25 @@
 .activity { display: flex; align-items: center; flex: none; }
 .activity:empty { display: none; }
 .activityExpanded { flex: 1; min-width: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  .notice {
+    animation: none;
+  }
+  .pending {
+    animation: none;
+  }
+  .cardWorkspaceTrigger::after,
+  .add,
+  .select,
+  .primary,
+  .retry {
+    transition: none;
+  }
+  .add:active:not(:disabled),
+  .select:active:not(:disabled),
+  .primary:active:not(:disabled),
+  .retry:active:not(:disabled) {
+    scale: none;
+  }
+}

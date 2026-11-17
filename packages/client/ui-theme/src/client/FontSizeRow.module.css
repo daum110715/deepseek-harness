@@ -94,6 +94,7 @@
   flex-direction: column;
   gap: 2px;
   opacity: 0;
+  transition: opacity var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
 }
 
 @media (hover: hover) {
@@ -125,6 +126,14 @@
   background: color-mix(in srgb, var(--dsw-alias-bg-layer-1) 75%, transparent);
   color: var(--dsw-alias-label-primary);
   cursor: pointer;
+  transition:
+    background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
+}
+
+.arrow:active:not(:disabled) {
+  scale: 0.92;
 }
 
 @media (hover: hover) {
@@ -151,6 +160,14 @@
   background: transparent;
   color: var(--dsw-alias-label-tertiary);
   cursor: pointer;
+  transition:
+    background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
+}
+
+.expander:active {
+  scale: 0.94;
 }
 
 @media (hover: hover) {
@@ -160,9 +177,23 @@
 }
 
 .expander svg {
-  transition: transform var(--ds-transition-duration-fast) var(--ds-ease-in-out);
+  transition: transform var(--dsh-motion-base, 180ms) var(--dsh-ease-out, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 .expander[aria-expanded='true'] svg {
   transform: rotate(180deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .arrows,
+  .arrow,
+  .expander,
+  .expander svg {
+    transition: none;
+  }
+
+  .arrow:active:not(:disabled),
+  .expander:active {
+    scale: none;
+  }
 }

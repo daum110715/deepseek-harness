@@ -30,7 +30,7 @@
   background: var(--dsw-alias-bg-layer-1);
   box-shadow: var(--dsw-elevation-soft);
   transform: translateX(calc(var(--dsh-segment-index) * (100% + 2px)));
-  transition: transform 160ms ease;
+  transition: transform var(--dsh-motion-base, 180ms) var(--dsh-ease-out, cubic-bezier(0.22, 1, 0.36, 1));
   pointer-events: none;
 }
 

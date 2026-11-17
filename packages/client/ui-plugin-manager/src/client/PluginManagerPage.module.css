@@ -305,6 +305,7 @@
   line-height: 22px;
   font-weight: 400;
   color: color-mix(in srgb, var(--dsw-alias-label-secondary) 60%, var(--dsw-alias-label-tertiary));
+  transition: color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
 }
 
 .groupMore:focus-visible {
@@ -449,12 +450,15 @@
  */
 .cardLink {
   position: relative;
+  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
 }
 
 /* Press feedback carries the tap: with hover fenced off, a card would otherwise
    read as inert between touch-down and release. */
 .cardLink:active {
   background: var(--dsw-alias-interactive-bg-active);
+  scale: 0.995;
 }
 
 @media (hover: hover) {
@@ -588,10 +592,14 @@
   background: transparent;
   color: var(--dsw-alias-label-caption);
   cursor: pointer;
+  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
 }
 
 .iconButton:active:not(:disabled) {
   background: var(--dsw-alias-interactive-bg-active);
+  scale: 0.92;
 }
 
 @media (hover: hover) {
@@ -674,10 +682,13 @@
   background: transparent;
   color: var(--dsw-alias-state-error-primary);
   cursor: pointer;
+  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
 }
 
 .deleteButton:active:not(:disabled) {
   background: var(--dsw-alias-interactive-bg-hover-danger, var(--dsw-alias-interactive-bg-hover));
+  scale: 0.92;
 }
 
 @media (hover: hover) {
@@ -814,6 +825,7 @@
   font-size: 12.5px;
   color: var(--dsw-alias-label-secondary);
   cursor: pointer;
+  transition: color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
 }
 
 @media (hover: hover) {
@@ -823,7 +835,7 @@
 }
 
 .guideChevron {
-  transition: transform 160ms ease;
+  transition: transform var(--dsh-motion-base, 180ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
 }
 
 .guideToggle[aria-expanded='true'] .guideChevron {
@@ -947,6 +959,9 @@
   font-size: 12.5px;
   color: var(--dsw-alias-label-secondary);
   cursor: pointer;
+  transition: color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    border-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
 }
 
 @media (hover: hover) {
@@ -1020,6 +1035,7 @@
   border: 0;
   border-radius: var(--dsw-radius-md);
   cursor: pointer;
+  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
 }
 
 @media (hover: hover) {
@@ -1143,6 +1159,7 @@ label.registryOption {
   font-weight: 600;
   color: var(--dsw-alias-label-primary);
   cursor: pointer;
+  transition: opacity var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
 }
 
 .wizardClose {
@@ -1157,6 +1174,13 @@ label.registryOption {
   background: none;
   color: var(--dsw-alias-label-tertiary);
   cursor: pointer;
+  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.wizardClose:active {
+  scale: 0.92;
 }
 
 @media (hover: hover) {
@@ -1267,10 +1291,13 @@ label.registryOption {
   font-size: 13px;
   color: var(--dsw-alias-label-secondary);
   cursor: pointer;
+  transition: color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    border-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
 }
 
 .detailsChevron {
-  transition: transform 160ms ease;
+  transition: transform var(--dsh-motion-base, 180ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
 }
 
 .detailsToggle[aria-expanded='true'] .detailsChevron {
@@ -1282,6 +1309,18 @@ label.registryOption {
   flex-direction: column;
   gap: 8px;
   min-width: 0;
+  animation: dsh-plugin-details-in var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+@keyframes dsh-plugin-details-in {
+  from {
+    opacity: 0;
+    translate: 0 -4px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
 }
 
 /* The failed screen's actions beside the details toggle: change the registry, retry. */
@@ -1445,6 +1484,7 @@ label.registryOption {
   font: inherit;
   font-size: 12.5px;
   cursor: pointer;
+  transition: color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
 }
 
 @media (hover: hover) {
@@ -1690,6 +1730,7 @@ label.registryOption {
 .rowOpenIcon {
   flex: none;
   color: var(--dsw-alias-label-tertiary);
+  transition: color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
 }
 
 @media (hover: hover) {
@@ -1894,6 +1935,7 @@ label.registryOption {
 
 button.versionSummary {
   cursor: pointer;
+  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
 }
 
 @media (hover: hover) {
@@ -2315,4 +2357,31 @@ button.versionSummary:focus-visible {
   margin: 0;
   align-self: safe start;
   justify-self: safe start;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .groupMore,
+  .cardLink,
+  .iconButton,
+  .deleteButton,
+  .guideToggle,
+  .guideChevron,
+  .registryToggle,
+  .registryOption,
+  .wizardBack,
+  .wizardClose,
+  .crumb,
+  .rowOpenIcon,
+  button.versionSummary {
+    transition: none;
+  }
+  .cardLink:active,
+  .iconButton:active:not(:disabled),
+  .deleteButton:active:not(:disabled),
+  .wizardClose:active {
+    scale: none;
+  }
+  .detailsBody {
+    animation: none;
+  }
 }

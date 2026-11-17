@@ -111,6 +111,12 @@
   margin: 0 -8px;
   padding: 8px;
   border-radius: var(--dsw-radius-xl);
+  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.card:has(.cardOpen:active:not(:disabled)) {
+  scale: 0.995;
 }
 
 @media (hover: hover) {
@@ -251,6 +257,7 @@
   font: inherit;
   font-size: 12.5px;
   cursor: pointer;
+  transition: color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
 }
 
 @media (hover: hover) {
@@ -436,12 +443,17 @@
 
 @media (prefers-reduced-motion: reduce) {
   .skeletonFill { animation: none; }
+  .card,
+  .crumb,
+  .link { transition: none; }
+  .card:has(.cardOpen:active:not(:disabled)) { scale: none; }
 }
 
 .link {
   color: var(--dsw-alias-link);
   overflow-wrap: anywhere;
   text-decoration: none;
+  transition: color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
 }
 
 @media (hover: hover) {

@@ -21,6 +21,7 @@
   inset: 0;
   background: var(--dsw-alias-bg-mask-1);
   backdrop-filter: var(--dsw-mask-blur);
+  animation: lightboxMaskEnter var(--dsh-motion-base, 180ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
 }
 
 .image {
@@ -32,6 +33,7 @@
   background: var(--dsw-specific-input-major);
   border: 0;
   box-shadow: var(--dsw-elevation-prominent);
+  animation: lightboxImageEnter var(--dsh-motion-panel, 220ms) var(--dsh-ease-out, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 .close {
@@ -49,6 +51,50 @@
   background: var(--dsw-specific-input-major);
   color: var(--dsw-alias-label-primary);
   cursor: pointer;
+  animation: lightboxMaskEnter var(--dsh-motion-base, 180ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
+  transition:
+    background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
+}
+
+@media (hover: hover) {
+  .close:hover {
+    background: var(--dsw-alias-interactive-bg-hover-solid);
+  }
+}
+
+.close:active {
+  scale: 0.94;
 }
 
 .close:focus-visible { outline: var(--dsw-focus-ring-width) solid var(--dsw-focus-ring-color, var(--dsw-alias-state-business-primary)); outline-offset: 3px; }
+
+@keyframes lightboxMaskEnter {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes lightboxImageEnter {
+  from {
+    opacity: 0;
+    scale: 0.96;
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mask,
+  .image,
+  .close {
+    animation: none;
+    transition: none;
+  }
+
+  .close:active {
+    scale: none;
+  }
+}

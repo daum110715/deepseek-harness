@@ -80,6 +80,18 @@
   font-size: var(--dsh-content-font-size-secondary, 13px);
   line-height: 1.5;
   overflow-wrap: anywhere;
+  animation: dsh-excel-notice-in var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+@keyframes dsh-excel-notice-in {
+  from {
+    opacity: 0;
+    translate: 0 -4px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
 }
 
 .notice > svg {
@@ -100,6 +112,7 @@
   background: transparent;
   border: 0;
   border-radius: var(--dsw-radius-sm);
+  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
 }
 
 .formulaWarning:focus-visible {
@@ -126,4 +139,13 @@
   height: 100%;
   padding: 16px;
   color: var(--dsw-alias-label-secondary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .notice {
+    animation: none;
+  }
+  .formulaWarning {
+    transition: none;
+  }
 }

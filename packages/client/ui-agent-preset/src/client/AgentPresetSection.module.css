@@ -57,7 +57,8 @@
   display: flex;
   flex-direction: column;
   background: var(--dsw-alias-settings-card-fill);
-  transition: border-color .16s, background .16s;
+  transition: border-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
 }
 
 
@@ -124,7 +125,7 @@
   overflow-wrap: anywhere;
   opacity: 0;
   pointer-events: none;
-  transition: opacity .12s;
+  transition: opacity var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
 }
 
 /* Focusing the card reveals it too: a broken card keeps its place in the tab
@@ -291,6 +292,7 @@
   font-size: 12px;
   font-weight: 400;
   color: var(--dsw-alias-label-tertiary);
+  transition: color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
 }
 
 .helpButton:focus-visible {
@@ -316,6 +318,13 @@
   cursor: pointer;
   display: inline-flex;
   align-items: center;
+  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.iconButton:active {
+  scale: 0.92;
 }
 
 @media (hover: hover) {
@@ -345,7 +354,7 @@
   white-space: nowrap;
   opacity: 0;
   pointer-events: none;
-  transition: opacity .12s;
+  transition: opacity var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
 }
 
 .iconButton:focus-visible::after {
@@ -406,6 +415,13 @@
   background: transparent;
   color: var(--dsw-alias-label-primary);
   cursor: pointer;
+  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    border-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.creatorButton:active:not(:disabled) {
+  scale: 0.99;
 }
 
 @media (hover: hover) {
@@ -417,4 +433,19 @@
 .creatorButton:disabled {
   opacity: 0.4;
   cursor: default;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .brokenTip,
+  .helpButton,
+  .iconButton,
+  .iconButton::after,
+  .creatorButton {
+    transition: none;
+  }
+  .iconButton:active,
+  .creatorButton:active:not(:disabled) {
+    scale: none;
+  }
 }

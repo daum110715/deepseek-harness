@@ -353,6 +353,14 @@
   background: transparent;
   cursor: pointer;
   color: var(--dsw-alias-label-secondary);
+  transition:
+    background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
+}
+
+.iconButton:active {
+  scale: 0.94;
 }
 
 @media (hover: hover) {
@@ -453,6 +461,14 @@
   line-height: 22px;
   cursor: pointer;
   overflow: hidden;
+  transition:
+    background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    border-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
+}
+
+.newSession:active {
+  scale: 0.985;
 }
 
 @media (hover: hover) {
@@ -541,6 +557,7 @@
   flex: none;
   pointer-events: none;
   font-weight: 400;
+  transition: opacity var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
 }
 
 .newSession:focus-visible .newSessionShortcut {
@@ -642,6 +659,7 @@
   border-inline: var(--dsh-sidebar-paint-inset) solid transparent;
   border-radius: var(--dsw-radius-md);
   background-clip: padding-box;
+  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
 }
 
 .panelEntryWide > *:first-child {
@@ -677,6 +695,14 @@
   background: transparent;
   color: var(--dsw-alias-label-caption);
   cursor: pointer;
+  transition:
+    opacity var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
+}
+
+.panelUnpin:active {
+  scale: 0.92;
 }
 
 .panelUnpin:focus-visible {
@@ -723,6 +749,7 @@
   line-height: 22px;
   text-align: left;
   cursor: pointer;
+  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
 }
 
 @media (hover: hover) {
@@ -833,6 +860,12 @@
   :global([data-animating]:not([data-dragging])) .root,
   .wide,
   .fading > *,
+  .iconButton,
+  .newSession,
+  .newSessionShortcut,
+  .panelEntry,
+  .panelUnpin,
+  .panelRow,
   .railIn .iconButton,
   .railIn .newSessionRow > :global([data-slot='sidebar.session.action']) > *,
   .railIn .panelList,
@@ -840,5 +873,11 @@
   .railIn .regionArea {
     transition: none;
     animation: none;
+  }
+
+  .iconButton:active,
+  .newSession:active,
+  .panelUnpin:active {
+    scale: none;
   }
 }

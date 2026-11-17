@@ -67,6 +67,29 @@
   color: inherit;
   cursor: pointer;
   font: inherit;
+  transition:
+    opacity var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
+}
+
+.copyButton:active {
+  scale: 0.96;
+}
+
+@media (hover: hover) {
+  .copyButton:hover {
+    opacity: 0.78;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .copyButton {
+    transition: none;
+  }
+
+  .copyButton:active {
+    scale: none;
+  }
 }
 
 /* Consumers may turn the stable content node into a viewport without changing

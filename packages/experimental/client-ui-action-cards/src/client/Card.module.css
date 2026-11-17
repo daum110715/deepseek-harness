@@ -1,4 +1,6 @@
-.card { margin: 16px 0; border: 0.5px solid var(--dsw-alias-border-l2); border-radius: var(--dsw-radius-lg); overflow: hidden; background: var(--dsw-alias-bg-layer-1); font-family: var(--dsw-font-family); color: var(--dsw-alias-label-primary); }
+.card { margin: 16px 0; border: 0.5px solid var(--dsw-alias-border-l2); border-radius: var(--dsw-radius-lg); overflow: hidden; background: var(--dsw-alias-bg-layer-1); font-family: var(--dsw-font-family); color: var(--dsw-alias-label-primary); animation: dsh-action-card-in var(--dsh-motion-base, 180ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1)); }
+@keyframes dsh-action-card-in { from { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .card { animation: none; } }
 .body { padding: 12px 20px 20px; }
 .title { display: block; font-size: 16px; font-weight: 500; line-height: 1.5; overflow-wrap: anywhere; }
 .text { margin: 8px 0 0; font-size: 13px; line-height: 1.7; white-space: pre-wrap; overflow-wrap: anywhere; color: var(--dsw-alias-label-secondary); }

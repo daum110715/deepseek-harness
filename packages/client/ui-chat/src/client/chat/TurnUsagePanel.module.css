@@ -30,6 +30,13 @@
   line-height: calc(24px + var(--dsh-content-font-delta, 0px));
   white-space: nowrap;
   cursor: pointer;
+  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.trigger:active {
+  scale: 0.96;
 }
 
 /* A narrow column trims the label to an ellipsis instead of overflowing the
@@ -75,5 +82,14 @@
 
   .root + .root {
     margin-left: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .trigger {
+    transition: none;
+  }
+  .trigger:active {
+    scale: none;
   }
 }

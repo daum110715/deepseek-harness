@@ -9,6 +9,13 @@
   color: var(--dsw-alias-label-primary);
   font: var(--dsw-font-xs-13);
   cursor: pointer;
+  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+  animation: dsh-quote-selection-in var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.action:active {
+  scale: 0.96;
 }
 
 .action:focus-visible {
@@ -18,5 +25,23 @@
 @media (hover: hover) {
   .action:hover {
     background: var(--dsw-alias-button-floating-hover);
+  }
+}
+
+@keyframes dsh-quote-selection-in {
+  from {
+    opacity: 0;
+    transform: translateY(3px) scale(0.96);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .action {
+    animation: none;
+    transition-duration: 0.01ms;
+  }
+
+  .action:active {
+    scale: none;
   }
 }

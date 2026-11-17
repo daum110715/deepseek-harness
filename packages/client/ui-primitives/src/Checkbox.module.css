@@ -6,6 +6,7 @@
   line-height: 20px;
   color: var(--dsw-alias-label-primary);
   cursor: pointer;
+  transition: opacity var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
 }
 
 .checkbox input {
@@ -15,6 +16,11 @@
   margin: 0;
   accent-color: var(--dsw-alias-brand-primary);
   cursor: inherit;
+  transition: scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
+}
+
+.checkbox:active input:not(:disabled) {
+  scale: 0.92;
 }
 
 .checkbox input:focus-visible {
@@ -25,4 +31,15 @@
 .checkbox:has(input:disabled) {
   cursor: default;
   opacity: 0.5;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .checkbox,
+  .checkbox input {
+    transition: none;
+  }
+
+  .checkbox:active input:not(:disabled) {
+    scale: none;
+  }
 }

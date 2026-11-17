@@ -91,6 +91,14 @@ body {
 .welcome > #auth-page {
   grid-row: 2;
   grid-column: 1;
+  animation: dsh-welcome-stage-in 260ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes dsh-welcome-stage-in {
+  from {
+    opacity: 0;
+    translate: 0 6px;
+  }
 }
 
 .brand {
@@ -161,7 +169,12 @@ body {
     background-color var(--ds-transition-duration) var(--ds-ease-in-out),
     border-color var(--ds-transition-duration) var(--ds-ease-in-out),
     opacity var(--ds-transition-duration) var(--ds-ease-in-out),
-    color var(--ds-transition-duration-slow) var(--ds-ease-in-out);
+    color var(--ds-transition-duration-slow) var(--ds-ease-in-out),
+    scale 120ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.actions button:active:not(:disabled) {
+  scale: 0.97;
 }
 
 .actions button:disabled {
@@ -220,8 +233,21 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .actions button {
+  .welcome > .tagline,
+  .welcome > .key-form,
+  .welcome > #auth-page {
+    animation: none;
+  }
+
+  .actions button,
+  .key-field input,
+  .auth-waiting .copy-link {
     transition: none;
+  }
+
+  .actions button:active:not(:disabled),
+  .auth-waiting .copy-link:active:not(:disabled) {
+    scale: none;
   }
 }
 
@@ -283,6 +309,7 @@ body {
   font-size: 14px;
   line-height: 24px;
   user-select: text;
+  transition: border-color var(--ds-transition-duration) var(--ds-ease-in-out);
 }
 
 .key-field input:focus {
@@ -336,6 +363,13 @@ body {
   cursor: pointer;
   app-region: no-drag;
   text-decoration: underline;
+  transition: color var(--ds-transition-duration) var(--ds-ease-in-out),
+    opacity var(--ds-transition-duration) var(--ds-ease-in-out),
+    scale 120ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.auth-waiting .copy-link:active:not(:disabled) {
+  scale: 0.97;
 }
 #auth-loading:disabled { opacity: 1; }
 .actions .welcome-loading { color: inherit; }

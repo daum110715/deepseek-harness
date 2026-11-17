@@ -37,6 +37,7 @@
   color: transparent;
   background: var(--dsw-alias-bg-skeleton);
   border-radius: var(--dsw-radius-xs);
+  animation: dsh-cua-skeleton-pulse 1.5s var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)) infinite;
 }
 .skeletonCopy p { color: transparent; }
 .appPlaceholder { width: 160px; height: 1.6em; }
@@ -48,8 +49,23 @@
   max-width: 100%;
   border-radius: var(--dsw-radius-xs);
   background: var(--dsw-alias-bg-skeleton);
+  animation: dsh-cua-skeleton-pulse 1.5s var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)) infinite;
 }
 .buttonPlaceholder { height: 28px; }
 .appsPlaceholder { display: block; color: transparent; }
 
 .iconPlaceholder { display: inline-block; width: 32px; height: 32px; flex-shrink: 0; }
+
+@keyframes dsh-cua-skeleton-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.55; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeletonCopy strong,
+  .skeletonCopy .applicationBadge,
+  .buttonPlaceholder,
+  .appsPlaceholder {
+    animation: none;
+  }
+}

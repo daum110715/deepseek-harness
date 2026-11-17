@@ -47,7 +47,11 @@
   line-height: 22px;
   cursor: pointer;
   white-space: nowrap;
+  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    opacity var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
 }
+.button:active:not(:disabled) { scale: 0.97; }
 @media (hover: hover) {
   .button:hover { background: var(--dsw-alias-interactive-bg-hover); }
 }
@@ -92,7 +96,10 @@
   background: transparent;
   color: var(--dsw-alias-label-primary);
   cursor: pointer;
+  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
 }
+.close:active { scale: 0.92; }
 @media (hover: hover) {
   .close:hover { background: var(--dsw-alias-interactive-bg-hover); }
 }
@@ -114,6 +121,7 @@
   border: 0.5px solid var(--dsw-alias-border-l2);
   border-radius: 12px;
   background: var(--dsw-alias-markdown-code-block);
+  transition: border-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
 }
 .searchIcon { flex: none; color: var(--dsw-alias-label-caption); }
 .search {
@@ -161,6 +169,8 @@
   color: var(--dsw-alias-label-secondary);
   font: inherit;
   cursor: pointer;
+  transition: color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    opacity var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
 }
 @media (hover: hover) {
   .resetAll:enabled:hover { color: var(--dsw-alias-label-secondary); }
@@ -185,6 +195,7 @@
   color: var(--dsw-alias-label-primary);
   font-size: 13px;
   line-height: 18px;
+  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
 }
 .binding { position: relative; flex-shrink: 0; pointer-events: none; }
 .binding:has(.inlineEditor) { pointer-events: auto; }
@@ -193,7 +204,7 @@
 p.hint { margin: 6px 0; }
 
 /* Keyboard focus reveals actions without retaining a mouse interaction's hover state. */
-.rowActions { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 26px; color: var(--dsw-alias-label-tertiary); opacity: 0; }
+.rowActions { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 26px; color: var(--dsw-alias-label-tertiary); opacity: 0; transition: opacity var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)); }
 .row:has(:focus-visible) .rowActions { opacity: 1; }
 
 @media (hover: hover) {
@@ -212,8 +223,11 @@ p.hint { margin: 6px 0; }
 .inlineEditor { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
 .binding:has(.inlineEditor) { max-width: 100%; }
 .inlineControls { display: flex; justify-content: flex-end; align-items: center; gap: 8px; }
-.inlineAction { padding: 0; border: 0; background: transparent; color: var(--dsw-alias-label-tertiary); font: inherit; font-size: 12px; line-height: 18px; white-space: nowrap; cursor: pointer; }
-.recorder { display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box; min-width: 96px; height: 26px; padding: 3px 14px; border: 0.5px solid var(--dsw-alias-border-l4); border-radius: 10px; background: var(--dsw-alias-bg-module-platform); color: var(--dsw-alias-label-secondary); font: inherit; font-size: 12px; line-height: 18px; white-space: nowrap; cursor: pointer; }
+.inlineAction { padding: 0; border: 0; background: transparent; color: var(--dsw-alias-label-tertiary); font: inherit; font-size: 12px; line-height: 18px; white-space: nowrap; cursor: pointer; transition: color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)); }
+@media (hover: hover) {
+  .inlineAction:hover:not(:disabled) { color: var(--dsw-alias-label-primary); }
+}
+.recorder { display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box; min-width: 96px; height: 26px; padding: 3px 14px; border: 0.5px solid var(--dsw-alias-border-l4); border-radius: 10px; background: var(--dsw-alias-bg-module-platform); color: var(--dsw-alias-label-secondary); font: inherit; font-size: 12px; line-height: 18px; white-space: nowrap; cursor: pointer; transition: border-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)), background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)); }
 .recorder:focus-visible { outline: 1px solid var(--dsw-focus-ring-color, var(--dsw-alias-state-business-primary)); outline-offset: 2px; }
 .recorder.invalid { border: 1px solid var(--dsw-alias-state-error-primary); box-shadow: none; }
 .recorded { height: auto; padding: 0; background: transparent; color: inherit; }
@@ -227,7 +241,8 @@ p.hint { margin: 6px 0; }
 .button:disabled, .rowButton:disabled, .inlineAction:disabled, .recorder[aria-disabled="true"] { cursor: default; opacity: 0.45; }
 
 .search::-webkit-search-cancel-button { -webkit-appearance: none; }
-.clearSearch { box-sizing: border-box; display: inline-flex; align-items: center; justify-content: center; flex: none; width: 16px; height: 16px; padding: 0; border: 0.5px solid var(--dsw-alias-label-tertiary); border-radius: 50%; corner-shape: round; background: transparent; color: var(--dsw-alias-label-secondary); cursor: pointer; }
+.clearSearch { box-sizing: border-box; display: inline-flex; align-items: center; justify-content: center; flex: none; width: 16px; height: 16px; padding: 0; border: 0.5px solid var(--dsw-alias-label-tertiary); border-radius: 50%; corner-shape: round; background: transparent; color: var(--dsw-alias-label-secondary); cursor: pointer; transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)), scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1)); }
+.clearSearch:active { scale: 0.9; }
 @media (hover: hover) {
   .clearSearch:hover { background: var(--dsw-alias-interactive-bg-hover); }
 }
@@ -235,4 +250,23 @@ p.hint { margin: 6px 0; }
 
 @media (hover: none) {
   .rowActions { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button,
+  .close,
+  .searchField,
+  .resetAll,
+  .row,
+  .rowActions,
+  .inlineAction,
+  .recorder,
+  .clearSearch {
+    transition: none;
+  }
+  .button:active:not(:disabled),
+  .close:active,
+  .clearSearch:active {
+    scale: none;
+  }
 }

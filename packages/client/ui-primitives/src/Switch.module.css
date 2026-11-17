@@ -14,6 +14,9 @@
   corner-shape: round;
   background: var(--dsw-alias-border-l3);
   cursor: pointer;
+  transition:
+    background-color var(--dsh-motion-base, 180ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    opacity var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
 }
 
 .switch[aria-checked='true'] {
@@ -37,7 +40,14 @@
   border-radius: 50%;
   corner-shape: round;
   background: var(--dsw-alias-label-primary-foreground);
-  transition: transform 120ms ease;
+  transition:
+    transform var(--dsh-motion-base, 180ms) var(--dsh-ease-out, cubic-bezier(0.22, 1, 0.36, 1)),
+    background-color var(--dsh-motion-base, 180ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
+}
+
+.switch:active:not(:disabled) .thumb {
+  scale: 0.92;
 }
 
 .switch[aria-checked='false'] .thumb {
@@ -46,4 +56,15 @@
 
 .switch[aria-checked='true'] .thumb {
   transform: translateX(16px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .switch,
+  .thumb {
+    transition: none;
+  }
+
+  .switch:active:not(:disabled) .thumb {
+    scale: none;
+  }
 }

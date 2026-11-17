@@ -48,6 +48,12 @@
   line-height: 22px;
   color: var(--dsw-alias-label-primary);
   cursor: pointer;
+  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.selector:active {
+  scale: 0.98;
 }
 
 @media (hover: hover) {
@@ -58,4 +64,19 @@
 
 .chevron {
   flex: none;
+  transition: transform var(--dsh-motion-base, 180ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.selector[aria-expanded='true'] .chevron {
+  transform: rotate(180deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .selector,
+  .chevron {
+    transition: none;
+  }
+  .selector:active {
+    scale: none;
+  }
 }

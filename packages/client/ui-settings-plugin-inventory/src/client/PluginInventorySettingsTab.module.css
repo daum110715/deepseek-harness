@@ -42,6 +42,12 @@
   color: var(--dsw-alias-label-primary);
   font: inherit;
   cursor: pointer;
+  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.failure button:active {
+  scale: 0.97;
 }
 
 .catalog {
@@ -75,6 +81,8 @@
   color: var(--dsw-alias-label-primary);
   font: inherit;
   font-size: 13px;
+  transition: border-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    box-shadow var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
 }
 
 .search input::placeholder {
@@ -106,6 +114,7 @@
   border: 0.5px solid var(--dsw-alias-settings-card-stroke);
   border-radius: var(--dsw-radius-xl);
   background: var(--dsw-alias-settings-card-fill);
+  transition: border-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
 }
 
 .card[data-open='true'] {
@@ -137,6 +146,8 @@
   font: inherit;
   text-align: left;
   cursor: pointer;
+  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
 }
 
 .card[data-open='true'] > .cardContent {
@@ -147,6 +158,7 @@
    state carries the feedback a touch client would otherwise lose. */
 .cardContent:active {
   background: var(--dsw-alias-interactive-bg-active);
+  scale: 0.99;
 }
 
 @media (hover: hover) {
@@ -278,6 +290,8 @@
   font: inherit;
   text-align: left;
   cursor: pointer;
+  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
 }
 
 .groupToggle:focus-visible {
@@ -328,10 +342,13 @@
   font-size: 14px;
   line-height: 22px;
   cursor: pointer;
+  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
 }
 
 .switcher:active {
   background: var(--dsw-alias-interactive-bg-active);
+  scale: 0.98;
 }
 
 @media (hover: hover) {
@@ -438,6 +455,18 @@
   border-top: 0.5px solid var(--dsw-alias-border-l2);
   padding: 10px 14px 12px;
   background: var(--dsw-alias-bg-module-platform);
+  animation: dsh-plugin-inventory-details-in var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+@keyframes dsh-plugin-inventory-details-in {
+  from {
+    opacity: 0;
+    translate: 0 -4px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
 }
 
 .entryValue {
@@ -484,11 +513,29 @@
 
 @media (prefers-reduced-motion: no-preference) {
   .chevron {
-    transition: transform 140ms var(--ds-ease-in-out);
+    transition: transform var(--dsh-motion-base, 180ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
   }
 
   .skeletonBar {
     animation: plugin-inventory-skeleton 2s cubic-bezier(0.36, 0, 0.64, 1) infinite;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .failure button,
+  .search input,
+  .card,
+  .cardContent,
+  .switcher {
+    transition: none;
+  }
+  .failure button:active,
+  .cardContent:active,
+  .switcher:active {
+    scale: none;
+  }
+  .cardDetails {
+    animation: none;
   }
 }
 

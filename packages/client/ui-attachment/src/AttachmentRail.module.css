@@ -36,6 +36,11 @@
   border-radius: var(--dsw-radius-xl);
   background: var(--dsw-alias-interactive-bg-hover);
   cursor: zoom-in;
+  transition: scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.thumbnail:active {
+  scale: 0.97;
 }
 
 .thumbnail img {
@@ -62,7 +67,12 @@
   color: var(--dsw-alias-label-primary-inverted);
   cursor: pointer;
   opacity: 0;
-  transition: opacity 0.2s ease-in-out;
+  transition: opacity var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.remove:active {
+  scale: 0.9;
 }
 
 .remove:focus-visible {
@@ -82,11 +92,6 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .remove {
-    transition: none;
-  }
-}
 .arrow {
   position: absolute;
   top: 50%;
@@ -105,6 +110,12 @@
   box-shadow: var(--dsw-elevation-panel);
   cursor: pointer;
   transform: translateY(-50%);
+  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.arrow:active {
+  scale: 0.92;
 }
 
 @media (hover: hover) {
@@ -119,4 +130,17 @@
 
 .arrowRight {
   right: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .thumbnail,
+  .remove,
+  .arrow {
+    transition: none;
+  }
+  .thumbnail:active,
+  .remove:active,
+  .arrow:active {
+    scale: none;
+  }
 }

@@ -45,7 +45,7 @@
     ~ :is([data-chat-flow-kind='user'], [data-chat-flow-kind='steering'])
   ) .actions {
     opacity: 0;
-    transition: opacity 80ms ease;
+    transition: opacity var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
   }
 
   [data-actions-reveal='hover']:hover .actions,
@@ -72,6 +72,13 @@
   background: transparent;
   color: var(--dsw-alias-label-tertiary);
   cursor: pointer;
+  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.action:active:not([data-unavailable]) {
+  scale: 0.92;
 }
 
 /* Action glyphs follow the same px delta as the text they serve; the
@@ -113,4 +120,17 @@
   overflow: hidden;
   clip: rect(0 0 0 0);
   white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-actions-reveal='hover'] .actions,
+  :is([data-chat-flow-kind='user'], [data-chat-flow-kind='steering']):has(
+    ~ :is([data-chat-flow-kind='user'], [data-chat-flow-kind='steering'])
+  ) .actions,
+  .action {
+    transition: none;
+  }
+  .action:active:not([data-unavailable]) {
+    scale: none;
+  }
 }

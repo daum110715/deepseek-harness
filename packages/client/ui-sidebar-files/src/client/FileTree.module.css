@@ -21,6 +21,7 @@
   width: 100%;
   min-width: 0;
   border-radius: var(--dsw-radius-md);
+  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
 }
 
 .action {
@@ -116,4 +117,10 @@
 .match {
   color: var(--dsw-alias-state-business-primary);
   background: transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .row {
+    transition: none;
+  }
 }

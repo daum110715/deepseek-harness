@@ -11,13 +11,36 @@
   transform: translateY(-50%);
   opacity: 0;
   pointer-events: none;
+  transition: opacity var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
 }
-.pinAnchor { position: absolute; right: 6px; top: 0; bottom: 0; display: flex; align-items: center; }
-.pinButton { width: 22px; height: 22px; padding: 0; color: var(--dsw-alias-label-tertiary); }
+.pinAnchor {
+  position: absolute;
+  right: 6px;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  transition: opacity var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
+}
+.pinButton {
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  color: var(--dsw-alias-label-tertiary);
+  transition: color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.pinButton:active:not(:disabled) {
+  scale: 0.9;
+}
 
 .sidebarEntry .pinButton:active:not(:disabled) { background: transparent; }
 
 @media (hover: hover) {
+  .sidebarEntry > div:first-child > button {
+    transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
+  }
   .sidebarEntry:hover > div:first-child > button { background: var(--dsw-alias-interactive-bg-hover); }
   .sidebarEntry .pinButton:hover:not(:disabled) {
     color: var(--dsw-alias-label-primary);
@@ -29,4 +52,16 @@
   :global(html[data-input-modality='keyboard']) .sidebarEntry:focus-within .pinAnchor { opacity: 1; }
   .sidebarEntry:hover .activeMark,
   :global(html[data-input-modality='keyboard']) .sidebarEntry:focus-within .activeMark { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sidebarEntry .activeMark,
+  .pinAnchor,
+  .pinButton,
+  .sidebarEntry > div:first-child > button {
+    transition: none;
+  }
+  .pinButton:active:not(:disabled) {
+    scale: none;
+  }
 }

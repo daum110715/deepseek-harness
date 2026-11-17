@@ -137,6 +137,13 @@
   background: transparent;
   color: var(--dsw-alias-label-tertiary);
   cursor: pointer;
+  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.iconButton:active {
+  scale: 0.92;
 }
 
 .iconButton:focus-visible {
@@ -330,7 +337,7 @@
 .chevron {
   flex: none;
   color: var(--dsw-alias-label-tertiary);
-  transition: transform 120ms ease;
+  transition: transform var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
 }
 
 .chevronOpen {
@@ -436,6 +443,12 @@
 
 .rowButton {
   cursor: pointer;
+  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.rowButton:active {
+  scale: 0.99;
 }
 
 .rowButton[aria-expanded='true'] {
@@ -575,7 +588,7 @@
 .mergeCaret {
   flex: none;
   transform: rotate(90deg);
-  transition: transform 120ms ease;
+  transition: transform var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
 }
 
 .mergeCaretOpen {
@@ -624,4 +637,18 @@
   overflow: hidden;
   clip-path: inset(50%);
   white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .iconButton,
+  .chevron,
+  .rowButton,
+  .mergeCaret {
+    transition-duration: 0.01ms;
+  }
+
+  .iconButton:active,
+  .rowButton:active {
+    scale: none;
+  }
 }

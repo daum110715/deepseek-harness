@@ -124,8 +124,13 @@
   .panel :global([data-dockkit-divider]),
   .panel[data-sidebar-right-open] :global([data-dockkit-host='dock']),
   .panel[data-sidebar-right-open] :global([data-dockkit-empty]),
-  .panel[data-sidebar-right-open] :global([data-dockkit-divider]) {
+  .panel[data-sidebar-right-open] :global([data-dockkit-divider]),
+  .iconButton {
     transition: none;
+  }
+
+  .iconButton:active {
+    scale: none;
   }
 }
 
@@ -145,6 +150,14 @@
   border: none;
   border-radius: var(--dsw-radius-sm);
   cursor: pointer;
+  transition:
+    background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
+}
+
+.iconButton:active {
+  scale: 0.94;
 }
 
 .iconButton svg {

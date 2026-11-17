@@ -83,6 +83,13 @@
   font: inherit;
   line-height: 16px;
   cursor: pointer;
+  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    opacity var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.button:active:not(:disabled) {
+  scale: 0.96;
 }
 
 .button:focus-visible {
@@ -108,4 +115,14 @@
 .notice {
   color: var(--dsw-alias-state-error-primary);
   font-size: 11px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button {
+    transition-duration: 0.01ms;
+  }
+
+  .button:active:not(:disabled) {
+    scale: none;
+  }
 }

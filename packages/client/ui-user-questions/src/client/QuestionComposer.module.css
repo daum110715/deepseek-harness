@@ -247,7 +247,8 @@
   border: 0.5px solid transparent;
   border-radius: var(--dsw-radius-md);
   background: transparent;
-  transition: background-color 120ms ease, border-color 120ms ease;
+  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    border-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
   timeline-scope: --description-copy;
 }
 
@@ -325,7 +326,9 @@
   height: 14px;
   border: 0.5px solid var(--dsw-alias-border-l4);
   border-radius: var(--dsw-radius-xs);
-  transition: background-color 120ms ease, border-color 120ms ease;
+  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    border-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
 }
 
 .checkbox > svg {
@@ -485,7 +488,8 @@
   padding: 8px 12px 8px 8px;
   border: 0.5px solid transparent;
   border-radius: var(--dsw-radius-md);
-  transition: background-color 120ms ease, border-color 120ms ease;
+  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    border-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
 }
 
 .customRow:focus-within:not(.customRowYielded),
@@ -575,6 +579,7 @@
   border-radius: var(--dsw-radius-lg);
   background: var(--dsw-alias-bg-module-platform);
   --dsh-answer-field-padding: 8px 12px;
+  transition: border-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
 }
 
 .customBlock:focus-within {
@@ -639,7 +644,9 @@
 
 @media (prefers-reduced-motion: reduce) {
   .optionRow,
-  .customRow {
+  .checkbox::before,
+  .customRow,
+  .customBlock {
     transition: none;
   }
 }

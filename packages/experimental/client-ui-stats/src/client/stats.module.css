@@ -137,6 +137,12 @@
   cursor: pointer;
   font: inherit;
   text-align: left;
+  transition: color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.rowToggle:active {
+  scale: 0.98;
 }
 
 .rowToggle:focus-visible {
@@ -345,6 +351,13 @@
   margin-right: 0;
   background: transparent;
   cursor: pointer;
+  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.imagePill:active {
+  scale: 0.96;
 }
 
 .promptText + .imagePill {
@@ -385,6 +398,12 @@
   background: var(--dsw-alias-bg-layer-2);
   cursor: pointer;
   overflow: hidden;
+  transition: border-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.imageThumb:active {
+  scale: 0.96;
 }
 
 .imageThumb img {
@@ -722,6 +741,14 @@
   cursor: pointer;
   font-size: 10px;
   font-weight: 650;
+  transition: border-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.chip:active,
+.chipOn:active {
+  scale: 0.96;
 }
 
 .chipOn {
@@ -828,6 +855,13 @@
   color: var(--dsw-alias-label-secondary);
   cursor: pointer;
   font: var(--dsw-font-xxxs-11);
+  transition: color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    border-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.copy:active {
+  scale: 0.96;
 }
 
 @media (hover: hover) {
@@ -941,6 +975,13 @@
   color: var(--dsw-alias-label-primary);
   cursor: pointer;
   font-size: 12px;
+  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    border-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.button:active {
+  scale: 0.97;
 }
 
 @media (hover: hover) {
@@ -962,4 +1003,26 @@
   color: var(--dsw-alias-label-secondary);
   cursor: default;
   font-size: 12px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rowToggle,
+  .imagePill,
+  .imageThumb,
+  .chip,
+  .chipOn,
+  .copy,
+  .button {
+    transition-duration: 0.01ms;
+  }
+
+  .rowToggle:active,
+  .imagePill:active,
+  .imageThumb:active,
+  .chip:active,
+  .chipOn:active,
+  .copy:active,
+  .button:active {
+    scale: none;
+  }
 }

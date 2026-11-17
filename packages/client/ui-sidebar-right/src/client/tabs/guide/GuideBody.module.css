@@ -56,6 +56,14 @@
   border: 0.5px solid var(--dsw-alias-border-l3);
   border-radius: var(--dsl-guide-entry-radius);
   cursor: pointer;
+  transition:
+    background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    border-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
+}
+
+.entry:active {
+  scale: 0.99;
 }
 
 @media (hover: hover) {
@@ -126,3 +134,13 @@
 .moreAnchor .entry[aria-expanded='true'] { background: var(--dsw-alias-interactive-bg-hover); }
 
 .moreMenu { width: max-content; max-width: min(480px, calc(100vw - 24px)); }
+
+@media (prefers-reduced-motion: reduce) {
+  .entry {
+    transition: none;
+  }
+
+  .entry:active {
+    scale: none;
+  }
+}

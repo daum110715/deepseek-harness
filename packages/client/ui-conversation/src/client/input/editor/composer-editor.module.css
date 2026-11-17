@@ -8,6 +8,7 @@
   background: transparent;
   box-decoration-break: clone;
   -webkit-box-decoration-break: clone;
+  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
 }
 
 @media (hover: hover) {
@@ -28,4 +29,10 @@
 .textRef {
   display: inline-block;
   max-width: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reference {
+    transition: none;
+  }
 }

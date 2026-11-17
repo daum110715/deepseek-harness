@@ -477,6 +477,31 @@
   background: transparent;
   vertical-align: middle;
   cursor: zoom-in;
+  transition:
+    opacity var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
+}
+
+@media (hover: hover) {
+  .imageButton:hover {
+    opacity: 0.94;
+  }
+}
+
+.imageButton:active {
+  scale: 0.99;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .markdown a,
+  .markdown .fileLink,
+  .imageButton {
+    transition: none;
+  }
+
+  .imageButton:active {
+    scale: none;
+  }
 }
 .imageButton .image { max-width: min(100%, 640px); max-height: 360px; }
 .imageButton:focus-visible { outline: var(--dsw-focus-ring-width) solid var(--dsw-focus-ring-color, var(--dsw-alias-state-business-primary)); outline-offset: 3px; }

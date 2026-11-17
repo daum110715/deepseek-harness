@@ -38,6 +38,19 @@
   color: var(--dsw-alias-label-secondary);
   cursor: pointer;
   font: var(--dsw-font-xs-13);
+  transition:
+    color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
+}
+
+.copyButton:active {
+  scale: 0.96;
+}
+
+@media (hover: hover) {
+  .copyButton:hover {
+    color: var(--dsw-alias-label-primary);
+  }
 }
 
 .body {
@@ -99,6 +112,7 @@
   cursor: pointer;
   font: inherit;
   text-align: left;
+  transition: color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
 }
 
 @media (hover: hover) {
@@ -111,4 +125,15 @@
   padding: 12px 14px;
   font: var(--dsw-font-markdown-code-block);
   color: var(--dsw-alias-label-tertiary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .copyButton,
+  .expand {
+    transition: none;
+  }
+
+  .copyButton:active {
+    scale: none;
+  }
 }

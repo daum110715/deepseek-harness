@@ -37,6 +37,13 @@
    the static span form keeps the resting tertiary reading. */
 button.pill {
   cursor: pointer;
+  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+button.pill:active {
+  scale: 0.97;
 }
 
 button.pill[aria-expanded='true'] {
@@ -60,4 +67,13 @@ button.pill[aria-expanded='true'] {
 .sep {
   color: var(--dsw-alias-separator-primary);
   margin: 0 6px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  button.pill {
+    transition: none;
+  }
+  button.pill:active {
+    scale: none;
+  }
 }

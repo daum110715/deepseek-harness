@@ -109,7 +109,9 @@ button.leading {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .row {
+  .row,
+  .iconIdle,
+  .chevronHover {
     transition: none;
   }
 }

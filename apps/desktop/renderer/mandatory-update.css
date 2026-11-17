@@ -1,9 +1,9 @@
 #status, #version { margin-top: 12px; color: var(--dsw-alias-label-secondary); }
 #status:empty, #version:empty { display: none; }
 #error { margin-top: 12px; color: var(--dsw-alias-state-error-primary); }
-#address { display: block; width: 100%; margin-top: 4px; padding: 8px; border: 1px solid var(--dsw-alias-border-l2); border-radius: 8px; background: var(--dsw-alias-markdown-code-block); font: 12px/20px monospace; color: var(--dsw-alias-label-secondary); overflow-wrap: anywhere; resize: vertical; }
+#address { display: block; width: 100%; margin-top: 4px; padding: 8px; border: 1px solid var(--dsw-alias-border-l2); border-radius: 8px; background: var(--dsw-alias-markdown-code-block); font: 12px/20px monospace; color: var(--dsw-alias-label-secondary); overflow-wrap: anywhere; resize: vertical; transition: border-color 140ms cubic-bezier(0.2, 0.8, 0.2, 1); }
 #actions button:not(.primary) { min-height: 32px; padding: 5px 8px; color: var(--dsw-alias-label-secondary); background: transparent; }
-#update, #refresh { border-radius: 100px; }
+#update, #refresh { border-radius: 100px; corner-shape: round; }
 #fallback { border-top: 1px solid var(--dsw-alias-border-l2); margin-top: 12px; padding-top: 12px; }
 #fallback p, #manual-copy { font-size: 12px; line-height: 20px; color: var(--dsw-alias-label-secondary); }
 #copy { min-height: 32px; padding: 3px 0; background: transparent; color: var(--dsw-alias-link); font-size: 12px; }
@@ -12,8 +12,13 @@
 #progress { display: block; width: 100%; height: 4px; margin-top: 12px; border: 0; appearance: none; -webkit-appearance: none; background: var(--dsw-alias-border-l2); accent-color: var(--dsw-alias-button-primary-fill); }
 
 #progress::-webkit-progress-bar { background: var(--dsw-alias-border-l2); }
-#progress::-webkit-progress-value { background: var(--dsw-alias-button-primary-fill); }
-#progress::-moz-progress-bar { background: var(--dsw-alias-button-primary-fill); }
+#progress::-webkit-progress-value { background: var(--dsw-alias-button-primary-fill); transition: width 180ms cubic-bezier(0.16, 1, 0.3, 1); }
+#progress::-moz-progress-bar { background: var(--dsw-alias-button-primary-fill); transition: width 180ms cubic-bezier(0.16, 1, 0.3, 1); }
 @media (hover: hover) {
   #actions button:not(.primary):hover:not(:disabled), #copy:hover:not(:disabled) { background: var(--dsw-alias-interactive-bg-hover); }
+}
+@media (prefers-reduced-motion: reduce) {
+  #address,
+  #progress::-webkit-progress-value,
+  #progress::-moz-progress-bar { transition: none; }
 }

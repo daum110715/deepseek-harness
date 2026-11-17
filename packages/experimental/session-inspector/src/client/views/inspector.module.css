@@ -28,6 +28,14 @@
   color: inherit;
   font: inherit;
   cursor: pointer;
+  transition: color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.toolbar button:active:not(:disabled),
+.disclosure:active {
+  scale: 0.96;
 }
 
 .toolbar button:disabled { color: var(--dsw-alias-label-tertiary); cursor: default; }
@@ -38,7 +46,8 @@
 .idColumn { width: 64px; }
 .typeColumn { width: 190px; }
 .typeHeader { display: flex; align-items: center; gap: 6px; }
-.typeFilterButton { display: inline-flex; border: none; border-radius: 3px; padding: 2px; background: transparent; color: inherit; cursor: pointer; }
+.typeFilterButton { display: inline-flex; border: none; border-radius: 3px; padding: 2px; background: transparent; color: inherit; cursor: pointer; transition: color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)), background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)), scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1)); }
+.typeFilterButton:active { scale: 0.92; }
 .typeFilterButton[aria-pressed='true'] { color: var(--dsw-alias-state-business-primary); background: var(--dsw-alias-interactive-bg-hover); }
 @media (hover: hover) {
   .typeFilterButton:hover { color: var(--dsw-alias-state-business-primary); background: var(--dsw-alias-interactive-bg-hover); }
@@ -69,13 +78,14 @@
 .typeFilterInput { width: 100%; box-sizing: border-box; padding: 5px 6px; border: 0.5px solid var(--dsw-alias-border-l2); border-radius: 4px; background: transparent; color: inherit; font: inherit; }
 .typeFilterHelp { margin: 6px 0; color: var(--dsw-alias-label-secondary); }
 .typeFilterOptions { max-height: 180px; overflow: auto; }
-.typeFilterOptions button { display: block; width: 100%; padding: 4px 6px; border: none; background: transparent; color: inherit; font: inherit; text-align: left; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: pointer; }
+.typeFilterOptions button { display: block; width: 100%; padding: 4px 6px; border: none; background: transparent; color: inherit; font: inherit; text-align: left; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: pointer; transition: color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)), background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)); }
 .typeFilterOptions button[aria-selected='true'] { background: var(--dsw-alias-interactive-bg-hover); color: var(--dsw-alias-state-business-primary); }
 @media (hover: hover) {
   .typeFilterOptions button:hover { background: var(--dsw-alias-interactive-bg-hover); color: var(--dsw-alias-state-business-primary); }
 }
 .typeFilterActions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 8px; }
-.typeFilterActions button { border: 0.5px solid var(--dsw-alias-border-l2); border-radius: 4px; padding: 3px 6px; background: transparent; color: inherit; font: inherit; cursor: pointer; }
+.typeFilterActions button { border: 0.5px solid var(--dsw-alias-border-l2); border-radius: 4px; padding: 3px 6px; background: transparent; color: inherit; font: inherit; cursor: pointer; transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)), scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1)); }
+.typeFilterActions button:active { scale: 0.96; }
 .contextRow .record { color: var(--dsw-alias-label-tertiary); }
 .locationColumn { width: 65px; }
 .timeColumn { width: 100px; }
@@ -95,7 +105,7 @@
 .record, .preview { padding: 0; text-align: left; }
 .preview { display: block; width: 100%; overflow: hidden; text-overflow: ellipsis; }
 .details { display: flex; flex: 0 0 40%; flex-direction: column; min-height: 0; max-height: 80%; overflow: hidden; }
-.detailsResize { flex: none; height: 5px; cursor: row-resize; touch-action: none; user-select: none; background: var(--dsw-alias-border-l2); }
+.detailsResize { flex: none; height: 5px; cursor: row-resize; touch-action: none; user-select: none; background: var(--dsw-alias-border-l2); transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)); }
 .detailsResize:active,
 .detailsResize:focus-visible { background: var(--dsw-alias-state-business-primary); }
 @media (hover: hover) {
@@ -104,7 +114,8 @@
 .details pre { flex: 1; min-height: 0; margin: 0; padding: 8px; font-size: inherit; overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; }
 .modeSelector { border: none; background: var(--dsw-alias-bg-module-platform); color: inherit; font: inherit; padding: 2px 4px; }
 .modeControls { display: inline-flex; align-items: center; gap: 6px; vertical-align: middle; }
-.pickButton { display: inline-flex; align-items: center; justify-content: center; border-radius: 4px; padding: 3px; }
+.pickButton { display: inline-flex; align-items: center; justify-content: center; border-radius: 4px; padding: 3px; transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)), color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)), scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1)); }
+.pickButton:active { scale: 0.92; }
 .pickButton[aria-pressed='true'] { background: var(--dsw-alias-interactive-bg-hover); color: var(--dsw-alias-state-business-primary); }
 @media (hover: hover) {
   .pickButton:hover { background: var(--dsw-alias-interactive-bg-hover); color: var(--dsw-alias-state-business-primary); }
@@ -133,6 +144,26 @@
 
 @media (prefers-reduced-motion: reduce) {
   .table tr { animation: none; }
+
+  .toolbar button,
+  .record,
+  .preview,
+  .disclosure,
+  .typeFilterButton,
+  .typeFilterOptions button,
+  .typeFilterActions button,
+  .detailsResize,
+  .pickButton {
+    transition-duration: 0.01ms;
+  }
+
+  .toolbar button:active:not(:disabled),
+  .disclosure:active,
+  .typeFilterButton:active,
+  .typeFilterActions button:active,
+  .pickButton:active {
+    scale: none;
+  }
 }
 
 @position-try --dsh-types-window {

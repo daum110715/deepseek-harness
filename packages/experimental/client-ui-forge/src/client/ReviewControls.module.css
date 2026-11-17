@@ -31,6 +31,14 @@
   font: inherit;
   white-space: nowrap;
   cursor: pointer;
+  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    box-shadow var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.segment:active:not(:disabled) {
+  scale: 0.97;
 }
 
 .segment[aria-checked='true'] {
@@ -90,6 +98,12 @@
   font: inherit;
   white-space: nowrap;
   cursor: pointer;
+  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.trigger:active {
+  scale: 0.97;
 }
 
 .trigger[aria-expanded='true'] {
@@ -159,4 +173,18 @@
 
 .ringFill {
   stroke: var(--dsw-alias-state-success-primary);
+  transition: stroke-dashoffset var(--dsh-motion-panel, 220ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .segment,
+  .trigger,
+  .ringFill {
+    transition-duration: 0.01ms;
+  }
+
+  .segment:active:not(:disabled),
+  .trigger:active {
+    scale: none;
+  }
 }

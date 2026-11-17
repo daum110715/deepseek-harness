@@ -32,6 +32,14 @@
   border: 0;
   border-radius: var(--dsw-radius-sm);
   cursor: pointer;
+  transition:
+    color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
+}
+
+.tool:active:not(:disabled) {
+  scale: 0.94;
 }
 
 @media (hover: hover) {
@@ -67,6 +75,10 @@
   background: var(--dsw-alias-bg-layer-1);
   border: 0.5px solid var(--dsw-alias-border-l2);
   border-radius: var(--dsw-radius-sm);
+  transition:
+    color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    border-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
 }
 
 .addressGo {
@@ -75,11 +87,15 @@
   right: 0;
   visibility: hidden;
   opacity: 0;
+  transition:
+    opacity var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    visibility 0s linear var(--dsh-motion-fast, 120ms);
 }
 
 .addressBox:focus-within .addressGo {
   visibility: visible;
   opacity: 1;
+  transition: opacity var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
 }
 
 .addressUnknown {
@@ -105,11 +121,17 @@
   line-height: 16px;
   pointer-events: none;
   background: var(--dsw-alias-bg-layer-2);
+  transition:
+    opacity var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    visibility 0s linear 0s;
 }
 
 .addressBox:focus-within .addressChanged {
   visibility: hidden;
   opacity: 0;
+  transition:
+    opacity var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    visibility 0s linear var(--dsh-motion-fast, 120ms);
 }
 
 .address:focus {
@@ -246,4 +268,19 @@
 .titleIcon {
   flex: 0 0 auto;
   margin-right: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tool,
+  .address,
+  .addressGo,
+  .addressBox:focus-within .addressGo,
+  .addressChanged,
+  .addressBox:focus-within .addressChanged {
+    transition: none;
+  }
+
+  .tool:active:not(:disabled) {
+    scale: none;
+  }
 }

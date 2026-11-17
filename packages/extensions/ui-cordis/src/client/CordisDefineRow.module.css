@@ -175,6 +175,13 @@
   color: var(--dsw-alias-label-tertiary);
   cursor: pointer;
   font: var(--dsw-font-xs-13);
+  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.sourceTab:active:not(:disabled) {
+  scale: 0.97;
 }
 
 @media (hover: hover) {
@@ -202,6 +209,15 @@
   border-radius: 1px 1px 0 0;
   background: var(--dsw-alias-state-business-primary);
   content: '';
+  transform-origin: center;
+  animation: dsh-cordis-source-tab-in var(--dsh-motion-base, 180ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+@keyframes dsh-cordis-source-tab-in {
+  from {
+    transform: scaleX(0.4);
+    opacity: 0;
+  }
 }
 
 .sourceTab:focus-visible {
@@ -269,7 +285,14 @@
   line-height: 16px;
   cursor: pointer;
   opacity: 0;
-  transition: opacity 100ms ease;
+  transition: opacity var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.inspectButton:active {
+  scale: 0.96;
 }
 
 .inspectButton:focus-visible {
@@ -297,8 +320,18 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .sourceTab,
   .inspectButton {
-    transition: none;
+    transition-duration: 0.01ms;
+  }
+
+  .sourceTabActive::after {
+    animation: none;
+  }
+
+  .sourceTab:active:not(:disabled),
+  .inspectButton:active {
+    scale: none;
   }
 }
 

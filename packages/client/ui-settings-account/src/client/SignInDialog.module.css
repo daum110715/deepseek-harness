@@ -2,7 +2,8 @@
 .content { display: flex; flex-direction: column; width: 100%; }
 .header { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 22px 24px 12px; }
 .title { margin: 0; font-size: 16px; line-height: 24px; font-weight: 500; color: var(--dsw-alias-label-primary); }
-.close { box-sizing: border-box; display: inline-flex; flex: none; align-items: center; justify-content: center; width: 28px; height: 28px; padding: 6px; border: 0; border-radius: var(--dsw-radius-sm); background: transparent; color: var(--dsw-alias-label-primary); cursor: pointer; }
+.close { box-sizing: border-box; display: inline-flex; flex: none; align-items: center; justify-content: center; width: 28px; height: 28px; padding: 6px; border: 0; border-radius: var(--dsw-radius-sm); background: transparent; color: var(--dsw-alias-label-primary); cursor: pointer; transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)), scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1)); }
+.close:active { scale: 0.92; }
 @media (hover: hover) {
   .close:hover { background: var(--dsw-alias-interactive-bg-hover); }
 }
@@ -11,10 +12,16 @@
 .primaryButton { padding: 0 16px; font-weight: 500; }
 .secondaryButton { padding: 0 14px; --dsh-button-outline-color: var(--dsw-alias-border-l2); }
 .description { margin: 0; padding: 0 24px; font-size: 14px; line-height: 22px; color: var(--dsw-alias-label-primary); }
-.link { border: 0; padding: 0; background: transparent; color: inherit; font: inherit; text-decoration: underline; cursor: pointer; }
+.link { border: 0; padding: 0; background: transparent; color: inherit; font: inherit; text-decoration: underline; cursor: pointer; transition: opacity var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)); }
+@media (hover: hover) {
+  .link:hover { opacity: 0.78; }
+}
 .spinner { flex: none; animation: spin 1s linear infinite; }
 .primaryButton:has(.spinner) { opacity: 1; }
 @keyframes spin { to { transform: rotate(360deg); } }
 @media (prefers-reduced-motion: reduce) {
   .spinner { animation: none; }
+  .close,
+  .link { transition: none; }
+  .close:active { scale: none; }
 }

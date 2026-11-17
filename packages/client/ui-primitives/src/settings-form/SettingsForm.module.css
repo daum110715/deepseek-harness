@@ -40,6 +40,13 @@
   cursor: pointer;
   background: var(--dsw-alias-label-primary);
   color: var(--dsw-alias-bg-layer-3);
+  transition:
+    opacity var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
+}
+
+.save:active:not(:disabled) {
+  scale: 0.98;
 }
 
 .save:disabled {
@@ -50,4 +57,14 @@
 .save:focus-visible {
   outline: var(--dsw-focus-ring-width) solid var(--dsw-focus-ring-color, var(--dsw-alias-state-business-primary));
   outline-offset: 1px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .save {
+    transition: none;
+  }
+
+  .save:active:not(:disabled) {
+    scale: none;
+  }
 }

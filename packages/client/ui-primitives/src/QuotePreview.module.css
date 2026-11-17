@@ -136,3 +136,10 @@
     opacity: 1;
   }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .quoteMark,
+  .closeMark {
+    transition: none;
+  }
+}

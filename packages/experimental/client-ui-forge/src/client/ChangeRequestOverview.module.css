@@ -177,6 +177,8 @@
   color: var(--dsw-alias-link);
   font-variant-numeric: tabular-nums;
   text-decoration: none;
+  transition: color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    opacity var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
 }
 
 .issue[data-state='closed'] {
@@ -193,4 +195,10 @@
 .issue:focus-visible {
   outline: var(--dsw-focus-ring-width) solid var(--dsw-focus-ring-color, var(--dsw-alias-state-business-primary));
   outline-offset: 1px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .issue {
+    transition-duration: 0.01ms;
+  }
 }

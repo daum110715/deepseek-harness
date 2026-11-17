@@ -13,6 +13,7 @@
   -webkit-user-select: none;
   user-select: none;
   color: var(--dsw-alias-label-primary);
+  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
 }
 
 @media (hover: hover) {
@@ -45,6 +46,7 @@
   cursor: pointer;
   text-align: left;
   color: var(--dsw-alias-label-primary);
+  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
 }
 
 @media (hover: hover) {
@@ -163,7 +165,7 @@
 
 /* Expand arrow (filled triangle): points right closed, rotates to point down open. */
 .arrow {
-  transition: transform 150ms var(--ds-ease-in-out);
+  transition: transform var(--dsh-motion-base, 180ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
 }
 
 .arrowOpen {
@@ -464,6 +466,12 @@
   background: transparent;
   cursor: pointer;
   color: var(--dsw-alias-label-tertiary);
+  transition: color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.iconButton:active {
+  scale: 0.9;
 }
 
 /* Keep the focus ring on its original compact outline. */
@@ -487,5 +495,14 @@
   .arrow {
     animation: none;
     transition: none;
+  }
+  .projectRow,
+  .sessionRow,
+  .searchResultRow,
+  .iconButton {
+    transition: none;
+  }
+  .iconButton:active {
+    scale: none;
   }
 }

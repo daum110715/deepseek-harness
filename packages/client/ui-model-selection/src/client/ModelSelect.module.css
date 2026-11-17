@@ -29,6 +29,13 @@
   line-height: 20px;
   font-weight: 400;
   cursor: pointer;
+  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.trigger:active:not(:disabled) {
+  scale: 0.97;
 }
 
 @media (hover: hover) {
@@ -82,7 +89,7 @@
 .chevron {
   flex: 0 0 auto;
   color: var(--dsw-alias-label-caption);
-  transition: transform 120ms ease;
+  transition: transform var(--dsh-motion-base, 180ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
 }
 
 .chevronOpen {
@@ -170,6 +177,13 @@
   font: inherit;
   font-weight: 600;
   cursor: pointer;
+  transition: opacity var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
+}
+
+@media (hover: hover) {
+  .retry:hover {
+    opacity: 0.78;
+  }
 }
 
 .searchRow {
@@ -208,6 +222,13 @@
   background: transparent;
   color: var(--dsw-alias-label-secondary);
   cursor: pointer;
+  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.searchClear:active {
+  scale: 0.9;
 }
 
 .searchClear:focus-visible {
@@ -264,6 +285,8 @@
   color: inherit;
   text-align: left;
   cursor: pointer;
+  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
 }
 
 .option:focus-visible,
@@ -359,6 +382,12 @@
   cursor: pointer;
   text-align: left;
   outline: none;
+  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.cell:active {
+  scale: 0.99;
 }
 
 .cell:focus-visible {
@@ -391,4 +420,20 @@
   width: 12px;
   height: 12px;
   color: var(--dsw-alias-menu-icon);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .trigger,
+  .chevron,
+  .retry,
+  .searchClear,
+  .option,
+  .cell {
+    transition: none;
+  }
+  .trigger:active:not(:disabled),
+  .searchClear:active,
+  .cell:active {
+    scale: none;
+  }
 }

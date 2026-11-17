@@ -14,6 +14,13 @@
   background: transparent;
   color: var(--dsw-alias-label-primary);
   cursor: pointer;
+  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    border-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.trigger:active {
+  scale: 0.94;
 }
 
 .trigger.wide {
@@ -107,6 +114,14 @@
   font-size: 14px;
   line-height: 22px;
   cursor: pointer;
+  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    border-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    opacity var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.workspaceButton:active:not(:disabled) {
+  scale: 0.98;
 }
 
 .workspaceButton > svg {
@@ -163,4 +178,16 @@
   height: 6px;
   margin-top: 16px;
   accent-color: var(--dsw-alias-state-business-primary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .trigger,
+  .workspaceButton {
+    transition-duration: 0.01ms;
+  }
+
+  .trigger:active,
+  .workspaceButton:active:not(:disabled) {
+    scale: none;
+  }
 }

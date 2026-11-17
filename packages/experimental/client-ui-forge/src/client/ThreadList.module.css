@@ -43,6 +43,12 @@
   color: var(--dsw-alias-label-primary);
   font: inherit;
   cursor: pointer;
+  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.back:active {
+  scale: 0.96;
 }
 
 @media (hover: hover) {
@@ -72,6 +78,13 @@
   background: transparent;
   color: var(--dsw-alias-label-secondary);
   cursor: pointer;
+  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.close:active {
+  scale: 0.92;
 }
 
 @media (hover: hover) {
@@ -113,6 +126,12 @@
   font: inherit;
   text-align: start;
   cursor: pointer;
+  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.item:active {
+  scale: 0.99;
 }
 
 @media (hover: hover) {
@@ -215,4 +234,18 @@
   .title,
   .total,
   .close { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .back,
+  .close,
+  .item {
+    transition-duration: 0.01ms;
+  }
+
+  .back:active,
+  .close:active,
+  .item:active {
+    scale: none;
+  }
 }

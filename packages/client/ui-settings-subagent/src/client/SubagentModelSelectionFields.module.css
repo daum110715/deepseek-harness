@@ -58,6 +58,13 @@
   background: transparent;
   color: var(--dsw-alias-brand-primary);
   cursor: pointer;
+  transition: opacity var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
+}
+
+@media (hover: hover) {
+  .catalogError button:hover {
+    opacity: 0.8;
+  }
 }
 
 .models {
@@ -105,6 +112,7 @@
   padding: 6px;
   border-radius: var(--dsw-radius-md);
   cursor: pointer;
+  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
 }
 
 @media (hover: hover) {
@@ -135,4 +143,11 @@
 .unavailable {
   font-size: 11px;
   color: var(--dsw-alias-label-tertiary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .catalogError button,
+  .model {
+    transition: none;
+  }
 }

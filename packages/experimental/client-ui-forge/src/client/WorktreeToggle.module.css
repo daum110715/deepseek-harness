@@ -26,6 +26,14 @@
   line-height: 20px;
   white-space: nowrap;
   cursor: pointer;
+  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.toggle:active:not([data-disabled]),
+.base:active:not(:disabled) {
+  scale: 0.97;
 }
 
 @media (hover: hover) {
@@ -89,7 +97,7 @@
 .chevron {
   flex: none;
   color: var(--dsw-alias-label-tertiary);
-  transition: transform 120ms ease;
+  transition: transform var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
 }
 
 .chevronOpen {
@@ -128,5 +136,19 @@
   .base,
   .current {
     max-width: 120px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toggle,
+  .base,
+  .current,
+  .chevron {
+    transition-duration: 0.01ms;
+  }
+
+  .toggle:active:not([data-disabled]),
+  .base:active:not(:disabled) {
+    scale: none;
   }
 }

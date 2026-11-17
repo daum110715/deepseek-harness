@@ -55,6 +55,14 @@
   font: inherit;
   font-size: 12px;
   cursor: pointer;
+  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.iconAction:active,
+.textAction:active {
+  scale: 0.94;
 }
 
 @media (hover: hover) {
@@ -370,6 +378,13 @@
   font: inherit;
   font-size: 12px;
   cursor: pointer;
+  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    border-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.subjectChip:active {
+  scale: 0.96;
 }
 
 .requestList {
@@ -398,4 +413,18 @@
 
 .methodDescription:empty {
   display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .iconAction,
+  .textAction,
+  .subjectChip {
+    transition-duration: 0.01ms;
+  }
+
+  .iconAction:active,
+  .textAction:active,
+  .subjectChip:active {
+    scale: none;
+  }
 }

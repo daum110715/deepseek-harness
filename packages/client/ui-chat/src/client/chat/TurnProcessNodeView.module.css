@@ -14,7 +14,7 @@
   font-size: var(--dsh-content-font-size, 14px);
   cursor: pointer;
   text-align: left;
-  transition: color 100ms ease;
+  transition: color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
 }
 
 .root:disabled {
@@ -33,7 +33,7 @@
   height: 14px;
   margin-left: 4px;
   color: inherit;
-  transition: transform 100ms ease;
+  transition: transform var(--dsh-motion-base, 180ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
 }
 
 .root[data-open] .chevron {

@@ -18,8 +18,10 @@
   font: inherit;
   text-align: left;
   cursor: pointer;
-  transition: background-color 120ms ease;
+  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
 }
+.card:active:not(:disabled) { scale: 0.99; }
 @media (hover: hover) {
   .card:hover { background: var(--plan-card-hover); }
 }
@@ -29,7 +31,7 @@
 .cardTitle { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 13px; font-weight: 500; line-height: 20px; }
 .cardDescription { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--dsw-alias-label-tertiary); font-size: 10px; line-height: 16px; }
 .cardOpen { box-sizing: border-box; display: inline-flex; flex: none; align-items: center; height: 28px; padding: 4px 8px; border: 0.5px solid var(--dsw-alias-border-l3); border-radius: var(--dsw-radius-sm); background: var(--dsw-alias-button-floating-fill); font-size: 12px; line-height: 18px; }
-.reviewLink { display: inline-flex; align-items: center; gap: 4px; padding: 0; border: 0; background: transparent; color: var(--dsw-alias-label-secondary); font: inherit; cursor: pointer; }
+.reviewLink { display: inline-flex; align-items: center; gap: 4px; padding: 0; border: 0; background: transparent; color: var(--dsw-alias-label-secondary); font: inherit; cursor: pointer; transition: color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)); }
 @media (hover: hover) {
   .reviewLink:hover { color: var(--dsw-alias-label-primary); }
 }
@@ -40,4 +42,13 @@
 .titleIcon { flex: none; }
 @media (max-width: 767px) {
   .preview { padding: 16px 18px 32px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .reviewLink {
+    transition: none;
+  }
+  .card:active:not(:disabled) {
+    scale: none;
+  }
 }

@@ -16,6 +16,13 @@
   line-height: 20px;
   font-weight: 500;
   cursor: pointer;
+  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.trigger:active:not(:disabled) {
+  scale: 0.97;
 }
 
 @media (hover: hover) {
@@ -82,7 +89,7 @@
   display: inline-flex;
   flex: 0 0 auto;
   color: var(--dsw-alias-label-caption);
-  transition: transform 120ms ease;
+  transition: transform var(--dsh-motion-base, 180ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
 }
 
 /* Narrow composer: mode text collapses while icons stay visible.
@@ -99,4 +106,14 @@
 
 .chevronOpen {
   transform: rotate(180deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .trigger,
+  .chevron {
+    transition: none;
+  }
+  .trigger:active:not(:disabled) {
+    scale: none;
+  }
 }

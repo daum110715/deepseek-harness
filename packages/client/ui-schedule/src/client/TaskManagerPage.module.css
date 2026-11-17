@@ -175,6 +175,13 @@
   line-height: 22px;
   white-space: nowrap;
   cursor: pointer;
+  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.filterTab:active {
+  scale: 0.97;
 }
 
 @media (hover: hover) {
@@ -222,7 +229,7 @@
   border: 0.5px solid var(--dsw-alias-border-l3);
   border-radius: 12px;
   color: var(--dsw-alias-label-tertiary);
-  transition: border-color 0.15s;
+  transition: border-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
 }
 
 @media (hover: hover) {
@@ -314,6 +321,7 @@
   border-radius: 12px;
   text-align: left;
   white-space: normal;
+  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
 }
 
 @media (hover: hover) {
@@ -687,6 +695,7 @@
   font-weight: 500;
   color: var(--dsw-alias-label-tertiary);
   cursor: pointer;
+  transition: color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
 }
 
 .detailTab::after {
@@ -698,6 +707,11 @@
   height: 2px;
   border-radius: 2px;
   background: transparent;
+  opacity: 0;
+  scale: 0 1;
+  transition: opacity var(--dsh-motion-base, 180ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1)),
+    scale var(--dsh-motion-base, 180ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1)),
+    background-color var(--dsh-motion-base, 180ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
 }
 
 .detailTab[aria-selected="true"] {
@@ -706,6 +720,8 @@
 
 .detailTab[aria-selected="true"]::after {
   background: var(--dsw-alias-state-business-primary);
+  opacity: 1;
+  scale: 1 1;
 }
 
 /* The theme's WebKit bar takes layout space: the reservation keeps the content
@@ -890,7 +906,7 @@
   min-height: 32px;
   padding: 0 8px;
   border-radius: 18px;
-  transition: background 0.15s;
+  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
 }
 
 @media (hover: hover) {
@@ -969,7 +985,7 @@
   font: inherit;
   font-size: 14px;
   text-align: right;
-  transition: background 0.15s;
+  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
 }
 
 @media (hover: hover) {
@@ -1066,6 +1082,12 @@
   background: color-mix(in srgb, var(--dsw-alias-bg-layer-1) 75%, transparent);
   color: var(--dsw-alias-label-primary);
   cursor: pointer;
+  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.ruleIntervalArrow:active:not(:disabled) {
+  scale: 0.9;
 }
 
 @media (hover: hover) {
@@ -1126,7 +1148,7 @@
   font-size: 14px;
   line-height: 24px;
   resize: none;
-  transition: border-color 0.15s;
+  transition: border-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
   /* The inset thumb and the vertical track margin keep the bar inside the
      box's rounded corners (rendered by ui-theme styles/scrollbar.css). */
   --dsh-scrollbar-width: 9px;
@@ -1263,6 +1285,7 @@
   font-size: 12px;
   line-height: 20px;
   cursor: pointer;
+  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
 }
 
 @media (hover: hover) {
@@ -1439,5 +1462,24 @@
   .ruleInput,
   .zoneSearch {
     font-size: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .filterTab,
+  .searchField,
+  .row,
+  .detailTab,
+  .detailTab::after,
+  .ruleValueFace,
+  .ruleInput,
+  .ruleIntervalArrow,
+  .instruction,
+  .savedPromptToggle {
+    transition: none;
+  }
+  .filterTab:active,
+  .ruleIntervalArrow:active:not(:disabled) {
+    scale: none;
   }
 }
