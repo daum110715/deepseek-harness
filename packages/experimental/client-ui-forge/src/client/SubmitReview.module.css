@@ -7,7 +7,7 @@
 .summary { display: flex; flex-direction: column; gap: 8px; }
 .hint { color: var(--dsw-alias-label-secondary); }
 .decisions { display: flex; flex-wrap: wrap; gap: 8px 20px; }
-.decisions label { display: inline-flex; align-items: center; gap: 6px; min-height: 28px; color: var(--dsw-alias-label-primary); cursor: pointer; transition: color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)), opacity var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)); }
+.decisions label { display: inline-flex; align-items: center; gap: 6px; min-height: 28px; color: var(--dsw-alias-label-primary); cursor: pointer; transition: color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1)), opacity var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1)); }
 .decisions input { flex: none; width: 16px; height: 16px; margin: 0; accent-color: var(--dsw-alias-brand-primary); cursor: inherit; }
 .decisions input:focus-visible { outline: var(--dsw-focus-ring-width) solid var(--dsw-focus-ring-color, var(--dsw-alias-state-business-primary)); outline-offset: 2px; }
 .decisions label:has(input:disabled) { cursor: default; opacity: 0.5; }
@@ -22,7 +22,7 @@
   --dsh-scrollbar-thumb: var(--dsw-alias-scrollbar-bg-l2);
   --dsh-scrollbar-thumb-hover: var(--dsw-alias-scrollbar-hover-l2);
   background: var(--dsw-alias-bg-layer-2);
-  animation: dsh-forge-confirm-in var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+  animation: dsh-forge-confirm-in var(--dsh-motion-fast, 140ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
 }
 .confirmText { flex: 1 1 auto; min-width: 0; overflow-wrap: anywhere; }
 

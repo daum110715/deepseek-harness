@@ -5,8 +5,8 @@
 
 .anchor .warning {
   color: var(--dsw-alias-state-warn-label);
-  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
+  transition: background-color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1)),
+    color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 @media (hover: hover) {
@@ -54,19 +54,15 @@
   height: fit-content;
   min-height: 0;
   margin: 0;
-  animation: dsh-font-notice-in var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+  animation: dsh-font-notice-in var(--dsh-motion-fast, 140ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
 }
 
 @keyframes dsh-font-notice-in {
   from {
     opacity: 0;
-    scale: 0.96;
-    translate: 0 -4px;
   }
   to {
     opacity: 1;
-    scale: 1;
-    translate: 0 0;
   }
 }
 

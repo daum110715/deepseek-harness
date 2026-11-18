@@ -29,13 +29,8 @@
   line-height: 20px;
   font-weight: 400;
   cursor: pointer;
-  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
-}
-
-.trigger:active:not(:disabled) {
-  scale: 0.97;
+  transition: background-color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1)),
+    color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 @media (hover: hover) {
@@ -89,7 +84,7 @@
 .chevron {
   flex: 0 0 auto;
   color: var(--dsw-alias-label-caption);
-  transition: transform var(--dsh-motion-base, 180ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+  transition: transform var(--dsh-motion-base, 200ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
 }
 
 .chevronOpen {
@@ -177,7 +172,7 @@
   font: inherit;
   font-weight: 600;
   cursor: pointer;
-  transition: opacity var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
+  transition: opacity var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 @media (hover: hover) {
@@ -222,13 +217,8 @@
   background: transparent;
   color: var(--dsw-alias-label-secondary);
   cursor: pointer;
-  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
-}
-
-.searchClear:active {
-  scale: 0.9;
+  transition: background-color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1)),
+    color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 .searchClear:focus-visible {
@@ -285,8 +275,8 @@
   color: inherit;
   text-align: left;
   cursor: pointer;
-  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
+  transition: background-color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1)),
+    color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 .option:focus-visible,
@@ -382,12 +372,7 @@
   cursor: pointer;
   text-align: left;
   outline: none;
-  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
-}
-
-.cell:active {
-  scale: 0.99;
+  transition: background-color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 .cell:focus-visible {
@@ -430,10 +415,5 @@
   .option,
   .cell {
     transition: none;
-  }
-  .trigger:active:not(:disabled),
-  .searchClear:active,
-  .cell:active {
-    scale: none;
   }
 }

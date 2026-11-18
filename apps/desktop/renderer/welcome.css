@@ -169,12 +169,7 @@ body {
     background-color var(--ds-transition-duration) var(--ds-ease-in-out),
     border-color var(--ds-transition-duration) var(--ds-ease-in-out),
     opacity var(--ds-transition-duration) var(--ds-ease-in-out),
-    color var(--ds-transition-duration-slow) var(--ds-ease-in-out),
-    scale 120ms cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.actions button:active:not(:disabled) {
-  scale: 0.97;
+    color var(--ds-transition-duration-slow) var(--ds-ease-in-out);
 }
 
 .actions button:disabled {
@@ -245,10 +240,6 @@ body {
     transition: none;
   }
 
-  .actions button:active:not(:disabled),
-  .auth-waiting .copy-link:active:not(:disabled) {
-    scale: none;
-  }
 }
 
 .actions .secondary:hover:not(:disabled) {
@@ -344,7 +335,6 @@ body {
 #auth-status { font-size: 20px; line-height: 24px; font-weight: 400; letter-spacing: normal; }
 .auth-expired p { line-height: 16px; letter-spacing: normal; }
 
-
 .auth-waiting { gap: 12px; padding-top: 28px; }
 .auth-waiting p { line-height: 16px; letter-spacing: normal; }
 .auth-waiting .copy-link {
@@ -364,13 +354,9 @@ body {
   app-region: no-drag;
   text-decoration: underline;
   transition: color var(--ds-transition-duration) var(--ds-ease-in-out),
-    opacity var(--ds-transition-duration) var(--ds-ease-in-out),
-    scale 120ms cubic-bezier(0.16, 1, 0.3, 1);
+    opacity var(--ds-transition-duration) var(--ds-ease-in-out);
 }
 
-.auth-waiting .copy-link:active:not(:disabled) {
-  scale: 0.97;
-}
 #auth-loading:disabled { opacity: 1; }
 .actions .welcome-loading { color: inherit; }
 

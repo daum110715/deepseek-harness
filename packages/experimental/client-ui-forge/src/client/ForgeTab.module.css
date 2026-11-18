@@ -15,7 +15,6 @@
   line-height: 20px;
 }
 
-
 /* Loading and disconnected states of a panel without state yet. */
 .centered {
   display: flex;
@@ -137,13 +136,8 @@
   background: transparent;
   color: var(--dsw-alias-label-tertiary);
   cursor: pointer;
-  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
-}
-
-.iconButton:active {
-  scale: 0.92;
+  transition: background-color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1)),
+    color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 .iconButton:focus-visible {
@@ -337,7 +331,7 @@
 .chevron {
   flex: none;
   color: var(--dsw-alias-label-tertiary);
-  transition: transform var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+  transition: transform var(--dsh-motion-fast, 140ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
 }
 
 .chevronOpen {
@@ -443,12 +437,7 @@
 
 .rowButton {
   cursor: pointer;
-  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
-}
-
-.rowButton:active {
-  scale: 0.99;
+  transition: background-color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 .rowButton[aria-expanded='true'] {
@@ -588,7 +577,7 @@
 .mergeCaret {
   flex: none;
   transform: rotate(90deg);
-  transition: transform var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+  transition: transform var(--dsh-motion-fast, 140ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
 }
 
 .mergeCaretOpen {
@@ -647,8 +636,4 @@
     transition-duration: 0.01ms;
   }
 
-  .iconButton:active,
-  .rowButton:active {
-    scale: none;
-  }
 }

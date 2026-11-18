@@ -337,9 +337,9 @@
   height: 14px;
   background: var(--dsw-alias-border-l4);
   transition:
-    background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    width var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.22, 1, 0.36, 1)),
-    height var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.22, 1, 0.36, 1));
+    background-color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1)),
+    width var(--dsh-motion-fast, 140ms) var(--dsh-ease-out, cubic-bezier(0.22, 1, 0.36, 1)),
+    height var(--dsh-motion-fast, 140ms) var(--dsh-ease-out, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 /* The active chip is a filled tab and needs no rule against it: the two
@@ -378,9 +378,9 @@
   touch-action: none;
   user-select: none;
   transition:
-    background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    opacity var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
+    background-color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1)),
+    color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1)),
+    opacity var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 /* A flex row with a 5px gap, so an embedder's leading glyph (`renderTabTitle`)
@@ -446,14 +446,9 @@
      trailing 20px would close the tab instead of activating it. */
   pointer-events: none;
   transition:
-    opacity var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
-}
-
-.tabClose:active {
-  scale: 0.9;
+    opacity var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1)),
+    background-color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1)),
+    color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 /* Shown while the chip is hovered or holds focus, and always on the active
@@ -487,13 +482,8 @@
   border-radius: var(--dsw-radius-sm);
   cursor: pointer;
   transition:
-    background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
-}
-
-.addTab:active {
-  scale: 0.94;
+    background-color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1)),
+    color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 @media (hover: hover) {
@@ -571,13 +561,8 @@
   border-radius: var(--dsw-radius-sm);
   cursor: pointer;
   transition:
-    background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
-}
-
-.iconButton:active:not(:disabled) {
-  scale: 0.94;
+    background-color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1)),
+    color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 .iconButton svg {
@@ -629,7 +614,7 @@
   border: none;
   border-radius: var(--dsw-radius-md);
   cursor: pointer;
-  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
+  transition: background-color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 @media (hover: hover) {
@@ -836,17 +821,15 @@
   --dsw-elevation-stroke-color: var(--dsw-alias-border-l2);
   box-shadow: var(--dsw-elevation-prominent);
   pointer-events: auto;
-  animation: dockFloatIn var(--dsh-motion-base, 180ms) var(--dsh-ease-out, cubic-bezier(0.22, 1, 0.36, 1));
+  animation: dockFloatIn var(--dsh-motion-base, 200ms) var(--dsh-ease-out, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 @keyframes dockFloatIn {
   from {
     opacity: 0;
-    scale: 0.985;
   }
   to {
     opacity: 1;
-    scale: 1;
   }
 }
 
@@ -953,9 +936,4 @@
     animation: none;
   }
 
-  .tabClose:active,
-  .addTab:active,
-  .iconButton:active:not(:disabled) {
-    scale: none;
-  }
 }

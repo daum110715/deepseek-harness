@@ -43,13 +43,8 @@
   background: transparent;
   cursor: pointer;
   font: var(--dsw-font-xxs-12);
-  transition: color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
-}
-
-.toggle:active {
-  scale: 0.96;
+  transition: color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1)),
+    background-color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 @media (hover: hover) {
@@ -95,13 +90,8 @@
   background: transparent;
   cursor: pointer;
   font: var(--dsw-font-xxs-12);
-  transition: color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
-}
-
-.control:active:not(:disabled) {
-  scale: 0.96;
+  transition: color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1)),
+    background-color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 .control[hidden] {
@@ -173,13 +163,8 @@
   background: transparent;
   cursor: pointer;
   font: var(--dsw-font-xxs-12);
-  transition: color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
-}
-
-.action:active {
-  scale: 0.96;
+  transition: color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1)),
+    background-color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 @media (hover: hover) {
@@ -212,8 +197,8 @@
   border-radius: var(--dsw-radius-sm);
   color: var(--dsw-alias-label-caption);
   background: var(--dsw-alias-bg-layer-2);
-  transition: border-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
+  transition: border-color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1)),
+    background-color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 @media (hover: hover) {
@@ -262,9 +247,4 @@
     transition-duration: 0.01ms;
   }
 
-  .toggle:active,
-  .control:active:not(:disabled),
-  .action:active {
-    scale: none;
-  }
 }

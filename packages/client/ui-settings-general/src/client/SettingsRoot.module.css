@@ -35,12 +35,7 @@
   font-family: inherit;
   font-size: 14px;
   line-height: 22px;
-  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
-}
-
-.trigger:active {
-  scale: 0.98;
+  transition: background-color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 @media (hover: hover) {
@@ -85,7 +80,7 @@
   inset: var(--dsh-frame-chrome-top, 0px) 0 0;
   background: var(--dsw-alias-bg-mask-1);
   backdrop-filter: var(--dsw-mask-blur);
-  animation: dsh-settings-mask-in var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+  animation: dsh-settings-mask-in var(--dsh-motion-fast, 140ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
 }
 
 @keyframes dsh-settings-mask-in {
@@ -127,18 +122,16 @@
      styles/scrollbar.css for the rebinding contract). */
   --dsh-scrollbar-thumb: var(--dsw-alias-scrollbar-bg-l2);
   --dsh-scrollbar-thumb-hover: var(--dsw-alias-scrollbar-hover-l2);
-  animation: dsh-settings-panel-in var(--dsh-motion-panel, 220ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+  animation: dsh-settings-panel-in var(--dsh-motion-panel, 260ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
 }
 
 @keyframes dsh-settings-panel-in {
   from {
     opacity: 0;
-    scale: 0.97;
     translate: 0 8px;
   }
   to {
     opacity: 1;
-    scale: 1;
     translate: 0 0;
   }
 }
@@ -199,13 +192,8 @@
   font-weight: 400;
   color: var(--dsw-alias-label-primary);
   text-align: left;
-  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
-}
-
-.navCell:active {
-  scale: 0.98;
+  transition: background-color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1)),
+    color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 @media (hover: hover) {
@@ -266,12 +254,7 @@
   background: transparent;
   cursor: pointer;
   color: var(--dsw-alias-label-primary);
-  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
-}
-
-.close:active {
-  scale: 0.92;
+  transition: background-color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 @media (hover: hover) {
@@ -384,11 +367,6 @@
   .navCell,
   .close {
     transition: none;
-  }
-  .trigger:active,
-  .navCell:active,
-  .close:active {
-    scale: none;
   }
 }
 

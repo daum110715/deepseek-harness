@@ -49,13 +49,8 @@
   color: var(--dsw-alias-label-primary);
   text-align: start;
   cursor: pointer;
-  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    border-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
-}
-
-.selector:active:not(:disabled) {
-  scale: 0.99;
+  transition: background-color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1)),
+    border-color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 .selector:focus-visible {
@@ -84,7 +79,7 @@
 .chevron {
   flex: none;
   color: var(--dsw-alias-label-tertiary);
-  transition: transform var(--dsh-motion-base, 180ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+  transition: transform var(--dsh-motion-base, 200ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
 }
 
 .selector[aria-expanded='true'] .chevron {
@@ -153,7 +148,7 @@
 .link {
   color: var(--dsw-alias-link);
   text-decoration: none;
-  transition: opacity var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
+  transition: opacity var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 @media (hover: hover) {
@@ -167,8 +162,5 @@
   .chevron,
   .link {
     transition: none;
-  }
-  .selector:active:not(:disabled) {
-    scale: none;
   }
 }

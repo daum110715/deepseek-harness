@@ -16,14 +16,13 @@
 .interactive {
   cursor: pointer;
   transition:
-    background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    box-shadow var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
+    background-color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1)),
+    color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1)),
+    box-shadow var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 .interactive:active:not(:disabled) {
-  scale: 0.97;
+  background: var(--dsw-alias-interactive-bg-active);
 }
 
 @media (hover: hover) {
@@ -41,9 +40,5 @@
 @media (prefers-reduced-motion: reduce) {
   .interactive {
     transition: none;
-  }
-
-  .interactive:active:not(:disabled) {
-    scale: none;
   }
 }

@@ -37,7 +37,7 @@
   color: transparent;
   background: var(--dsw-alias-bg-skeleton);
   border-radius: var(--dsw-radius-xs);
-  animation: dsh-cua-skeleton-pulse 1.5s var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)) infinite;
+  animation: dsh-cua-skeleton-pulse 1.5s var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1)) infinite;
 }
 .skeletonCopy p { color: transparent; }
 .appPlaceholder { width: 160px; height: 1.6em; }
@@ -49,7 +49,7 @@
   max-width: 100%;
   border-radius: var(--dsw-radius-xs);
   background: var(--dsw-alias-bg-skeleton);
-  animation: dsh-cua-skeleton-pulse 1.5s var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)) infinite;
+  animation: dsh-cua-skeleton-pulse 1.5s var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1)) infinite;
 }
 .buttonPlaceholder { height: 28px; }
 .appsPlaceholder { display: block; color: transparent; }

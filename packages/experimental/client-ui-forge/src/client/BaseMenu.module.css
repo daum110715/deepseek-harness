@@ -20,12 +20,7 @@
   font: inherit;
   font-family: var(--ds-font-family-code);
   cursor: pointer;
-  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
-}
-
-.trigger:active {
-  scale: 0.97;
+  transition: background-color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 .trigger[aria-expanded='true'] {
@@ -157,9 +152,6 @@
     transition-duration: 0.01ms;
   }
 
-  .trigger:active {
-    scale: none;
-  }
 }
 
 @media (pointer: coarse) {

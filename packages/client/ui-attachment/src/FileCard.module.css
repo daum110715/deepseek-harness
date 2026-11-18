@@ -98,12 +98,7 @@
   color: var(--dsw-alias-label-primary-inverted);
   opacity: 0;
   cursor: pointer;
-  transition: opacity var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
-}
-
-.remove:active {
-  scale: 0.9;
+  transition: opacity var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 .remove:focus-visible {
@@ -125,9 +120,6 @@
 @media (prefers-reduced-motion: reduce) {
   .remove {
     transition: none;
-  }
-  .remove:active {
-    scale: none;
   }
   .spinner,
   .progressBar {

@@ -63,8 +63,8 @@
   line-height: 20px;
   color: var(--dsw-alias-label-primary);
   text-align: left;
-  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
+  transition: background-color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1)),
+    color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 /* One shared highlight: pointer motion parks it here through the hover event,
@@ -184,8 +184,8 @@
   height: 18px;
   border-radius: var(--dsw-radius-xs);
   color: var(--dsw-alias-menu-icon);
-  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
+  transition: background-color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1)),
+    color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 @media (hover: hover) {
@@ -261,12 +261,8 @@
   line-height: 16px;
   text-overflow: ellipsis;
   white-space: nowrap;
-  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
-}
-.crumb:active:not(:disabled) {
-  scale: 0.97;
+  transition: background-color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1)),
+    color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
 }
 @media (hover: hover) {
   .crumb:hover {
@@ -279,9 +275,6 @@
   background: transparent;
   color: var(--dsw-alias-label-primary);
   cursor: default;
-}
-.crumbCurrent:active:not(:disabled) {
-  scale: none;
 }
 
 @media (hover: hover) {
@@ -302,9 +295,6 @@
   .drill,
   .crumb {
     transition: none;
-  }
-  .crumb:active:not(:disabled) {
-    scale: none;
   }
   .skeletonBar {
     animation: none;

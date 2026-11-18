@@ -21,7 +21,7 @@
   inset: 0;
   background: var(--dsw-alias-bg-mask-1);
   backdrop-filter: var(--dsw-mask-blur);
-  animation: lightboxMaskEnter var(--dsh-motion-base, 180ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
+  animation: lightboxMaskEnter var(--dsh-motion-base, 200ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 .image {
@@ -33,7 +33,7 @@
   background: var(--dsw-specific-input-major);
   border: 0;
   box-shadow: var(--dsw-elevation-prominent);
-  animation: lightboxImageEnter var(--dsh-motion-panel, 220ms) var(--dsh-ease-out, cubic-bezier(0.22, 1, 0.36, 1));
+  animation: lightboxImageEnter var(--dsh-motion-panel, 260ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
 }
 
 .close {
@@ -51,11 +51,10 @@
   background: var(--dsw-specific-input-major);
   color: var(--dsw-alias-label-primary);
   cursor: pointer;
-  animation: lightboxMaskEnter var(--dsh-motion-base, 180ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
+  animation: lightboxMaskEnter var(--dsh-motion-base, 200ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
   transition:
-    background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
+    background-color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1)),
+    color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 @media (hover: hover) {
@@ -65,7 +64,7 @@
 }
 
 .close:active {
-  scale: 0.94;
+  background: var(--dsw-alias-interactive-bg-active);
 }
 
 .close:focus-visible { outline: var(--dsw-focus-ring-width) solid var(--dsw-focus-ring-color, var(--dsw-alias-state-business-primary)); outline-offset: 3px; }
@@ -78,11 +77,9 @@
 @keyframes lightboxImageEnter {
   from {
     opacity: 0;
-    scale: 0.96;
   }
   to {
     opacity: 1;
-    scale: 1;
   }
 }
 
@@ -92,9 +89,5 @@
   .close {
     animation: none;
     transition: none;
-  }
-
-  .close:active {
-    scale: none;
   }
 }

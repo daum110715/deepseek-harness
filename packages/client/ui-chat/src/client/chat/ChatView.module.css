@@ -339,14 +339,9 @@
   color: var(--dsw-alias-label-secondary);
   background: var(--dsw-alias-interactive-bg-hover-solid);
   cursor: pointer;
-  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    opacity var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
-}
-
-.older button:active:not(:disabled) {
-  scale: 0.97;
+  transition: background-color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1)),
+    color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1)),
+    opacity var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 .older button > span {
@@ -410,26 +405,19 @@
   box-shadow: var(--dsw-elevation-panel);
   cursor: pointer;
   pointer-events: auto;
-  animation: dsh-to-bottom-in var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
-  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+  animation: dsh-to-bottom-in var(--dsh-motion-fast, 140ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+  transition: background-color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 @keyframes dsh-to-bottom-in {
   from {
     opacity: 0;
-    scale: 0.9;
     translate: 0 6px;
   }
   to {
     opacity: 1;
-    scale: 1;
     translate: 0 0;
   }
-}
-
-.toBottom:active {
-  scale: 0.92;
 }
 
 @media (hover: hover) {
@@ -460,9 +448,5 @@
   }
   .toBottom {
     animation: none;
-  }
-  .older button:active:not(:disabled),
-  .toBottom:active {
-    scale: none;
   }
 }

@@ -24,7 +24,7 @@
   flex: none;
   max-width: none;
   margin: auto;
-  animation: dsh-preview-image-in var(--dsh-motion-base, 180ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+  animation: dsh-preview-image-in var(--dsh-motion-base, 200ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
 }
 
 @keyframes dsh-preview-image-in {

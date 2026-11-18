@@ -129,9 +129,6 @@
     transition: none;
   }
 
-  .iconButton:active {
-    scale: none;
-  }
 }
 
 /* The geometry of a message's action row button (ui-chat MessageIconActions),
@@ -151,13 +148,8 @@
   border-radius: var(--dsw-radius-sm);
   cursor: pointer;
   transition:
-    background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
-}
-
-.iconButton:active {
-  scale: 0.94;
+    background-color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1)),
+    color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 .iconButton svg {

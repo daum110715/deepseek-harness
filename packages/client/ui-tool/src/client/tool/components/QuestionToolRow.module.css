@@ -16,12 +16,7 @@
   line-height: 1;
   white-space: nowrap;
   cursor: pointer;
-  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
-}
-
-.panelButton:active {
-  scale: 0.96;
+  transition: background-color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 .panelButton svg {
@@ -38,8 +33,5 @@
 @media (prefers-reduced-motion: reduce) {
   .panelButton {
     transition: none;
-  }
-  .panelButton:active {
-    scale: none;
   }
 }

@@ -154,19 +154,14 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   cursor: pointer;
-  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+  transition: background-color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1)),
+    color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 @media (hover: hover) {
   button.crumb:hover {
     background: var(--dsw-alias-interactive-bg-hover);
   }
-}
-
-button.crumb:active:not(:disabled) {
-  scale: 0.97;
 }
 
 .crumbCurrent {
@@ -279,7 +274,7 @@ button.crumb:active:not(:disabled) {
   font-weight: 500;
   color: var(--dsw-alias-label-tertiary);
   cursor: pointer;
-  transition: color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
+  transition: color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 @media (hover: hover) {
@@ -296,12 +291,9 @@ button.crumb:active:not(:disabled) {
   left: var(--dsh-tab-hit-inline);
   height: 2px;
   border-radius: 2px;
-  background: transparent;
+  background: var(--dsw-alias-state-business-primary);
   opacity: 0;
-  scale: 0 1;
-  transition: opacity var(--dsh-motion-base, 180ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1)),
-    scale var(--dsh-motion-base, 180ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1)),
-    background-color var(--dsh-motion-base, 180ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+  transition: opacity var(--dsh-motion-base, 200ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
 }
 
 /* Selected tab is blue, not ink: brand-primary resolves to neutral black in
@@ -312,9 +304,7 @@ button.crumb:active:not(:disabled) {
 }
 
 .tabActive::after {
-  background: var(--dsw-alias-state-business-primary);
   opacity: 1;
-  scale: 1 1;
 }
 
 /* The More launcher centers its 22px box on the tab's 16px text line. */
@@ -409,7 +399,7 @@ button.crumb:active:not(:disabled) {
   );
   opacity: 0;
   pointer-events: none;
-  transition: opacity var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
+  transition: opacity var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 .widthHandle[data-side='left']::after {
@@ -675,8 +665,5 @@ button.crumb:active:not(:disabled) {
   .tab::after,
   .widthHandle::after {
     transition: none;
-  }
-  button.crumb:active:not(:disabled) {
-    scale: none;
   }
 }

@@ -56,7 +56,7 @@
   max-width: none;
   margin-inline: auto;
   box-shadow: var(--dsw-elevation-prominent);
-  animation: dsh-pdf-page-in var(--dsh-motion-base, 180ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+  animation: dsh-pdf-page-in var(--dsh-motion-base, 200ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
 }
 
 @keyframes dsh-pdf-page-in {

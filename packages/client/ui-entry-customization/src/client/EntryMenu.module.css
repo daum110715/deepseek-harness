@@ -11,7 +11,7 @@
   transform: translateY(-50%);
   opacity: 0;
   pointer-events: none;
-  transition: opacity var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
+  transition: opacity var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
 }
 .pinAnchor {
   position: absolute;
@@ -20,26 +20,21 @@
   bottom: 0;
   display: flex;
   align-items: center;
-  transition: opacity var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
+  transition: opacity var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
 }
 .pinButton {
   width: 22px;
   height: 22px;
   padding: 0;
   color: var(--dsw-alias-label-tertiary);
-  transition: color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
-}
-
-.pinButton:active:not(:disabled) {
-  scale: 0.9;
+  transition: color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 .sidebarEntry .pinButton:active:not(:disabled) { background: transparent; }
 
 @media (hover: hover) {
   .sidebarEntry > div:first-child > button {
-    transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
+    transition: background-color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
   }
   .sidebarEntry:hover > div:first-child > button { background: var(--dsw-alias-interactive-bg-hover); }
   .sidebarEntry .pinButton:hover:not(:disabled) {
@@ -60,8 +55,5 @@
   .pinButton,
   .sidebarEntry > div:first-child > button {
     transition: none;
-  }
-  .pinButton:active:not(:disabled) {
-    scale: none;
   }
 }

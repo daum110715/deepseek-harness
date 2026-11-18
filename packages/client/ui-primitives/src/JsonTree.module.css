@@ -246,7 +246,7 @@
   height: 16px;
   opacity: 0;
   pointer-events: none;
-  transition: opacity var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
+  transition: opacity var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 .row > .copySlot {
@@ -293,12 +293,7 @@
   background: transparent;
   cursor: pointer;
   transition:
-    color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
-}
-
-.actionButton:active {
-  scale: 0.92;
+    color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 @media (hover: hover) {
@@ -346,7 +341,7 @@
   content: '';
   transform: scale(0.75);
   transform-origin: 33.333% center;
-  transition: transform var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.22, 1, 0.36, 1));
+  transition: transform var(--dsh-motion-fast, 140ms) var(--dsh-ease-out, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 .collapseIcon::before {
@@ -386,7 +381,4 @@
     transition: none;
   }
 
-  .actionButton:active {
-    scale: none;
-  }
 }

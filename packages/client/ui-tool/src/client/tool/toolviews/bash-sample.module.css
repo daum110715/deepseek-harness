@@ -19,7 +19,6 @@
   --dsl-terminal-command-whitespace: pre-wrap;
   margin: 4px 0 4px 4px;
   border: 0.5px solid var(--dsw-alias-border-l1);
-  animation: dsh-bash-body-in var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
 }
 
 /* A bash execution error can settle without terminal-card material (for
@@ -33,18 +32,6 @@
   border-radius: var(--dsw-radius-lg);
   background: var(--dsw-alias-markdown-code-block);
   font: var(--dsw-font-markdown-code-block-small);
-  animation: dsh-bash-body-in var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
-}
-
-@keyframes dsh-bash-body-in {
-  from {
-    opacity: 0;
-    translate: 0 -4px;
-  }
-  to {
-    opacity: 1;
-    translate: 0 0;
-  }
 }
 
 .ioSection {
@@ -238,14 +225,9 @@
   line-height: 16px;
   cursor: pointer;
   opacity: 0;
-  transition: opacity var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
-}
-
-.inspectButton:active {
-  scale: 0.96;
+  transition: opacity var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1)),
+    background-color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1)),
+    color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 .inspectButton:focus-visible {
@@ -266,7 +248,6 @@
     color: var(--dsw-alias-label-primary);
   }
 }
-
 
 .visuallyHidden {
   position: absolute;
@@ -290,8 +271,5 @@
   .chevronHover,
   .inspectButton {
     transition: none;
-  }
-  .inspectButton:active {
-    scale: none;
   }
 }

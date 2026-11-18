@@ -58,7 +58,7 @@
   line-height: 20px;
   word-break: break-word;
   text-decoration: none;
-  transition: opacity var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
+  transition: opacity var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 /* Leading URL glyph inside source and fetch links; rides the link color.
@@ -122,7 +122,7 @@
   line-height: 19px;
   word-break: break-all;
   text-decoration: none;
-  transition: opacity var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
+  transition: opacity var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 .fetchUrl:focus-visible {

@@ -2,11 +2,11 @@
 .field + .field { border-top: 0.5px solid var(--dsw-alias-border-l2); }
 .head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
 .head label { color: var(--dsw-alias-label-primary); font-size: 13px; font-weight: 500; }
-.head button { border: none; background: none; color: var(--dsw-alias-label-secondary); font: inherit; cursor: pointer; transition: color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)); }
+.head button { border: none; background: none; color: var(--dsw-alias-label-secondary); font: inherit; cursor: pointer; transition: color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1)); }
 .field input, .field select, .field textarea {
   padding: 6px 12px; border: 0.5px solid var(--dsw-alias-border-l4); border-radius: var(--dsw-radius-md);
   background: var(--dsw-alias-bg-layer-3); color: var(--dsw-alias-label-primary); font: inherit;
-  transition: border-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
+  transition: border-color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
 }
 .field textarea { resize: vertical; }
 .field [aria-invalid='true'] { border-color: var(--dsw-alias-state-error-primary); }

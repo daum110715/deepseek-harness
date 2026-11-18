@@ -16,7 +16,7 @@
   font-family: Inter, var(--dsw-font-family);
   overflow-y: auto;
   resize: none;
-  transition: border-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
+  transition: border-color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 .editor:focus {

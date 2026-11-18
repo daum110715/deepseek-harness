@@ -13,7 +13,7 @@
   -webkit-user-select: none;
   user-select: none;
   color: var(--dsw-alias-label-primary);
-  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
+  transition: background-color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 @media (hover: hover) {
@@ -46,7 +46,7 @@
   cursor: pointer;
   text-align: left;
   color: var(--dsw-alias-label-primary);
-  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
+  transition: background-color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 @media (hover: hover) {
@@ -154,7 +154,6 @@
   color: var(--dsw-alias-state-business-primary);
 }
 
-
 /* Project leading slot: folder by default, expand arrow on row hover. */
 .projectRow .chevron { display: none; }
 @media (hover: hover) {
@@ -165,7 +164,7 @@
 
 /* Expand arrow (filled triangle): points right closed, rotates to point down open. */
 .arrow {
-  transition: transform var(--dsh-motion-base, 180ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+  transition: transform var(--dsh-motion-base, 200ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
 }
 
 .arrowOpen {
@@ -466,12 +465,7 @@
   background: transparent;
   cursor: pointer;
   color: var(--dsw-alias-label-tertiary);
-  transition: color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
-}
-
-.iconButton:active {
-  scale: 0.9;
+  transition: color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 /* Keep the focus ring on its original compact outline. */
@@ -501,8 +495,5 @@
   .searchResultRow,
   .iconButton {
     transition: none;
-  }
-  .iconButton:active {
-    scale: none;
   }
 }

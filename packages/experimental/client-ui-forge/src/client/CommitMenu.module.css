@@ -21,12 +21,7 @@
   font: inherit;
   white-space: nowrap;
   cursor: pointer;
-  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
-}
-
-.trigger:active {
-  scale: 0.97;
+  transition: background-color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 .chosen .triggerName {
@@ -149,7 +144,4 @@
     transition-duration: 0.01ms;
   }
 
-  .trigger:active {
-    scale: none;
-  }
 }

@@ -218,7 +218,7 @@
   list-style: none;
   cursor: pointer;
   overflow-wrap: anywhere;
-  transition: color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
+  transition: color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 @media (hover: hover) {
@@ -231,20 +231,18 @@
 .group[open] > summary svg { transform: rotate(90deg); }
 .group > summary svg {
   flex: none;
-  transition: transform var(--dsh-motion-base, 180ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+  transition: transform var(--dsh-motion-base, 200ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
 }
 .group .list { max-height: none; overflow: visible; }
 .group[open] .list {
-  animation: dsh-tool-details-open var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+  animation: dsh-tool-details-open var(--dsh-motion-fast, 140ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
 }
 @keyframes dsh-tool-details-open {
   from {
     opacity: 0;
-    translate: 0 -4px;
   }
   to {
     opacity: 1;
-    translate: 0 0;
   }
 }
 .group .item { padding: 9px 0 2px 20px; }

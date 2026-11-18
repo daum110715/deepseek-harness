@@ -44,13 +44,8 @@
   color: var(--dsw-alias-label-primary);
   cursor: pointer;
   transition:
-    background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    border-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
-}
-
-.themeCube:active {
-  scale: 0.985;
+    background-color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1)),
+    border-color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -58,9 +53,6 @@
     transition: none;
   }
 
-  .themeCube:active {
-    scale: none;
-  }
 }
 
 @media (hover: hover) {

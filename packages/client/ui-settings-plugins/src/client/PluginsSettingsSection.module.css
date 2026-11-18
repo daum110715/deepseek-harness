@@ -38,7 +38,7 @@
   font-size: 13px;
   line-height: 20px;
   cursor: pointer;
-  transition: color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
+  transition: color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 .tab[data-active='true'] {
@@ -61,15 +61,12 @@
   background: var(--dsw-alias-label-primary);
   content: '';
   opacity: 0;
-  scale: 0 1;
-  transition: opacity var(--dsh-motion-base, 180ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1)),
-    scale var(--dsh-motion-base, 180ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+  transition: opacity var(--dsh-motion-base, 200ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
 }
 
 .tab[data-active='true']::after,
 .tab:focus-visible::after {
   opacity: 1;
-  scale: 1 1;
 }
 
 .tab:focus-visible {

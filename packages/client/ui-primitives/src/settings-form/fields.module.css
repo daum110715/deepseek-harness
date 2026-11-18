@@ -52,13 +52,8 @@
   color: var(--dsw-alias-label-tertiary);
   cursor: pointer;
   transition:
-    background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
-}
-
-.helpButton:active {
-  scale: 0.94;
+    background-color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1)),
+    color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 .helpButton[aria-expanded='true'] {
@@ -109,7 +104,7 @@
   line-height: 1.5;
   color: var(--dsw-alias-label-secondary);
   cursor: pointer;
-  transition: color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
+  transition: color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 @media (hover: hover) {
@@ -132,7 +127,7 @@
   font-size: 13px;
   line-height: 1.5;
   color: var(--dsw-alias-label-primary);
-  transition: border-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
+  transition: border-color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 .input:focus-visible {
@@ -166,11 +161,9 @@
 @keyframes dsh-settings-help-in {
   from {
     opacity: 0;
-    translate: 0 -4px;
   }
   to {
     opacity: 1;
-    translate: 0 0;
   }
 }
 
@@ -179,10 +172,6 @@
   .reset,
   .input {
     transition: none;
-  }
-
-  .helpButton:active {
-    scale: none;
   }
 
   .help {

@@ -55,14 +55,8 @@
   font: inherit;
   font-size: 12px;
   cursor: pointer;
-  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
-}
-
-.iconAction:active,
-.textAction:active {
-  scale: 0.94;
+  transition: background-color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1)),
+    color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 @media (hover: hover) {
@@ -102,7 +96,6 @@
 .hint { margin: 0; color: var(--dsw-alias-label-secondary); font-size: 12px; }
 .warning { margin: 0; color: var(--dsw-alias-label-primary); font-size: 12px; }
 
-
 .identityName { color: var(--dsw-alias-label-primary); }
 
 .description {
@@ -121,7 +114,6 @@
 
 .accountRow { display: flex; align-items: center; gap: 6px; min-height: 24px; }
 .identityAvatar { width: 20px; height: 20px; border-radius: 50%; corner-shape: round; object-fit: cover; }
-
 
 /* The editable address fills its row, and its value stays readable whether or not it is truncated. */
 .relayInput { flex: 1; min-width: 0; }
@@ -378,13 +370,8 @@
   font: inherit;
   font-size: 12px;
   cursor: pointer;
-  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    border-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
-}
-
-.subjectChip:active {
-  scale: 0.96;
+  transition: background-color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1)),
+    border-color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 .requestList {
@@ -422,9 +409,4 @@
     transition-duration: 0.01ms;
   }
 
-  .iconAction:active,
-  .textAction:active,
-  .subjectChip:active {
-    scale: none;
-  }
 }

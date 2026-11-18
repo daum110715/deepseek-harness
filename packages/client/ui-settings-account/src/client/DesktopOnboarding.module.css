@@ -163,12 +163,7 @@
   text-align: left;
   cursor: pointer;
   backdrop-filter: blur(32.609px);
-  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
-}
-
-.card:active:not([aria-disabled='true']) {
-  scale: 0.99;
+  transition: background-color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 .card::before, .card::after {
@@ -249,8 +244,7 @@
 }
 
 .navigation button { pointer-events: auto; }
-.navigation button { display: flex; align-items: center; gap: 20px; padding: 0; border: 0; background: transparent; color: var(--dsw-alias-label-tertiary); font: inherit; font-size: 16px; font-weight: 300; line-height: 32px; cursor: pointer; transition: color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)), scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1)); }
-.navigation button:active:not(:disabled) { scale: 0.97; }
+.navigation button { display: flex; align-items: center; gap: 20px; padding: 0; border: 0; background: transparent; color: var(--dsw-alias-label-tertiary); font: inherit; font-size: 16px; font-weight: 300; line-height: 32px; cursor: pointer; transition: color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1)); }
 .navigation button:focus-visible { outline: 2px solid var(--dsw-focus-ring-color, var(--dsw-alias-state-business-primary)); outline-offset: 5px; }
 @media (hover: hover) {
   .navigation button:hover:not(:disabled) { color: var(--dsw-alias-label-primary); }
@@ -260,8 +254,7 @@
 .confirmation { padding: 22px 24px 0; color: var(--dsw-alias-label-primary); }
 .confirmationHeading { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 12px; }
 .confirmation h2 { margin: 0; font-size: 16px; line-height: 24px; font-weight: 500; }
-.confirmationClose { display: flex; align-items: center; justify-content: center; flex: none; width: 28px; height: 28px; border: 0; border-radius: 28px; background: transparent; color: var(--dsw-alias-label-secondary); cursor: pointer; transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)), scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1)); }
-.confirmationClose:active { scale: 0.92; }
+.confirmationClose { display: flex; align-items: center; justify-content: center; flex: none; width: 28px; height: 28px; border: 0; border-radius: 28px; background: transparent; color: var(--dsw-alias-label-secondary); cursor: pointer; transition: background-color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1)); }
 @media (hover: hover) {
   .confirmationClose:hover { background: var(--dsw-alias-interactive-bg-hover); }
 }
@@ -312,9 +305,6 @@
 
 @media (prefers-reduced-motion: reduce) {
   .page button, .card, .card::before, .card::after, .indicator { transition: none; }
-  .card:active:not([aria-disabled='true']),
-  .navigation button:active:not(:disabled),
-  .confirmationClose:active { scale: none; }
 
   .page, .fileIcons > svg, .selected::after { animation: none; }
 }
@@ -352,8 +342,8 @@
   background: transparent;
   color: var(--dsw-alias-label-primary-foreground);
   pointer-events: none;
-  transition: border-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
+  transition: border-color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1)),
+    background-color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 .indicator svg { visibility: hidden; }

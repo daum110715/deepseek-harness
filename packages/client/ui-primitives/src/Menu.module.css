@@ -191,8 +191,8 @@
   color: var(--dsw-alias-label-primary);
   text-align: left;
   transition:
-    background-color var(--dsh-motion-fast, 110ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    color var(--dsh-motion-fast, 110ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
+    background-color var(--dsh-motion-fast, 110ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1)),
+    color var(--dsh-motion-fast, 110ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 @media (prefers-reduced-motion: reduce) {

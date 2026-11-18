@@ -1,8 +1,7 @@
 .trigger { width: 28px; padding: 0; flex: none; }
 .triggerAnchor { display: inline-flex; flex: none; }
 .captureRow { display: flex; align-items: center; gap: 12px; width: 100%; min-width: 0; min-height: 34px; }
-.roundButton { width: 32px; height: 32px; padding: 0; border-radius: 50%; corner-shape: round; flex: none; background: var(--dsw-specific-selector); transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)), opacity var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)), scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1)); }
-.roundButton:active:not(:disabled) { scale: 0.94; }
+.roundButton { width: 32px; height: 32px; padding: 0; border-radius: 50%; corner-shape: round; flex: none; background: var(--dsw-specific-selector); transition: background-color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1)), opacity var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1)); }
 @media (hover: hover) {
   .roundButton:hover:not(:disabled) { background: var(--dsw-alias-interactive-bg-hover-solid); }
 }
@@ -29,7 +28,7 @@
 .stepProgress small { font-size: 11px; color: var(--dsw-alias-label-tertiary); overflow-wrap: anywhere; }
 .preferences { display: grid; gap: 12px; font-size: 13px; margin: 18px 0; }
 .deviceRow, .preferences label, .sourceChoice label { display: grid; grid-template-columns: 100px minmax(120px, 280px); align-items: center; gap: 12px; }
-.preferences select, .sourceChoice select { border: 0.5px solid var(--dsw-alias-border-l1); border-radius: 6px; padding: 6px 10px; background: transparent; color: inherit; font: inherit; transition: border-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)); }
+.preferences select, .sourceChoice select { border: 0.5px solid var(--dsw-alias-border-l1); border-radius: 6px; padding: 6px 10px; background: transparent; color: inherit; font: inherit; transition: border-color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1)); }
 .sourceChoice { display: grid; gap: 6px; }
 .preferences p { margin: 0; }
 .settingsCard { list-style: none; padding: 16px; border: 0.5px solid var(--dsw-alias-border-l1); border-radius: 10px; }
@@ -47,7 +46,7 @@
 .deviceMeter { position: absolute; top: 50%; right: 24px; display: inline-flex; transform: translateY(-50%); pointer-events: none; }
 .deviceError { grid-column: 2; min-width: 0; color: var(--dsw-alias-state-error-primary); overflow-wrap: anywhere; font-size: 12px; }
 .inputLevel { display: inline-flex; align-items: center; gap: 3px; flex: none; }
-.inputLevel > span { width: 3px; height: 12px; border-radius: 1px; background: var(--dsw-alias-border-l1); transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)); }
+.inputLevel > span { width: 3px; height: 12px; border-radius: 1px; background: var(--dsw-alias-border-l1); transition: background-color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1)); }
 .inputLevel > span[data-active='true'] { background: var(--dsw-alias-state-success-primary); }
 @media (max-width: 480px) {
   .deviceRow, .preferences label, .sourceChoice label { grid-template-columns: minmax(0, 1fr); gap: 6px; }
@@ -59,5 +58,4 @@
   .preferences select,
   .sourceChoice select,
   .inputLevel > span { transition-duration: 0.01ms; }
-  .roundButton:active:not(:disabled) { scale: none; }
 }

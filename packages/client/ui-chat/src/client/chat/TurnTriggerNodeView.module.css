@@ -3,7 +3,7 @@
   border: 0.5px solid var(--dsw-alias-border-l1);
   border-radius: var(--dsw-radius-xl);
   background: var(--dsw-alias-turn-trigger-bg, var(--dsw-alias-markdown-code-block));
-  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
+  transition: background-color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
 }
 @media (hover: hover) {
   .root:hover { background: var(--dsw-alias-turn-trigger-bg-hover, var(--dsw-alias-interactive-bg-hover)); }
@@ -17,7 +17,7 @@
   border: 0;
   background: none;
   color: var(--dsw-alias-label-tertiary);
-  transition: color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
+  transition: color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
   font: inherit;
   text-align: left;
   cursor: pointer;
@@ -42,23 +42,13 @@
 .chevron, .openChevron {
   flex: none;
   color: inherit;
-  transition: transform var(--dsh-motion-base, 180ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+  transition: transform var(--dsh-motion-base, 200ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
 }
 .openChevron { transform: rotate(180deg); }
 .body {
   padding: 0 16px 12px 40px;
-  animation: dsh-trigger-body-in var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
 }
-@keyframes dsh-trigger-body-in {
-  from {
-    opacity: 0;
-    translate: 0 -4px;
-  }
-  to {
-    opacity: 1;
-    translate: 0 0;
-  }
-}
+
 .explanation { margin: 8px 0; color: var(--dsw-alias-label-secondary); font: var(--dsw-font-xxs-12); }
 .content { max-height: 240px; overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; font: var(--dsw-font-xxs-12); }
 

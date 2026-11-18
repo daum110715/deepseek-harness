@@ -15,7 +15,7 @@
   border: 0.5px solid var(--dsw-alias-border-l3);
   border-radius: var(--dsw-radius-md);
   background: var(--dsw-alias-bg-layer-3);
-  transition: transform var(--dsh-motion-base, 180ms) var(--dsh-ease-out, cubic-bezier(0.22, 1, 0.36, 1));
+  transition: transform var(--dsh-motion-base, 200ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
   pointer-events: none;
 }
 
@@ -29,11 +29,7 @@
   line-height: 20px;
   background: transparent;
   color: var(--dsw-alias-label-secondary);
-  transition: color var(--dsh-motion-base, 180ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
-}
-
-.tab:active:not(:disabled) {
-  scale: none;
+  transition: color var(--dsh-motion-base, 200ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 .tab[aria-selected='true'] {

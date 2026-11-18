@@ -3,10 +3,8 @@
 .summary > :first-child { flex-shrink: 0; }
 .title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .reason { margin: 8px 0; padding: 12px; border-radius: var(--dsw-radius-lg); background: var(--dsw-alias-bg-layer-1); color: var(--dsw-alias-label-secondary); white-space: pre-wrap; overflow-wrap: anywhere; font-size: 12px; }
-.inspect { align-self: flex-start; border: none; padding: 4px 0; background: transparent; color: var(--dsw-alias-link); font: inherit; font-size: 12px; cursor: pointer; transition: opacity var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)), scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1)); }
-.inspect:active { scale: 0.97; }
+.inspect { align-self: flex-start; border: none; padding: 4px 0; background: transparent; color: var(--dsw-alias-link); font: inherit; font-size: 12px; cursor: pointer; transition: opacity var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1)); }
 @media (hover: hover) { .inspect:hover { opacity: 0.8; } }
 @media (prefers-reduced-motion: reduce) {
   .inspect { transition-duration: 0.01ms; }
-  .inspect:active { scale: none; }
 }

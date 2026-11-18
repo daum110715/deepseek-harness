@@ -15,12 +15,12 @@
   --ds-transition-duration: 0.2s;
   --ds-transition-duration-fast: 0.1s;
   --ds-transition-duration-slow: 0.3s;
-  --dsh-ease-standard: cubic-bezier(0.2, 0.8, 0.2, 1);
-  --dsh-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --dsh-ease-standard: cubic-bezier(0.22, 1, 0.36, 1);
+  --dsh-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --dsh-ease-in: cubic-bezier(0.4, 0, 1, 1);
-  --dsh-motion-fast: 120ms;
-  --dsh-motion-base: 180ms;
-  --dsh-motion-panel: 220ms;
+  --dsh-motion-fast: 140ms;
+  --dsh-motion-base: 200ms;
+  --dsh-motion-panel: 260ms;
   --dsw-radius-xs: 4px;
   --dsw-radius-sm: 8px;
   --dsw-radius-md: 12px;

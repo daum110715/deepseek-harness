@@ -164,12 +164,7 @@
   line-height: 20px;
   font-weight: 500;
   cursor: pointer;
-  transition: background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
-}
-
-.workspace:active:not(:disabled) {
-  scale: 0.98;
+  transition: background-color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 .workspace[aria-expanded='true'] {
@@ -221,7 +216,7 @@
   font-weight: 400;
   line-height: 22px;
   color: var(--dsw-alias-label-primary);
-  transition: border-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
+  transition: border-color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 .modalInput::placeholder {
@@ -247,8 +242,5 @@
   .workspace,
   .modalInput {
     transition: none;
-  }
-  .workspace:active:not(:disabled) {
-    scale: none;
   }
 }

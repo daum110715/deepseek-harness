@@ -14,14 +14,10 @@
   background: transparent;
   padding: 0 14px;
   transition:
-    background-color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    color var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    opacity var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    scale var(--dsh-motion-fast, 120ms) var(--dsh-ease-standard, cubic-bezier(0.2, 0.8, 0.2, 1));
-}
-
-.button:active:not(:disabled) {
-  scale: 0.98;
+    background-color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1)),
+    border-color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1)),
+    color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1)),
+    opacity var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 .button:disabled {
@@ -57,6 +53,10 @@
   }
 }
 
+.primary:active:not(:disabled) {
+  background: var(--dsw-alias-button-primary-hover);
+}
+
 .ghost:active:not(:disabled) {
   background: var(--dsw-alias-interactive-bg-active);
 }
@@ -74,6 +74,10 @@
   }
 }
 
+.outline:active:not(:disabled) {
+  background: var(--dsw-alias-interactive-bg-active);
+}
+
 .toolbar {
   background: var(--dsw-alias-button-tool-bar-fill);
 }
@@ -82,6 +86,10 @@
   .toolbar:hover:not(:disabled) {
     background: var(--dsw-alias-button-tool-bar-hover);
   }
+}
+
+.toolbar:active:not(:disabled) {
+  background: var(--dsw-alias-interactive-bg-active);
 }
 
 .icon {
@@ -95,9 +103,5 @@
 @media (prefers-reduced-motion: reduce) {
   .button {
     transition: none;
-  }
-
-  .button:active:not(:disabled) {
-    scale: none;
   }
 }
