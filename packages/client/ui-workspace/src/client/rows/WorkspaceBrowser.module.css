@@ -389,8 +389,33 @@
   from { opacity: 0; }
 }
 
+/* Positions the gliding active-session pill behind animated tree rows. */
+.indicatorHost {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.activePill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  border-radius: var(--dsw-radius-md);
+  background: var(--dsw-alias-interactive-bg-hover);
+  pointer-events: none;
+  transition:
+    transform var(--dsh-motion-panel, 320ms) var(--dsh-ease-fluid, cubic-bezier(0.32, 0.72, 0, 1)),
+    width var(--dsh-motion-panel, 320ms) var(--dsh-ease-fluid, cubic-bezier(0.32, 0.72, 0, 1)),
+    height var(--dsh-motion-panel, 320ms) var(--dsh-ease-fluid, cubic-bezier(0.32, 0.72, 0, 1));
+}
+
 /* Rows keep their natural height inside the list seat's scroller. */
 .list {
+  position: relative;
+  z-index: 1;
   flex: 1;
   min-height: 0;
   overflow: visible;
@@ -661,7 +686,8 @@
   .searchButton,
   .clearButton,
   .emptyAction,
-  .renameInput {
+  .renameInput,
+  .activePill {
     transition: none;
   }
 

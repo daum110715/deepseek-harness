@@ -23,7 +23,7 @@ import clsx from 'clsx'
 import {
   FishLogo, IconAppsAddOutlineRegular, IconNewChatOutlineMedium, IconNewChatOutlineRegular,
   IconPanelLeftOutlineRegular, IconPinFillRegular, focusWithoutRing, isBehindModal, isDarwinDesktop, Menu, ShortcutKeys, Toast,
-  Tooltip, useModalLayer, writeClipboard,
+  Tooltip, useModalLayer, useSlidingIndicator, writeClipboard,
 } from '@deepseek-ai/dsh-client-ui-primitives'
 import type { InjectFace, PropsRenderFactories, PropsRenderSlots, PropsRuntime } from '@deepseek-ai/dsh-client-ui-slots'
 import type {
@@ -75,7 +75,10 @@ function PanelRow({
 }: PanelRowProps) {
   const active = usePanelInfo(info => info.activePanelId === id)
   return (
-    <div className={clsx(css.panelEntry, wide && css.panelEntryWide, active && css.panelEntryActive)}>
+    <div
+      className={clsx(css.panelEntry, wide && css.panelEntryWide, active && css.panelEntryActive)}
+      data-panel-entry-active={active || undefined}
+    >
       <Tooltip label={label} delayMs={500} disabled={wide}>
         <button
           type="button"
@@ -277,6 +280,14 @@ export function SidebarRoot({
     })
   }
 
+  const panelListRef = useRef<HTMLElement>(null)
+  const panelIndicator = useSlidingIndicator(
+    panelListRef,
+    '[data-panel-entry-active]',
+    activePanelId ?? undefined,
+    { box: 'padding', layoutKey: `${String(wide)}:${unpinned.join(',')}` },
+  )
+
   const darwinDesktop = isDarwinDesktop()
   // Rail resting state is the whale mark; hovering swaps in the panel icon
   // (the expand affordance, figma sidebar-hover flow). Expanded it is a plain
@@ -414,7 +425,15 @@ export function SidebarRoot({
           data-sidebar-scrollport={wide ? '' : undefined}
         >
           {panels.length > 0 && (
-            <nav className={css.panelList} aria-label={t('panels.label')}>
+            <nav
+              ref={panelListRef}
+              className={css.panelList}
+              aria-label={t('panels.label')}
+              data-sliding-indicator={panelIndicator.active || undefined}
+            >
+              {panelIndicator.active && (
+                <span className={css.panelIndicator} aria-hidden="true" style={panelIndicator.style} />
+              )}
               {panels.filter(({ id }) => id === FIXED_PANEL_ID || !hasEntryActions || !unpinned.includes(id)).map(({ id, label }) => (
                 <PanelRow
                   key={id}

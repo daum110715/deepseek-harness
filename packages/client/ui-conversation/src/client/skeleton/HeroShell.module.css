@@ -42,6 +42,18 @@
   line-height: 32px;
   font-weight: 500;
   color: var(--dsw-alias-label-primary);
+  animation: dsh-hero-headline-in var(--dsh-motion-sheet, 380ms) var(--dsh-ease-fluid, cubic-bezier(0.32, 0.72, 0, 1)) both;
+}
+
+@keyframes dsh-hero-headline-in {
+  from {
+    opacity: 0;
+    translate: 0 12px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
 }
 
 /* Title text + badge as one wrap unit so the title never breaks mid-text with
@@ -242,5 +254,9 @@
   .workspace,
   .modalInput {
     transition: none;
+  }
+
+  .headline {
+    animation: none;
   }
 }

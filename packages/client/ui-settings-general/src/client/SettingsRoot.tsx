@@ -17,7 +17,7 @@ import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from
 import { createPortal } from 'react-dom'
 import clsx from 'clsx'
 import {
-  ConnectionIndicator, Tooltip, useModalLayer,
+  ConnectionIndicator, Tooltip, useModalLayer, useSlidingIndicator,
   IconAgentPresetOutlineMedium, IconArchiveOutlineMedium, IconCloseOutlineRegular, IconDataOutlineMedium,
   IconPersonalizationOutlineMedium, IconSettingsOutlineMedium, IconUserOutlineMedium,
 } from '@deepseek-ai/dsh-client-ui-primitives'
@@ -61,6 +61,13 @@ function SettingsPanel({ rows, renderSlot, activeId, onSelect, onClose }: PanelP
   const titleId = useId()
 
   const panel = useRef<HTMLDivElement>(null)
+  const navListRef = useRef<HTMLDivElement>(null)
+  const navIndicator = useSlidingIndicator(
+    navListRef,
+    '[aria-current="true"]',
+    active,
+    { layoutKey: rows.map(row => row.id).join('|') },
+  )
   useModalLayer(panel, true, onClose)
 
   // Portalled beside #root like the Modal primitive: a covering surface mounted
@@ -77,7 +84,14 @@ function SettingsPanel({ rows, renderSlot, activeId, onSelect, onClose }: PanelP
         <div className={css.navTitle} id={titleId} tabIndex={-1}
           data-modal-autofocus={active === undefined ? '' : undefined}>{renderSlot('settings.header', {})}</div>
         <nav className={css.nav}>
-          <div className={css.navList}>
+          <div
+            ref={navListRef}
+            className={css.navList}
+            data-sliding-indicator={navIndicator.active || undefined}
+          >
+            {navIndicator.active && (
+              <span className={css.navIndicator} aria-hidden="true" style={navIndicator.style} />
+            )}
             {rows.map(row => (
               <button
                 key={row.id}
@@ -106,7 +120,11 @@ function SettingsPanel({ rows, renderSlot, activeId, onSelect, onClose }: PanelP
           </button>
         </div>
         <div className={css.options}>
-          {active !== undefined && renderSlot('settings.section', { close: onClose }, { only: active })}
+          {active !== undefined && (
+            <div key={active} className={css.sectionStage}>
+              {renderSlot('settings.section', { close: onClose }, { only: active })}
+            </div>
+          )}
         </div>
       </div>
     </div>

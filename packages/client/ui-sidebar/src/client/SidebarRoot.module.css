@@ -26,7 +26,7 @@
 }
 
 :global([data-animating]:not([data-dragging])) .root {
-  transition: width var(--ds-transition-duration-slow) var(--ds-ease-in-out);
+  transition: width var(--ds-transition-duration-slow) var(--dsh-ease-fluid, cubic-bezier(0.32, 0.72, 0, 1));
 }
 
 /* macOS desktop: the AppFrame column owns the translucent sidebar tint; an
@@ -645,11 +645,12 @@
    instead of its inner panel row. */
 .panelEntry {
   position: relative;
+  z-index: 1;
   display: flex;
   border-inline: var(--dsh-sidebar-paint-inset) solid transparent;
   border-radius: var(--dsw-radius-md);
   background-clip: padding-box;
-  transition: background-color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
+  transition: background-color var(--dsh-motion-fast, 160ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 .panelEntryWide > *:first-child {
@@ -705,6 +706,7 @@
 }
 
 .panelList {
+  position: relative;
   grid-column: 2;
   grid-row: 2;
   flex: none;
@@ -712,6 +714,24 @@
   flex-direction: column;
   gap: 2px;
   margin-bottom: 8px;
+}
+
+.panelIndicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  border-radius: var(--dsw-radius-md);
+  background: var(--dsw-alias-interactive-bg-hover);
+  pointer-events: none;
+  transition:
+    transform var(--dsh-motion-panel, 320ms) var(--dsh-ease-fluid, cubic-bezier(0.32, 0.72, 0, 1)),
+    width var(--dsh-motion-panel, 320ms) var(--dsh-ease-fluid, cubic-bezier(0.32, 0.72, 0, 1)),
+    height var(--dsh-motion-panel, 320ms) var(--dsh-ease-fluid, cubic-bezier(0.32, 0.72, 0, 1));
+}
+
+.panelList[data-sliding-indicator] .panelEntryActive {
+  background-color: transparent;
 }
 
 /* Panel entries use a 3px paint inset, the New Session bar's 12px radius,
@@ -849,6 +869,7 @@
   .newSession,
   .newSessionShortcut,
   .panelEntry,
+  .panelIndicator,
   .panelUnpin,
   .panelRow,
   .railIn .iconButton,

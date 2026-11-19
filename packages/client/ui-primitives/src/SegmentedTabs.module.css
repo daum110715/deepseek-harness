@@ -15,7 +15,7 @@
   border: 0.5px solid var(--dsw-alias-border-l3);
   border-radius: var(--dsw-radius-md);
   background: var(--dsw-alias-bg-layer-3);
-  transition: transform var(--dsh-motion-base, 200ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+  transition: transform var(--dsh-motion-panel, 320ms) var(--dsh-ease-fluid, cubic-bezier(0.32, 0.72, 0, 1));
   pointer-events: none;
 }
 

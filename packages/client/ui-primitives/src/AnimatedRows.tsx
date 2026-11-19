@@ -2,8 +2,10 @@
 import { Component, createRef, type AriaRole, type ReactNode } from 'react'
 import css from './AnimatedRows.module.css'
 
-const ROW_FADE_MS = 100
-const ROW_GLIDE_MS = 200
+const ROW_FADE_MS = 180
+const ROW_GLIDE_MS = 280
+const ROW_EASING = 'cubic-bezier(0.32, 0.72, 0, 1)'
+const ROW_ENTER_EASING = 'cubic-bezier(0.16, 1, 0.3, 1)'
 
 /** Keyed row content, list semantics, and animation readiness. */
 export interface AnimatedRowsProps {
@@ -105,7 +107,10 @@ export class AnimatedRows extends Component<AnimatedRowsProps> {
       if (!intersects(row.rect, viewport)
         && (previousRow === undefined || !intersects(previousRow.rect, snapshot.viewport))) continue
       if (previousRow === undefined) {
-        this.move(row.element, [{ opacity: 0 }, { opacity: 1 }], ROW_FADE_MS)
+        this.move(row.element, [
+          { opacity: 0, transform: 'translateY(-6px)' },
+          { opacity: 1, transform: 'translateY(0)' },
+        ], ROW_FADE_MS, ROW_ENTER_EASING)
         continue
       }
       const dx = previousRow.rect.left - row.rect.left
@@ -127,8 +132,11 @@ export class AnimatedRows extends Component<AnimatedRowsProps> {
         width: `${String(row.rect.width)}px`, height: `${String(row.rect.height)}px`,
       })
       overlay.append(element)
-      const animation = element.animate([{ opacity: row.opacity }, { opacity: 0 }], {
-        duration: ROW_FADE_MS, easing: 'ease-out', fill: 'forwards',
+      const animation = element.animate([
+        { opacity: row.opacity, transform: 'translateY(0)' },
+        { opacity: 0, transform: 'translateY(-5px)' },
+      ], {
+        duration: ROW_FADE_MS, easing: ROW_EASING, fill: 'forwards',
       })
       this.exits.set(key, { element, animation })
       animation.onfinish = () => { this.removeExit(key) }
@@ -149,8 +157,8 @@ export class AnimatedRows extends Component<AnimatedRowsProps> {
     }]))
   }
 
-  private move(element: HTMLElement, keyframes: Keyframe[], duration: number): void {
-    const animation = element.animate(keyframes, { duration, easing: 'ease-out' })
+  private move(element: HTMLElement, keyframes: Keyframe[], duration: number, easing: string = ROW_EASING): void {
+    const animation = element.animate(keyframes, { duration, easing })
     this.movements.set(element, animation)
     animation.onfinish = () => { this.movements.delete(element); animation.cancel() }
   }

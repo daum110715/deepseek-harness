@@ -80,7 +80,13 @@ button.leading {
 .iconIdle {
   display: inline-flex;
   opacity: 1;
-  transition: opacity 100ms ease;
+  transition: opacity var(--dsh-motion-fast, 160ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
+}
+
+.chevron {
+  transition:
+    opacity var(--dsh-motion-fast, 160ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1)),
+    transform var(--dsh-motion-base, 240ms) var(--dsh-ease-fluid, cubic-bezier(0.32, 0.72, 0, 1));
 }
 
 .chevronHover {
@@ -88,7 +94,10 @@ button.leading {
   inset: 0;
   margin: auto;
   opacity: 0;
-  transition: opacity 100ms ease;
+}
+
+.chevronOpen {
+  transform: rotate(180deg);
 }
 
 @media (hover: hover) {
@@ -98,6 +107,23 @@ button.leading {
 
   .row:hover .chevronHover {
     opacity: 1;
+  }
+}
+
+.root[data-open] > :not([data-disclosure-header]) {
+  animation: dsh-disclosure-reveal var(--dsh-motion-panel, 320ms) var(--dsh-ease-fluid, cubic-bezier(0.32, 0.72, 0, 1));
+}
+
+@keyframes dsh-disclosure-reveal {
+  from {
+    opacity: 0;
+    translate: 0 -6px;
+    clip-path: inset(0 0 18% 0);
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+    clip-path: inset(0 0 0 0);
   }
 }
 
@@ -111,7 +137,12 @@ button.leading {
 @media (prefers-reduced-motion: reduce) {
   .row,
   .iconIdle,
+  .chevron,
   .chevronHover {
     transition: none;
+  }
+
+  .root[data-open] > :not([data-disclosure-header]) {
+    animation: none;
   }
 }

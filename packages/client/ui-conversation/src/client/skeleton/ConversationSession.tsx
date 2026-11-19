@@ -2,7 +2,7 @@
 
 import { useLayoutEffect, useMemo, useRef, useState } from 'react'
 import clsx from 'clsx'
-import { Button, IconEllipsisOutlineRegular, Menu, Tooltip } from '@deepseek-ai/dsh-client-ui-primitives'
+import { Button, IconEllipsisOutlineRegular, Menu, Tooltip, useSlidingIndicator } from '@deepseek-ai/dsh-client-ui-primitives'
 import type { SessionListState, SessionSummary } from '@deepseek-ai/dsh-api-session-controller/client'
 import type { SessionId } from '@deepseek-ai/dsh-session/types'
 import type {
@@ -142,6 +142,13 @@ export function ConversationSessionHeader({
     return { visibleTabs, moreTabs: tabs.filter(tab => !visibleIds.has(tab.id)) }
   }, [tabs, unpinned, hasEntryActions, visibleViewLimit])
   const currentInMore = moreTabs.some(tab => tab.id === active?.id)
+  const viewTabsRef = useRef<HTMLDivElement>(null)
+  const tabIndicator = useSlidingIndicator(
+    viewTabsRef,
+    '[role="tab"][aria-selected="true"]',
+    showTabs && !currentInMore ? active?.id : undefined,
+    { layoutKey: visibleTabs.map(tab => tab.id).join('|') },
+  )
   return (
     <>
       <div className={css.titleRow}>
@@ -223,7 +230,16 @@ export function ConversationSessionHeader({
         // data-conversation-tabs: marks the tab strip, which the window-chrome
         // geometry and the browser coverage lane anchor on.
         <div ref={tabRow} className={css.tabs}>
-          <div className={css.viewTabs} role="tablist" data-conversation-tabs="">
+          <div
+            ref={viewTabsRef}
+            className={css.viewTabs}
+            role="tablist"
+            data-conversation-tabs=""
+            data-sliding-indicator={tabIndicator.active || undefined}
+          >
+            {tabIndicator.active && (
+              <span className={css.tabIndicator} aria-hidden="true" style={tabIndicator.style} />
+            )}
             {visibleTabs.map(viewTab => (
               <button
                 key={viewTab.id}

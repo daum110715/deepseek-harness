@@ -5,7 +5,7 @@ import clsx from 'clsx'
 import css from './MenuSurface.module.css'
 
 /** Context-menu transition durations in milliseconds, shared with its lifecycle owner. */
-export const MENU_TRANSITION_MS = Object.freeze({ enter: 40, dismiss: 80, replace: 10, prepare: 20 })
+export const MENU_TRANSITION_MS = Object.freeze({ enter: 150, dismiss: 110, replace: 10, prepare: 20 })
 
 /** Menu containers preserve native div props and refs. */
 export interface MenuSurfaceProps extends ComponentPropsWithoutRef<'div'> {

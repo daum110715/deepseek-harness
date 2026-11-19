@@ -22,7 +22,7 @@ import {
   IconChevronsUpDownOutlineRegular, IconClockOutlineRegular, IconCloseFillRegular,
   IconFlatListOutlineRegular, IconFolderCloseRegular, IconProjectAddOutlineRegular,
   IconQueueOutlineRegular, IconSearchOutlineRegular, IconSlidersTwoOutlineRegular,
-  IconWorkspaceTreeOutlineRegular, Menu, Tooltip,
+  IconWorkspaceTreeOutlineRegular, Menu, Tooltip, useSlidingIndicator,
 } from '@deepseek-ai/dsh-client-ui-primitives'
 import type {
   SessionListState, SessionSearchResultItem,
@@ -653,23 +653,40 @@ function SessionTree({
     )
   }
 
+  const indicatorHostRef = useRef<HTMLDivElement>(null)
+  const sessionIndicator = useSlidingIndicator(
+    indicatorHostRef,
+    '[role="treeitem"][aria-selected="true"]',
+    current,
+    { box: 'padding', layoutKey: rowKeys.join('|') },
+  )
+
   const groupRows = rootGroups.map(group => renderGroup(group, 0))
   return (
     <HoverCardGroup className={clsx(css.treeBody, css.wide)}>
       {workspaceDropAtListStart && <span className={css.listTopDropIndicator} aria-hidden="true" />}
-      <AnimatedRows
-        className={clsx(css.list, workspaceDropAtListStart && css.listTopDropActive)}
-        role="tree"
-        label={t('section.sessions')}
-        rowKeys={rowKeys}
-        ready={list.phase === 'ready' && workspaceReady && !nativeDragActive}
-        resetKey={JSON.stringify([animationResetKey, watermarkMotionKey])}
+      <div
+        ref={indicatorHostRef}
+        className={css.indicatorHost}
+        data-sliding-indicator={sessionIndicator.active || undefined}
       >
-        {groups.length === 0 && (
-          <EmptySessions rowState={rowState} onLeaveArchivedOnly={onLeaveArchivedOnly} t={t} />
+        {sessionIndicator.active && (
+          <span className={css.activePill} aria-hidden="true" style={sessionIndicator.style} />
         )}
-        {groupRows}
-      </AnimatedRows>
+        <AnimatedRows
+          className={clsx(css.list, workspaceDropAtListStart && css.listTopDropActive)}
+          role="tree"
+          label={t('section.sessions')}
+          rowKeys={rowKeys}
+          ready={list.phase === 'ready' && workspaceReady && !nativeDragActive}
+          resetKey={JSON.stringify([animationResetKey, watermarkMotionKey])}
+        >
+          {groups.length === 0 && (
+            <EmptySessions rowState={rowState} onLeaveArchivedOnly={onLeaveArchivedOnly} t={t} />
+          )}
+          {groupRows}
+        </AnimatedRows>
+      </div>
     </HoverCardGroup>
   )
 }
@@ -720,66 +737,83 @@ function FlatList({
     const nextOrder = sessionDragOrder(sessionIds, rows, activeDrag, over)
     if (nextOrder !== undefined) setSessionOrder(FLAT_SESSION_ORDER_KEY, nextOrder)
   }
+  const flatRowKeys = rows.length === 0 ? ['empty'] : rows.map(row => `session:${row.id}`)
+  const indicatorHostRef = useRef<HTMLDivElement>(null)
+  const sessionIndicator = useSlidingIndicator(
+    indicatorHostRef,
+    '[role="treeitem"][aria-selected="true"]',
+    currentId,
+    { box: 'padding', layoutKey: flatRowKeys.join('|') },
+  )
   const now = Date.now()
   return (
     <HoverCardGroup className={clsx(css.treeBody, css.wide)}>
-      <AnimatedRows
-        className={clsx(css.list, css.flatList)}
-        role="tree"
-        label={t('section.sessions')}
-        rowKeys={rows.length === 0 ? ['empty'] : rows.map(row => `session:${row.id}`)}
-        ready={list.phase === 'ready' && workspaceReady && drag === null}
-        resetKey={animationResetKey}
+      <div
+        ref={indicatorHostRef}
+        className={css.indicatorHost}
+        data-sliding-indicator={sessionIndicator.active || undefined}
       >
-        {rows.length === 0 && (
-          <EmptySessions rowState={rowState} onLeaveArchivedOnly={onLeaveArchivedOnly} t={t} />
+        {sessionIndicator.active && (
+          <span className={css.activePill} aria-hidden="true" style={sessionIndicator.style} />
         )}
-        {rows.map((node) => {
-          const active = drag !== null && drag.pinned === node.pinned
-          const normalizeHalf = (half: 'before' | 'after'): 'before' | 'after' =>
-            node.blank ? 'after' : half
-          return (
-            <SessionNodeItem
-              key={node.id}
-              node={node}
-              currentId={currentId}
-              now={now}
-              onOpen={open}
-              onRenameRequest={onSessionRenameRequest}
-              renderSlot={renderSlot}
-              renderFactorySlot={renderFactorySlot} useContextMenu={useContextMenu}
-              useContextMenuTarget={useContextMenuTarget}
-              onReveal={node.id === revealSessionId
-                ? () => { onSessionRevealed(node.id) }
-                : undefined}
-              useSessionAccess={useSessionAccess}
-              drag={{
-                start: () => {
-                  dropCommitted.current = false
-                  setDrag({ accountKey: FLAT_SESSION_ORDER_KEY, sessionId: node.id, pinned: node.pinned, over: null })
-                },
-                active,
-                marker: active && drag.over?.id === node.id ? drag.over.half : null,
-                hover: (half) => {
-                  setDrag(current => current === null ? current : {
-                    ...current, over: { id: node.id, half: normalizeHalf(half) },
-                  })
-                },
-                drop: (half) => {
-                  if (drag !== null) commitDrag(drag, { id: node.id, half: normalizeHalf(half) })
-                },
-                end: () => {
-                  if (drag?.over !== null && drag?.over !== undefined) commitDrag(drag, drag.over)
-                  else setDrag(null)
-                  dropCommitted.current = false
-                },
-              }}
-              home={home}
-              t={t}
-            />
-          )
-        })}
-      </AnimatedRows>
+        <AnimatedRows
+          className={clsx(css.list, css.flatList)}
+          role="tree"
+          label={t('section.sessions')}
+          rowKeys={flatRowKeys}
+          ready={list.phase === 'ready' && workspaceReady && drag === null}
+          resetKey={animationResetKey}
+        >
+          {rows.length === 0 && (
+            <EmptySessions rowState={rowState} onLeaveArchivedOnly={onLeaveArchivedOnly} t={t} />
+          )}
+          {rows.map((node) => {
+            const active = drag !== null && drag.pinned === node.pinned
+            const normalizeHalf = (half: 'before' | 'after'): 'before' | 'after' =>
+              node.blank ? 'after' : half
+            return (
+              <SessionNodeItem
+                key={node.id}
+                node={node}
+                currentId={currentId}
+                now={now}
+                onOpen={open}
+                onRenameRequest={onSessionRenameRequest}
+                renderSlot={renderSlot}
+                renderFactorySlot={renderFactorySlot} useContextMenu={useContextMenu}
+                useContextMenuTarget={useContextMenuTarget}
+                onReveal={node.id === revealSessionId
+                  ? () => { onSessionRevealed(node.id) }
+                  : undefined}
+                useSessionAccess={useSessionAccess}
+                drag={{
+                  start: () => {
+                    dropCommitted.current = false
+                    setDrag({ accountKey: FLAT_SESSION_ORDER_KEY, sessionId: node.id, pinned: node.pinned, over: null })
+                  },
+                  active,
+                  marker: active && drag.over?.id === node.id ? drag.over.half : null,
+                  hover: (half) => {
+                    setDrag(current => current === null ? current : {
+                      ...current, over: { id: node.id, half: normalizeHalf(half) },
+                    })
+                  },
+                  drop: (half) => {
+                    if (drag !== null) commitDrag(drag, { id: node.id, half: normalizeHalf(half) })
+                  },
+                  end: () => {
+                    if (drag?.over !== null && drag?.over !== undefined) commitDrag(drag, drag.over)
+                    else setDrag(null)
+                    dropCommitted.current = false
+                  },
+                }}
+                home={home}
+                t={t}
+              />
+            )
+          })}
+        </AnimatedRows>
+      </div>
     </HoverCardGroup>
   )
 }

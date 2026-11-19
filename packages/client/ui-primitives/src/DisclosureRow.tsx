@@ -1,6 +1,6 @@
 import { memo, type KeyboardEvent, type MouseEvent, type ReactNode } from 'react'
 import clsx from 'clsx'
-import { IconChevronDownOutlineRegular, IconChevronUpOutlineRegular } from './icons/index.tsx'
+import { IconChevronDownOutlineRegular } from './icons/index.tsx'
 import { TextShimmer } from './TextShimmer.tsx'
 import css from './DisclosureRow.module.css'
 
@@ -71,17 +71,16 @@ export const DisclosureRow = memo(function DisclosureRow({
     event.preventDefault()
     onToggle()
   }
-  const collapsedLeading = previewChevron
+  const leading = previewChevron || open
     ? (
       <>
-        <span className={css.iconIdle}>{icon}</span>
-        <IconChevronDownOutlineRegular className={clsx(chevronClassName, css.chevronHover)} />
+        {!open && <span className={css.iconIdle}>{icon}</span>}
+        <IconChevronDownOutlineRegular
+          className={clsx(chevronClassName, css.chevron, !open && css.chevronHover, open && css.chevronOpen)}
+        />
       </>
     )
     : icon
-  const leading = open
-    ? <IconChevronUpOutlineRegular className={chevronClassName} />
-    : collapsedLeading
 
   return (
     <div className={clsx(css.root, className)} data-open={open || undefined}>

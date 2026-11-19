@@ -246,11 +246,38 @@
 }
 
 .viewTabs {
+  position: relative;
   display: flex;
   flex-wrap: wrap;
   gap: 32px;
   min-width: 0;
   min-height: 25px;
+}
+
+.tabIndicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  transition:
+    transform var(--dsh-motion-panel, 320ms) var(--dsh-ease-fluid, cubic-bezier(0.32, 0.72, 0, 1)),
+    width var(--dsh-motion-panel, 320ms) var(--dsh-ease-fluid, cubic-bezier(0.32, 0.72, 0, 1)),
+    height var(--dsh-motion-panel, 320ms) var(--dsh-ease-fluid, cubic-bezier(0.32, 0.72, 0, 1));
+}
+
+.tabIndicator::after {
+  content: '';
+  position: absolute;
+  right: 10px;
+  bottom: -1px;
+  left: 10px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--dsw-alias-state-business-primary);
+}
+
+.viewTabs[data-sliding-indicator] .tab::after {
+  opacity: 0;
 }
 
 /* The 16px text line retains 9px below it. The press target extends 10px
@@ -628,6 +655,22 @@
      closer to the card's inner controls below; right keeps the trailing
      preset seat off the card edge. */
   padding: 0 16px 0 20px;
+  animation: dsh-hero-rise var(--dsh-motion-sheet, 380ms) var(--dsh-ease-fluid, cubic-bezier(0.32, 0.72, 0, 1)) 45ms both;
+}
+
+.composerHero > :last-child {
+  animation: dsh-hero-rise var(--dsh-motion-sheet, 380ms) var(--dsh-ease-fluid, cubic-bezier(0.32, 0.72, 0, 1)) 90ms both;
+}
+
+@keyframes dsh-hero-rise {
+  from {
+    opacity: 0;
+    translate: 0 10px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
 }
 
 /* Plugin options share the row, pushed to its right edge. */
@@ -663,7 +706,13 @@
   .crumb,
   .tab,
   .tab::after,
+  .tabIndicator,
   .widthHandle::after {
     transition: none;
+  }
+
+  .heroWorkspaceRow,
+  .composerHero > :last-child {
+    animation: none;
   }
 }

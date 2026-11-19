@@ -50,18 +50,42 @@
 
 /* Opacity on the container would prevent its material from blurring the page.
  * Enter animations release their compositing layers so nested menus can blur too. */
-@keyframes dsh-context-menu-in { from { opacity: 0; } to { opacity: 1; } }
-@keyframes dsh-context-menu-out { from { opacity: 1; } to { opacity: 0; } }
+@keyframes dsh-context-menu-in {
+  from {
+    opacity: 0;
+    translate: 0 -5px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+@keyframes dsh-context-menu-out {
+  from {
+    opacity: 1;
+    translate: 0 0;
+  }
+  to {
+    opacity: 0;
+    translate: 0 -3px;
+  }
+}
+.surface:not([data-menu-phase]) > *,
+.backing:not([data-menu-phase]) {
+  animation: dsh-context-menu-in var(--dsh-motion-fast, 160ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+}
 .surface[data-menu-phase='enter'] > *,
-.backing[data-menu-phase='enter'] { animation: dsh-context-menu-in var(--dsh-menu-enter) ease-out; }
+.backing[data-menu-phase='enter'] {
+  animation: dsh-context-menu-in var(--dsh-menu-enter) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+}
 .surface[data-menu-phase='dismiss'] > *,
 .backing[data-menu-phase='dismiss'],
 .surface[data-menu-phase='replace'] > *,
-.backing[data-menu-phase='replace'] { animation: dsh-context-menu-out var(--dsh-menu-dismiss) ease-in both; }
+.backing[data-menu-phase='replace'] {
+  animation: dsh-context-menu-out var(--dsh-menu-dismiss) var(--dsh-ease-in, cubic-bezier(0.4, 0, 1, 1)) both;
+}
 .surface[data-menu-phase='replace'] > *,
 .backing[data-menu-phase='replace'] { animation-duration: var(--dsh-menu-replace); }
-@keyframes dsh-context-menu-in { from { opacity: 0; } to { opacity: 1; } }
-@keyframes dsh-context-menu-out { from { opacity: 1; } to { opacity: 0; } }
 @media (prefers-reduced-motion: reduce) {
   .surface:not([data-menu-phase]) > *,
   .backing:not([data-menu-phase]) {

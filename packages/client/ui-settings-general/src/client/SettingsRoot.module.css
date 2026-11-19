@@ -80,7 +80,7 @@
   inset: var(--dsh-frame-chrome-top, 0px) 0 0;
   background: var(--dsw-alias-bg-mask-1);
   backdrop-filter: var(--dsw-mask-blur);
-  animation: dsh-settings-mask-in var(--dsh-motion-fast, 140ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+  animation: dsh-settings-mask-in var(--dsh-motion-base, 240ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 @keyframes dsh-settings-mask-in {
@@ -122,13 +122,13 @@
      styles/scrollbar.css for the rebinding contract). */
   --dsh-scrollbar-thumb: var(--dsw-alias-scrollbar-bg-l2);
   --dsh-scrollbar-thumb-hover: var(--dsw-alias-scrollbar-hover-l2);
-  animation: dsh-settings-panel-in var(--dsh-motion-panel, 260ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+  animation: dsh-settings-panel-in var(--dsh-motion-panel, 320ms) var(--dsh-ease-fluid, cubic-bezier(0.32, 0.72, 0, 1));
 }
 
 @keyframes dsh-settings-panel-in {
   from {
     opacity: 0;
-    translate: 0 8px;
+    translate: 0 14px;
   }
   to {
     opacity: 1;
@@ -166,6 +166,7 @@
 
 /* Cell stack (figma 501:29961): gap 4. */
 .navList {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -173,9 +174,25 @@
   overflow-y: auto;
 }
 
+.navIndicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  border-radius: var(--dsw-radius-md);
+  background: var(--dsw-specific-sidebar-nav-item-active);
+  pointer-events: none;
+  transition:
+    transform var(--dsh-motion-panel, 320ms) var(--dsh-ease-fluid, cubic-bezier(0.32, 0.72, 0, 1)),
+    width var(--dsh-motion-panel, 320ms) var(--dsh-ease-fluid, cubic-bezier(0.32, 0.72, 0, 1)),
+    height var(--dsh-motion-panel, 320ms) var(--dsh-ease-fluid, cubic-bezier(0.32, 0.72, 0, 1));
+}
+
 /* Nav cell (figma .Setting-nav-cell 501:29962): 164x40, r12, pad
    (12,9,16,9), gap 8; label 14/400 lh22; selected fill #EBEEF2. */
 .navCell {
+  position: relative;
+  z-index: 1;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -192,8 +209,8 @@
   font-weight: 400;
   color: var(--dsw-alias-label-primary);
   text-align: left;
-  transition: background-color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1)),
-    color var(--dsh-motion-fast, 140ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
+  transition: background-color var(--dsh-motion-fast, 160ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1)),
+    color var(--dsh-motion-fast, 160ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 @media (hover: hover) {
@@ -204,6 +221,10 @@
 
 .navCell.active {
   background: var(--dsw-specific-sidebar-nav-item-active);
+}
+
+.navList[data-sliding-indicator] .navCell.active {
+  background: transparent;
 }
 
 .navIcon {
@@ -358,13 +379,30 @@
   white-space: nowrap;
 }
 
+.sectionStage {
+  animation: dsh-settings-section-in var(--dsh-motion-base, 240ms) var(--dsh-ease-fluid, cubic-bezier(0.32, 0.72, 0, 1));
+}
+
+@keyframes dsh-settings-section-in {
+  from {
+    opacity: 0;
+    translate: 0 6px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .mask,
-  .panel {
+  .panel,
+  .sectionStage {
     animation: none;
   }
   .trigger,
   .navCell,
+  .navIndicator,
   .close {
     transition: none;
   }

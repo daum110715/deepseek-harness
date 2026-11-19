@@ -18,9 +18,11 @@
   --dsh-ease-standard: cubic-bezier(0.22, 1, 0.36, 1);
   --dsh-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --dsh-ease-in: cubic-bezier(0.4, 0, 1, 1);
-  --dsh-motion-fast: 140ms;
-  --dsh-motion-base: 200ms;
-  --dsh-motion-panel: 260ms;
+  --dsh-ease-fluid: cubic-bezier(0.32, 0.72, 0, 1);
+  --dsh-motion-fast: 160ms;
+  --dsh-motion-base: 240ms;
+  --dsh-motion-panel: 320ms;
+  --dsh-motion-sheet: 380ms;
   --dsw-radius-xs: 4px;
   --dsw-radius-sm: 8px;
   --dsw-radius-md: 12px;
@@ -49,5 +51,6 @@ body {
     --dsh-motion-fast: 0ms;
     --dsh-motion-base: 0ms;
     --dsh-motion-panel: 0ms;
+    --dsh-motion-sheet: 0ms;
   }
 }

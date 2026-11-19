@@ -45,8 +45,11 @@ function CenterColumn(props: { children?: ReactNode; inert: boolean }) {
 /** Subscribe to the main key without subscribing the column frame to each panel id. */
 function MainPanel({ usePanelInfo, renderSlot }: Pick<PropsRuntime<'root'>, 'usePanelInfo'> & PropsRenderSlots<'main'>) {
   const panelId = usePanelInfo(info => info.activePanelId)
+  const entryKey = panelId ?? 'conversation'
   return <div className={css.mainPanel} data-global-panel={panelId !== null || undefined}>
-    {renderSlot('main', {}, { entryKey: panelId ?? 'conversation' })}
+    <div key={entryKey} className={css.mainView}>
+      {renderSlot('main', {}, { entryKey })}
+    </div>
   </div>
 }
 

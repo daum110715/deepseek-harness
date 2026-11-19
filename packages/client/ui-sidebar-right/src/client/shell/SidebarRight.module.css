@@ -55,7 +55,7 @@
   transform: translateX(var(--dsh-sidebar-width));
   visibility: hidden;
   transition:
-    transform var(--ds-transition-duration-slow) var(--ds-ease-in-out),
+    transform var(--ds-transition-duration-slow) var(--dsh-ease-fluid, cubic-bezier(0.32, 0.72, 0, 1)),
     visibility 0s linear var(--ds-transition-duration-slow);
 }
 
@@ -64,7 +64,7 @@
 .panel[data-sidebar-right-open] :global([data-dockkit-divider]) {
   transform: none;
   visibility: visible;
-  transition: transform var(--ds-transition-duration-slow) var(--ds-ease-in-out);
+  transition: transform var(--ds-transition-duration-slow) var(--dsh-ease-fluid, cubic-bezier(0.32, 0.72, 0, 1));
 }
 
 /* An item mounted by the opening has no closed style to slide from; it starts

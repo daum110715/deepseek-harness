@@ -59,15 +59,22 @@
   color: var(--dsw-alias-label-primary);
   box-shadow: var(--dsw-elevation-panel);
   opacity: 1;
-  transition: opacity var(--dsh-hover-preview-fade) linear;
+  translate: 0 0;
+  transition:
+    opacity var(--dsh-hover-preview-fade, 200ms) var(--dsh-ease-fluid, cubic-bezier(0.32, 0.72, 0, 1)),
+    translate var(--dsh-motion-base, 240ms) var(--dsh-ease-fluid, cubic-bezier(0.32, 0.72, 0, 1));
 }
 
 @starting-style {
-  .preview { opacity: 0; }
+  .preview {
+    opacity: 0;
+    translate: 0 6px;
+  }
 }
 
 .preview[data-closing] {
   opacity: 0;
+  translate: 0 4px;
   pointer-events: none;
 }
 

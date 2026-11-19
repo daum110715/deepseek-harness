@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import clsx from 'clsx'
 import type { WorkspaceId } from '@deepseek-ai/dsh-workspace/types'
 import { workspaceDisplayTitle } from '@deepseek-ai/dsh-api-workspace-controller/default-workspace'
@@ -50,7 +50,11 @@ export function ConversationContent(props: ConversationContentProps) {
   // observer churn while the first blank session fills the resident body
   // outlet.
   const seatObserver = useRef<ResizeObserver | null>(null)
+  const seatElementRef = useRef<HTMLDivElement | null>(null)
+  const heroSeatTopRef = useRef<{ sessionId: string | undefined; top: number } | null>(null)
+  const prevPhaseRef = useRef<{ sessionId: string | undefined; phase: string }>({ sessionId, phase })
   const seatResizeRef = useCallback((seat: HTMLDivElement | null): void => {
+    seatElementRef.current = seat
     seatObserver.current?.disconnect()
     seatObserver.current = null
     const scroller = seat?.parentElement ?? null
@@ -61,10 +65,47 @@ export function ConversationContent(props: ConversationContentProps) {
         '--dsh-conversation-viewport-height',
         `${scroller.clientHeight}px`,
       )
+      if (prevPhaseRef.current.phase === 'hero') {
+        const rect = seat.getBoundingClientRect()
+        if (rect.height > 0) heroSeatTopRef.current = { sessionId: prevPhaseRef.current.sessionId, top: rect.top }
+      }
     })
     seatObserver.current.observe(seat)
     seatObserver.current.observe(scroller)
   }, [])
+
+  useLayoutEffect(() => {
+    const previous = prevPhaseRef.current
+    prevPhaseRef.current = { sessionId, phase }
+    const seat = seatElementRef.current
+    if (seat === null) return
+    if (phase === 'hero') {
+      const rect = seat.getBoundingClientRect()
+      if (rect.height > 0) heroSeatTopRef.current = { sessionId, top: rect.top }
+      return
+    }
+    const saved = heroSeatTopRef.current
+    heroSeatTopRef.current = null
+    if (
+      previous.phase !== 'hero'
+      || phase !== 'active'
+      || previous.sessionId !== sessionId
+      || saved === null
+      || saved.sessionId !== sessionId
+      || typeof seat.animate !== 'function'
+      || (typeof window.matchMedia === 'function' && window.matchMedia('(prefers-reduced-motion: reduce)').matches)
+    ) return
+    const nextTop = seat.getBoundingClientRect().top
+    const deltaY = saved.top - nextTop
+    if (Math.abs(deltaY) < 12) return
+    seat.animate(
+      [
+        { transform: `translate3d(0, ${String(deltaY)}px, 0)` },
+        { transform: 'translate3d(0, 0, 0)' },
+      ],
+      { duration: 420, easing: 'cubic-bezier(0.32, 0.72, 0, 1)' },
+    )
+  }, [sessionId, phase])
 
   const sessionWorkspace = sessionId === undefined
     ? undefined

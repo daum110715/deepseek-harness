@@ -37,12 +37,13 @@
   display: block;
   width: 16px;
   height: 16px;
-  border-radius: 50%;
+  border-radius: 999px;
   corner-shape: round;
   background: var(--dsw-alias-label-primary-foreground);
   transition:
-    transform var(--dsh-motion-base, 200ms) var(--dsh-ease-out, cubic-bezier(0.16, 1, 0.3, 1)),
-    background-color var(--dsh-motion-base, 200ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
+    transform var(--dsh-motion-base, 240ms) var(--dsh-ease-fluid, cubic-bezier(0.32, 0.72, 0, 1)),
+    width var(--dsh-motion-fast, 160ms) var(--dsh-ease-fluid, cubic-bezier(0.32, 0.72, 0, 1)),
+    background-color var(--dsh-motion-base, 240ms) var(--dsh-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 .switch[aria-checked='false'] .thumb {
@@ -51,6 +52,14 @@
 
 .switch[aria-checked='true'] .thumb {
   transform: translateX(16px);
+}
+
+.switch:active:not(:disabled) .thumb {
+  width: 20px;
+}
+
+.switch[aria-checked='true']:active:not(:disabled) .thumb {
+  transform: translateX(12px);
 }
 
 @media (prefers-reduced-motion: reduce) {
